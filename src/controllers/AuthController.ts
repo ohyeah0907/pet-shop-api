@@ -1,0 +1,33 @@
+import { Request, Response } from "express";
+import { BadRequestResponse, SuccessResponse } from "../handler/app-response";
+import authService from "../services/AuthService";
+import { ProtectedRequest } from "../types/app-request";
+
+const controller = {
+    login: async (req: Request, res: Response) => {
+        try {
+            const result = await authService.login(req.body.login);
+            return new SuccessResponse("Đăng nhập thành công", result).send(res);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
+    logout: async (req: ProtectedRequest, res: Response) => {
+        try {
+            const result = await authService.logout(req.user);
+            return new SuccessResponse("Đăng xuất thành công", result).send(res);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
+    refreshToken: async (req: Request, res: Response) => {
+        try {
+            const { accessToken, refreshToken } = req.headers;
+
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    }
+}
+
+export default controller;

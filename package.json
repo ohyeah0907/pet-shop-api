@@ -1,0 +1,41 @@
+{
+  "name": "Mobieyes_v2",
+  "version": "1.0.0",
+  "main": "app.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git"
+  },
+  "scripts": {
+    "build": "rimraf build && tsc",
+    "predev": "npm install && npm run build",
+    "serve": "node -r dotenv/config build/app.js",
+    "clean": "rimraf ./build",
+    "dev": "cross-env NODE_ENV=development PORT=4000 concurrently \"tsc --watch\" \"nodemon -q build/app.js\"",
+    "prestart": "npm install && npm run build",
+    "start": "cross-env NODE_ENV=production PORT=4000 node build/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.1.0",
+    "@types/express": "^4.17.17",
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "joi": "^17.9.2",
+    "jsonwebtoken": "^9.0.1",
+    "rimraf": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/node": "^20.4.5",
+    "concurrently": "^8.2.0",
+    "nodemon": "^3.0.1",
+    "prisma": "^5.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}
