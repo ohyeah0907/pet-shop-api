@@ -3,7 +3,7 @@ import prisma from "../prisma";
 const findById = async (id: number) => {
     const scheduleHour = await prisma.scheduleHour.findUnique({
         include: {
-            schedule: true,
+            schedule_week: true,
         },
         where: {
             id: id,
@@ -18,7 +18,7 @@ const findById = async (id: number) => {
 const findAll = async () => {
     const scheduleHours = await prisma.scheduleHour.findMany({
         include: {
-            schedule: true,
+            schedule_week: true,
         },
         where: {
             NOT: {
@@ -35,9 +35,9 @@ const save = async (scheduleHour: ScheduleHour) => {
                 id: scheduleHour.id
             },
             data: {
-                schedule: {
+                schedule_week: {
                     connect: {
-                        id: scheduleHour.schedule_id
+                        id: scheduleHour.schedule_week_id
                     }
                 },
                 started_hour: scheduleHour.started_hour,
@@ -46,22 +46,22 @@ const save = async (scheduleHour: ScheduleHour) => {
                 deleted_at: scheduleHour.deleted_at,
             },
             include: {
-                schedule: true,
+                schedule_week: true,
             }
         })
     }
     return prisma.scheduleHour.create({
         data: {
-            schedule: {
+            schedule_week: {
                 connect: {
-                    id: scheduleHour.schedule_id
+                    id: scheduleHour.schedule_week_id
                 }
             },
             started_hour: scheduleHour.started_hour,
             ended_hour: scheduleHour.ended_hour,
         },
         include: {
-            schedule: true,
+            schedule_week: true,
         }
     })
 }

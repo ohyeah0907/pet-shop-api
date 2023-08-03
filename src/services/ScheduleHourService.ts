@@ -1,7 +1,7 @@
 import ScheduleHourRepository from "../repositories/ScheduleHourRepository"
 import { ScheduleHourCreate, ScheduleHourUpdate } from "../dto/schedule_hour";
 import { ObjectState } from "@prisma/client";
-import scheduleService from "./RoleScheduleService";
+import scheduleWeekService from "./ScheduleWeekService";
 
 const service = {
     search: async (params: any) => {
@@ -13,10 +13,10 @@ const service = {
         return scheduleHour;
     },
     create: async (create: ScheduleHourCreate) => {
-        const schedule = await scheduleService.getById(create.schedule.id);
+        const scheduleWeek = await scheduleWeekService.getById(create.schedule_week.id);
         const scheduleHour: any = {
             id: 0,
-            schedule_id: schedule.id,
+            schedule_week_id: scheduleWeek.id,
             started_hour: create.started_hour,
             ended_hour: create.ended_hour,
         }
@@ -25,9 +25,9 @@ const service = {
     update: async (update: ScheduleHourUpdate) => {
         const scheduleHour: any = await service.getById(update.id);
 
-        if(update.schedule) {
-            const schedule = await scheduleService.getById(update.schedule.id);
-            scheduleHour.schedule_id = schedule.id;
+        if(update.schedule_week) {
+            const scheduleWeek = await scheduleWeekService.getById(update.schedule_week.id);
+            scheduleHour.schedule_week_id = scheduleWeek.id;
         }
         if(update.started_hour) {
             scheduleHour.started_hour = update.started_hour;

@@ -1,14 +1,14 @@
-import { RoleSchedule } from "@prisma/client"
+import { ScheduleWeek } from "@prisma/client"
 
 export type ScheduleHourCreate = {
-    schedule: RoleSchedule,
+    schedule_week: ScheduleWeek,
     started_hour: number,
     ended_hour: number,
 }
 
 export type ScheduleHourUpdate = {
     id: number,
-    schedule: RoleSchedule,
-    started_hour: number,
-    ended_hour: number,
+    schedule_week?: ScheduleWeek,
+    started_hour?: number,
+    ended_hour?: number,
 }

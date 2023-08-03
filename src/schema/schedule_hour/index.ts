@@ -3,7 +3,7 @@ import Joi from "joi";
 export default {
     scheduleHourCreate: Joi.object().keys({
         create: Joi.object().keys({
-            schedule: Joi.object().keys({
+            schedule_week: Joi.object().keys({
                 id: Joi.number().required(),
             }).required(),
             started_hour: Joi.number().required(),
@@ -14,7 +14,7 @@ export default {
     scheduleHourUpdate: Joi.object().keys({
         update: Joi.object().keys({
             id: Joi.number().required(),
-            schedule: Joi.object().keys({
+            schedule_week: Joi.object().keys({
                 id: Joi.number().required(),
             }),
             started_hour: Joi.number().allow(null),

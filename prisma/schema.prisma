@@ -374,31 +374,31 @@ model RoleSchedule {
   updated_at     DateTime       @updatedAt
   deleted_at     DateTime?
   schedule_weeks ScheduleWeek[]
-  schedule_hours ScheduleHour[]
 }
 
 model ScheduleWeek {
-  id          Int          @id @default(autoincrement())
-  schedule    RoleSchedule @relation(fields: [schedule_id], references: [id])
-  schedule_id Int
-  week_day    Int
-  enable      Boolean      @default(false)
-  state       ObjectState  @default(ACTIVE)
-  created_at  DateTime     @default(now())
-  updated_at  DateTime     @updatedAt
-  deleted_at  DateTime?
+  id             Int            @id @default(autoincrement())
+  schedule       RoleSchedule   @relation(fields: [schedule_id], references: [id])
+  schedule_id    Int
+  week_day       Int
+  enable         Boolean        @default(false)
+  state          ObjectState    @default(ACTIVE)
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+  deleted_at     DateTime?
+  schedule_hours ScheduleHour[]
 }
 
 model ScheduleHour {
-  id           Int          @id @default(autoincrement())
-  schedule     RoleSchedule @relation(fields: [schedule_id], references: [id])
-  schedule_id  Int
-  started_hour Int
-  ended_hour   Int
-  state        ObjectState  @default(ACTIVE)
-  created_at   DateTime     @default(now())
-  updated_at   DateTime     @updatedAt
-  deleted_at   DateTime?
+  id            Int          @id @default(autoincrement())
+  schedule_week ScheduleWeek @relation(fields: [schedule_week_id], references: [id])
+  schedule_week_id   Int
+  started_hour  Int
+  ended_hour    Int
+  state         ObjectState  @default(ACTIVE)
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt
+  deleted_at    DateTime?
 }
 
 model RoleDevice {

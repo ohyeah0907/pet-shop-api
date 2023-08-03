@@ -4,6 +4,7 @@ const findById = async (id: number) => {
     const scheduleWeek = await prisma.scheduleWeek.findUnique({
         include: {
             schedule: true,
+            schedule_hours: true,
         },
         where: {
             id: id,
@@ -19,6 +20,7 @@ const findAll = async () => {
     const scheduleWeeks = await prisma.scheduleWeek.findMany({
         include: {
             schedule: true,
+            schedule_hours: true,
         },
         where: {
             NOT: {

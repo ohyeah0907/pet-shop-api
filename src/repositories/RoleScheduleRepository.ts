@@ -4,7 +4,6 @@ const findById = async (id: number) => {
     const roleSchedule = await prisma.roleSchedule.findUnique({
         include: {
             role_house: true,
-            schedule_hours: true,
             schedule_weeks: true,
         },
         where: {
@@ -21,7 +20,6 @@ const findAll = async () => {
     const roleSchedules = await prisma.roleSchedule.findMany({
         include: {
             role_house: true,
-            schedule_hours: true,
             schedule_weeks: true,
         },
         where: {
