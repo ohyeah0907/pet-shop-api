@@ -11,6 +11,7 @@ const findAll = async () => {
             rooms: true,
             house_clouds: true,
             active_house_cloud: true,
+            role_houses: true
         },
         where: {
             NOT: {
@@ -29,6 +30,44 @@ const findById = async (id: number) => {
             rooms: true,
             house_clouds: true,
             active_house_cloud: true,
+        },
+        where: {
+            id: id,
+            NOT: {
+                state: ObjectState.DELETED,
+            }
+        }
+    });
+    return house;
+}
+
+const findByIdQueryHouseInfo = async (id: number) => {
+    const house = await prisma.house.findUnique({
+        include: {
+            roles: true,
+            cameras: true,
+            rooms: true,
+            house_clouds: true,
+            active_house_cloud: true,
+            role_houses: {
+                include: {
+                    role: true,
+                    role_devices: {
+                        include: {
+                            device: true,
+                        }
+                    },
+                    role_schedules: {
+                        include: {
+                            schedule_weeks: {
+                                include: {
+                                    schedule_hours: true,
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         },
         where: {
             id: id,
@@ -86,5 +125,6 @@ const save = async (house: House) => {
 export default {
     findAll,
     findById,
+    findByIdQueryHouseInfo,
     save
 }

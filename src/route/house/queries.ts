@@ -8,4 +8,7 @@ router.get("/search", asyncHandler(houseController.getHouseSearch));
 
 router.get("/:id", asyncHandler(houseController.getHouseById))
 
+router.get("/house-info/:id", asyncHandler(houseController.getHouseInfo))
+
+
 export default router;

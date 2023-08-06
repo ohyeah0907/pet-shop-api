@@ -15,6 +15,14 @@ const controller = {
             return new BadRequestResponse(error.message).send(res);
         }
     },
+    getHouseInfo: async (req: Request, res: Response) => {
+        try {
+            const house = await houseService.getHouseById(parseInt(req.params.id));
+            return new SuccessResponse("Thành công!", house).send(res);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
     createHouse: async (req: Request, res: Response) => {
         try {
             const house = await houseService.createHouse(req.body.create);

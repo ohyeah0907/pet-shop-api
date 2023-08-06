@@ -14,6 +14,11 @@ const service = {
         if (!house) throw new Error("Không tìm thấy house");
         return house;
     },
+    getHouseInfo: async (id: number) => {
+        const house = await HouseRepository.findByIdQueryHouseInfo(id);
+        if (!house) throw new Error("Không tìm thấy house");
+        return house;
+    },
     createHouse: async (create: HouseCreate) => {
         const house: any = {
             id: 0,
