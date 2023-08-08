@@ -37,9 +37,9 @@ const save = async (haEntity: HAEntity) => {
                 name: haEntity.name,
                 description: haEntity.description,
                 entity_id: haEntity.entity_id,
-                house: {
+                home: {
                     connect: {
-                        id: haEntity.house_id
+                        id: haEntity.home_id
                     }
                 },
                 accessed_at: haEntity.accessed_at,
@@ -54,9 +54,9 @@ const save = async (haEntity: HAEntity) => {
             name: haEntity.name,
             description: haEntity.description,
             entity_id: haEntity.entity_id,
-            house: {
+            home: {
                 connect: {
-                    id: haEntity.house_id
+                    id: haEntity.home_id
                 }
             },
             accessed_at: haEntity.accessed_at,

@@ -4,7 +4,7 @@ const findById = async (id: number) => {
     const roleDevice = await prisma.roleDevice.findUnique({
         include: {
             device: true,
-            role_house: true,
+            role_home: true,
         },
         where: {
             id: id,
@@ -20,7 +20,7 @@ const findAll = async () => {
     const roleDevices = await prisma.roleDevice.findMany({
         include: {
             device: true,
-            role_house: true,
+            role_home: true,
         },
         where: {
             NOT: {
@@ -37,9 +37,9 @@ const save = async (roleDevice: RoleDevice) => {
                 id: roleDevice.id
             },
             data: {
-                role_house: {
+                role_home: {
                     connect: {
-                        id: roleDevice.role_house_id
+                        id: roleDevice.role_home_id
                     }
                 },
                 device: {
@@ -53,15 +53,15 @@ const save = async (roleDevice: RoleDevice) => {
             },
             include: {
                 device: true,
-                role_house: true,
+                role_home: true,
             }
         })
     }
     return prisma.roleDevice.create({
         data: {
-            role_house: {
+            role_home: {
                 connect: {
-                    id: roleDevice.role_house_id
+                    id: roleDevice.role_home_id
                 }
             },
             device: {
@@ -73,7 +73,7 @@ const save = async (roleDevice: RoleDevice) => {
         },
         include: {
             device: true,
-            role_house: true,
+            role_home: true,
         }
     })
 }

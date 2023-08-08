@@ -7,6 +7,7 @@ import authentication from "../../middleware/authentication";
 
 const router = Router();
 
+router.get("/info", authentication, asyncHandler(controller.info));
 router.post("/login", validator(schema.userLogin), asyncHandler(controller.login));
 router.delete("/logout", authentication, asyncHandler(controller.logout));
 router.get("/refresh-token", asyncHandler(controller.refreshToken))

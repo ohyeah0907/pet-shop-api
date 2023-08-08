@@ -10,7 +10,7 @@ const findAll = async () => {
             }
         },
         include: {
-            house: true
+            home: true
         }
     });
     return scripts;
@@ -25,7 +25,7 @@ const findById = async (id: number) => {
             }
         },
         include: {
-            house: true
+            home: true
         }
     });
     return script;
@@ -41,9 +41,9 @@ const save = async (script: Script) => {
             data: {
                 name: script.name,
                 accessed_at: script.accessed_at,
-                house: {
+                home: {
                     connect: {
-                        id: script.house_id
+                        id: script.home_id
                     }
                 },
                 entity_id: script.entity_id,
@@ -52,7 +52,7 @@ const save = async (script: Script) => {
                 updated_at: script.updated_at,
             },
             include: {
-                house: true
+                home: true
             }
         });
     }
@@ -61,15 +61,15 @@ const save = async (script: Script) => {
             name: script.name,
             accessed_at: script.accessed_at,
             description: script.description,
-            house: {
+            home: {
                 connect: {
-                    id: script.house_id
+                    id: script.home_id
                 }
             },
             entity_id: script.entity_id,
         },
         include: {
-            house: true
+            home: true
         }
     });
 

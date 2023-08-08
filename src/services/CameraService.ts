@@ -1,5 +1,5 @@
 import CameraRepository from "../repositories/CameraRepository"
-import houseService from "./HouseService"
+import homeService from "./HomeService"
 import userService from "./UserService"
 import { CameraCreate, CameraUpdate } from "../dto/camera";
 import cameraBrandService from "./CameraBrandService"
@@ -15,11 +15,11 @@ const service = {
         return camera;
     },
     create: async (create: CameraCreate) => {
-        const house = await houseService.getHouseById(create.house.id);
+        const home = await homeService.getHomeById(create.home.id);
         const cameraBrand = await cameraBrandService.getById(create.camera_brand.id);
         const camera: any = {
             id: 0,
-            house_id: house.id,
+            home_id: home.id,
             name: create.name,
             camera_brand_id: cameraBrand.id,
             username: create.username,
@@ -42,9 +42,9 @@ const service = {
         if (update.name) {
             camera.name = update.name;
         }
-        if (update.house) {
-            const house = await houseService.getHouseById(update.house.id);
-            camera.house_id = house.id;
+        if (update.home) {
+            const home = await homeService.getHomeById(update.home.id);
+            camera.home_id = home.id;
         }
         if (update.camera_brand) {
             const cameraBrand = await cameraBrandService.getById(update.camera_brand.id);

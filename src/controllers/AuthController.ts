@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { BadRequestResponse, SuccessResponse } from "../handler/app-response";
 import authService from "../services/AuthService";
 import { ProtectedRequest } from "../types/app-request";
-
+import { UserInfo } from "../dto/auth";
+    
 const controller = {
     login: async (req: Request, res: Response) => {
         try {
@@ -24,6 +25,15 @@ const controller = {
         try {
             const { accessToken, refreshToken } = req.headers;
 
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
+    info: async (req: ProtectedRequest, res: Response) => {
+        try {
+            const { accessToken, refreshToken } = req.headers;
+            const userInfo = await authService.info(req.user);
+            return new SuccessResponse("Lấy thông tin thành công", userInfo).send(res);
         } catch (error: any) {
             return new BadRequestResponse(error.message).send(res);
         }

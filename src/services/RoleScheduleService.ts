@@ -1,7 +1,7 @@
 import RoleScheduleRepository from "../repositories/RoleScheduleRepository"
 import { RoleScheduleCreate, RoleScheduleUpdate } from "../dto/role_schedule";
 import { ObjectState } from "@prisma/client";
-import roleHouseService from "./RoleHouseService";
+import roleHomeService from "./RoleHomeService";
 
 const service = {
     search: async (params: any) => {
@@ -13,10 +13,10 @@ const service = {
         return roleSchedule;
     },
     create: async (create: RoleScheduleCreate) => {
-        const roleHouse = await roleHouseService.getById(create.role_house.id);
+        const roleHome = await roleHomeService.getById(create.role_home.id);
         const roleSchedule: any = {
             id: 0,
-            role_house_id: roleHouse.id,
+            role_home_id: roleHome.id,
             started_at: new Date(create.started_at),
             ended_at: new Date(create.ended_at),
         }
@@ -25,9 +25,9 @@ const service = {
     update: async (update: RoleScheduleUpdate) => {
         const roleSchedule: any = await service.getById(update.id);
 
-        if(update.role_house) {
-            const roleHouse = await roleHouseService.getById(update.role_house.id);
-            roleSchedule.role_house_id = roleHouse.id;
+        if(update.role_home) {
+            const roleHome = await roleHomeService.getById(update.role_home.id);
+            roleSchedule.role_home_id = roleHome.id;
         }
         if(update.started_at) {
             roleSchedule.started_at = new Date(update.started_at);

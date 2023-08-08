@@ -3,7 +3,7 @@ import prisma from "../prisma";
 const findById = async (id: number) => {
     const room = await prisma.room.findUnique({
         include: {
-            house: true,
+            home: true,
             // parent: true,
             user: true,
             // children: true,
@@ -21,7 +21,7 @@ const findById = async (id: number) => {
 const findAll = async () => {
     const rooms = await prisma.room.findMany({
         include: {
-            house: true,
+            home: true,
             // parent: true,
             user: true,
             // children: {
@@ -50,7 +50,7 @@ const save = async (room: Room) => {
         //         parent_id: room.parent_id
         //     },
         //     include: {
-        //         house: true,
+        //         home: true,
         //         // parent: true,
         //         user: true,
         //     }
@@ -63,9 +63,9 @@ const save = async (room: Room) => {
                 name: room.name,
                 image_url: room.image_url,
                 ordering: room.ordering,
-                house: {
+                home: {
                     connect: {
-                        id: room.house_id
+                        id: room.home_id
                     }
                 },
                 user: {
@@ -78,7 +78,7 @@ const save = async (room: Room) => {
                 deleted_at: room.deleted_at,
             },
             include: {
-                house: true,
+                home: true,
                 // parent: true,
                 user: true,
             }
@@ -90,9 +90,9 @@ const save = async (room: Room) => {
             name: room.name,
             image_url: room.image_url,
             ordering: room.ordering,
-            house: {
+            home: {
                 connect: {
-                    id: room.house_id
+                    id: room.home_id
                 }
             },
             // parent: room.parent_id ? {
@@ -108,7 +108,7 @@ const save = async (room: Room) => {
             is_home: room.is_home,
         },
         include: {
-            house: true,
+            home: true,
             // parent: true,
             user: true,
         }

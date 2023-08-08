@@ -1,5 +1,5 @@
 import AutomationRepository from "../repositories/AutomationRepository"
-import houseService from "./HouseService"
+import homeService from "./HomeService"
 import userService from "./UserService"
 import { AutomationCreate, AutomationUpdate } from "../dto/automation";
 import { ObjectState } from "@prisma/client";
@@ -14,12 +14,12 @@ const service = {
         return automation;
     },
     create: async (create: AutomationCreate) => {
-        const house = await houseService.getHouseById(create.house.id);
+        const home = await homeService.getHomeById(create.home.id);
         const automation: any = {
             id: 0,
             name: create.name,
             description: create.description,
-            house_id: house.id,
+            home_id: home.id,
             accessed_at: new Date(create.accessed_at),
             entity_id: create.entity_id,
         }
@@ -31,9 +31,9 @@ const service = {
         if (update.name) {
             automation.name = update.name;
         }
-        if (update.house) {
-            const house = await houseService.getHouseById(update.house.id);
-            automation.house_id = house.id;
+        if (update.home) {
+            const home = await homeService.getHomeById(update.home.id);
+            automation.home_id = home.id;
         }
         if (update.entity_id) {
             automation.entity_id = update.entity_id;

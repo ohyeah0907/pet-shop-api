@@ -1,7 +1,7 @@
-import { House, Room, User } from "@prisma/client"
+import { Home, Room, User } from "@prisma/client"
 
 export type RoomCreate = {
-    house: House,
+    home: Home,
     // parent?: Room,
     user: User,
     name: string,
@@ -11,7 +11,7 @@ export type RoomCreate = {
 
 export type RoomUpdate = {
     id: number,
-    house?: House,
+    home?: Home,
     // parent?: Room,
     user?: User,
     name?: string,

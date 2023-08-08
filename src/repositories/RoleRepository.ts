@@ -6,7 +6,7 @@ import { Role, ObjectState } from "@prisma/client";
 const findAll = async () => {
     const roles = await prisma.role.findMany({
         include: {
-            house: true,
+            home: true,
         },
         where: {
             NOT: {
@@ -20,7 +20,7 @@ const findAll = async () => {
 const findById = async (id: number) => {
     const role = await prisma.role.findUnique({
         include: {
-            house: true,
+            home: true,
         },
         where: {
             id: id,
@@ -42,9 +42,9 @@ const save = async (role: Role) => {
             data: {
                 name: role.name,
                 is_owner: role.is_owner,
-                house: {
+                home: {
                     connect: {
-                        id: role.house_id
+                        id: role.home_id
                     }
                 },
                 state: role.state,
@@ -56,7 +56,7 @@ const save = async (role: Role) => {
                 created_at: true,
                 updated_at: true,
                 deleted_at: true,
-                house: true,
+                home: true,
                 state: true,
                 is_owner: true,
             }
@@ -66,9 +66,9 @@ const save = async (role: Role) => {
         data: {
             name: role.name,
             is_owner: role.is_owner,
-            house: {
+            home: {
                 connect: {
-                    id: role.house_id
+                    id: role.home_id
                 }
             },
         },
@@ -78,7 +78,7 @@ const save = async (role: Role) => {
             created_at: true,
             updated_at: true,
             deleted_at: true,
-            house: true,
+            home: true,
             state: true,
             is_owner: true,
         }

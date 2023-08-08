@@ -1,5 +1,5 @@
 import DeviceRepository from "../repositories/DeviceRepository"
-import houseService from "./HouseService"
+import homeService from "./HomeService"
 import presetService from "./PresetService"
 import { DeviceCreate, DeviceUpdate } from "../dto/device";
 import { ObjectState } from "@prisma/client";
@@ -14,12 +14,12 @@ const service = {
         return device;
     },
     create: async (create: DeviceCreate) => {
-        const house = await houseService.getHouseById(create.house.id);
+        const home = await homeService.getHomeById(create.home.id);
         const preset = await presetService.getById(create.preset.id);
         const device: any = {
             id: 0,
             name: create.name,
-            house_id: house.id,
+            home_id: home.id,
             entity_id: create.entity_id,
             type: create.type,
             sub_type: create.sub_type,
@@ -36,9 +36,9 @@ const service = {
         if (update.name) {
             device.name = update.name;
         }
-        if (update.house) {
-            const house = await houseService.getHouseById(update.house.id);
-            device.house_id = house.id;
+        if (update.home) {
+            const home = await homeService.getHomeById(update.home.id);
+            device.home_id = home.id;
         }
         if (update.entity_id) {
             device.entity_id = update.entity_id;

@@ -1,7 +1,7 @@
-import { CameraBrand, House } from "@prisma/client"
+import { CameraBrand, Home } from "@prisma/client"
 
 export type CameraCreate = {
-    house: House,
+    home: Home,
     name: string,
     username: string,
     password: string,
@@ -19,7 +19,7 @@ export type CameraCreate = {
 
 export type CameraUpdate = {
     id: number,
-    house?: House,
+    home?: Home,
     camera_brand?: CameraBrand,
     name?: string,
     username: string,

@@ -3,7 +3,7 @@ import prisma from "../prisma";
 const findById = async (id: number) => {
     const camera = await prisma.camera.findUnique({
         include: {
-            house: true,
+            home: true,
             camera_brand: true,
             presets: true,
             room_cameras: true,
@@ -21,7 +21,7 @@ const findById = async (id: number) => {
 const findAll = async () => {
     const cameras = await prisma.camera.findMany({
         include: {
-            house: true,
+            home: true,
             camera_brand: true,
             presets: true,
             room_cameras: true,
@@ -42,9 +42,9 @@ const save = async (camera: Camera) => {
             },
             data: {
                 name: camera.name,
-                house: {
+                home: {
                     connect: {
-                        id: camera.house_id
+                        id: camera.home_id
                     }
                 },
                 username: camera.username,
@@ -67,7 +67,7 @@ const save = async (camera: Camera) => {
                 deleted_at: camera.deleted_at,
             },
             include: {
-                house: true,
+                home: true,
                 camera_brand: true,
                 presets: true,
                 room_cameras: true,
@@ -77,9 +77,9 @@ const save = async (camera: Camera) => {
     return prisma.camera.create({
         data: {
             name: camera.name,
-            house: {
+            home: {
                 connect: {
-                    id: camera.house_id
+                    id: camera.home_id
                 }
             },
             username: camera.username,
@@ -100,7 +100,7 @@ const save = async (camera: Camera) => {
             cloud_port: camera.cloud_port,
         },
         include: {
-            house: true,
+            home: true,
             camera_brand: true,
             presets: true,
             room_cameras: true,

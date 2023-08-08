@@ -1,7 +1,7 @@
-import { House } from "@prisma/client"
+import { Home } from "@prisma/client"
 
 export type ScriptCreate = {
-    house: House,
+    home: Home,
     entity_id: string,
     name: string,
     description: string,
@@ -10,7 +10,7 @@ export type ScriptCreate = {
 
 export type ScriptUpdate = {
     id: number,
-    house: House,
+    home: Home,
     entity_id: string,
     name: string,
     description: string

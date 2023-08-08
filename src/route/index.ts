@@ -1,17 +1,17 @@
 import { Router } from "express";
-import house from "./house";
+import home from "./home";
 import role from "./role";
 import auth from "./auth";
 import user from "./user";
 import cloud from "./cloud";
-import houseCloud from "./house_cloud";
+import homeCloud from "./home_cloud";
 import room from "./room";
 import session from "./session";
 import filter from "./filter";
 import camera from "./camera";
 import roomCamera from "./room_camera";
 import script from "./script";
-import userHouse from "./user_house";
+import userHome from "./user_home";
 import actionable from "./actionable";
 import preset from "./preset";
 import sensor from "./sensor";
@@ -29,23 +29,24 @@ import scheduleWeek from "./schedule_week";
 import scheduleHour from "./schedule_hour";
 import roomShortcut from "./room_shortcut";
 import haEntity from "./ha_entity";
-import roleHouse from "./role_house";
+import roleHome from "./role_home";
+import file from "./file";
 
 const router = Router();
 
-router.use("/house", house)
+router.use("/home", home)
 router.use("/role", role)
 router.use("/auth", auth)
 router.use("/user", user)
 router.use("/cloud", cloud)
-router.use("/house-cloud", houseCloud)
+router.use("/home-cloud", homeCloud)
 router.use("/room", room)
 router.use("/session", session)
 router.use("/filter", filter)
 router.use("/camera", camera)
 router.use("/room-camera", roomCamera)
 router.use("/script", script)
-router.use("/user-house", userHouse)
+router.use("/user-home", userHome)
 router.use("/actionable", actionable)
 router.use("/preset", preset)
 router.use("/sensor", sensor)
@@ -63,7 +64,8 @@ router.use("/schedule-week", scheduleWeek)
 router.use("/schedule-hour", scheduleHour)
 router.use("/room-shortcut", roomShortcut)
 router.use("/ha-entity", haEntity)
-router.use("/role-house", roleHouse)
+router.use("/role-home", roleHome)
+router.use("/file", file)
 
 
 export default router;

@@ -1,7 +1,7 @@
-import { DeviceType, House, Preset } from "@prisma/client"
+import { DeviceType, Home, Preset } from "@prisma/client"
 
 export type DeviceCreate = {
-    house: House,
+    home: Home,
     entity_id: string,
     type: DeviceType,
     sub_type: string,
@@ -14,7 +14,7 @@ export type DeviceCreate = {
 
 export type DeviceUpdate = {
     id: number,
-    house: House,
+    home: Home,
     entity_id: string,
     name: string,
     type: DeviceType,

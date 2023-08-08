@@ -1,7 +1,7 @@
 import HAEntityRepository from "../repositories/HAEntityRepository"
 import { HAEntityCreate, HAEntityUpdate } from "../dto/ha_entity";
 import { ObjectState } from "@prisma/client";
-import houseService from "./HouseService";
+import homeService from "./HomeService";
 
 const service = {
     search: async (params: any) => {
@@ -13,13 +13,13 @@ const service = {
         return haEntity;
     },
     create: async (create: HAEntityCreate) => {
-        const house = await houseService.getHouseById(create.house.id);
+        const home = await homeService.getHomeById(create.home.id);
         const haEntity: any = {
             id: 0,
             name: create.name,
             description: create.description,
             entity_id: create.entity_id,
-            house_id: house.id,
+            home_id: home.id,
             accessed_at: new Date(create.accessed_at),
         }
         return await HAEntityRepository.save(haEntity);
@@ -36,9 +36,9 @@ const service = {
         if (update.entity_id) {
             haEntity.entity_id = update.entity_id;
         }
-        if (update.house) {
-            const house = await houseService.getHouseById(update.house.id);
-            haEntity.house_id = house.id;
+        if (update.home) {
+            const home = await homeService.getHomeById(update.home.id);
+            haEntity.home_id = home.id;
         }
         if (update.accessed_at) {
             haEntity.accessed_at = new Date(update.accessed_at);

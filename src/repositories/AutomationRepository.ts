@@ -10,7 +10,7 @@ const findAll = async () => {
             }
         },
         include: {
-            house: true
+            home: true
         }
     });
     return automations;
@@ -25,7 +25,7 @@ const findById = async (id: number) => {
             }
         },
         include: {
-            house: true
+            home: true
         }
     });
     return automation;
@@ -41,9 +41,9 @@ const save = async (automation: Automation) => {
             data: {
                 name: automation.name,
                 accessed_at: automation.accessed_at,
-                house: {
+                home: {
                     connect: {
-                        id: automation.house_id
+                        id: automation.home_id
                     }
                 },
                 entity_id: automation.entity_id,
@@ -52,7 +52,7 @@ const save = async (automation: Automation) => {
                 updated_at: automation.updated_at,
             },
             include: {
-                house: true
+                home: true
             }
         });
     }
@@ -61,15 +61,15 @@ const save = async (automation: Automation) => {
             name: automation.name,
             description: automation.description,
             accessed_at: automation.accessed_at,
-            house: {
+            home: {
                 connect: {
-                    id: automation.house_id
+                    id: automation.home_id
                 }
             },
             entity_id: automation.entity_id,
         },
         include: {
-            house: true
+            home: true
         }
     });
 

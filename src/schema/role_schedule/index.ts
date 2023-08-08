@@ -3,7 +3,7 @@ import Joi from "joi";
 export default {
     roleScheduleCreate: Joi.object().keys({
         create: Joi.object().keys({
-            role_house: Joi.object().keys({
+            role_home: Joi.object().keys({
                 id: Joi.number().required(),
             }).required(),
             started_at: Joi.date().required(),
@@ -14,7 +14,7 @@ export default {
     roleScheduleUpdate: Joi.object().keys({
         update: Joi.object().keys({
             id: Joi.number().required(),
-            role_house: Joi.object().keys({
+            role_home: Joi.object().keys({
                 id: Joi.number().required(),
             }),
             started_at: Joi.date().allow(null),

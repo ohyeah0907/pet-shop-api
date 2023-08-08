@@ -1,5 +1,5 @@
 import RoomRepository from "../repositories/RoomRepository"
-import houseService from "./HouseService"
+import homeService from "./HomeService"
 import userService from "./UserService"
 import { RoomCreate, RoomUpdate } from "../dto/room";
 import { ObjectState } from "@prisma/client";
@@ -14,7 +14,7 @@ const service = {
         return room;
     },
     create: async (create: RoomCreate) => {
-        const house = await houseService.getHouseById(create.house.id);
+        const home = await homeService.getHomeById(create.home.id);
         const user = await userService.getUserById(create.user.id);
         // let parent: any = null;
         // if (create.parent) {
@@ -23,7 +23,7 @@ const service = {
         const room: any = {
             id: 0,
             name: create.name,
-            house_id: house.id,
+            home_id: home.id,
             user_id: user.id,
             // parent_id: parent?.id,
             image_url: create.image_url,
@@ -37,9 +37,9 @@ const service = {
         if (update.name) {
             room.name = update.name;
         }
-        if (update.house) {
-            const house = await houseService.getHouseById(update.house.id);
-            room.house_id = house.id;
+        if (update.home) {
+            const home = await homeService.getHomeById(update.home.id);
+            room.home_id = home.id;
         }
         // if (update.parent !== undefined) {
         //     const parent = update.parent ? await service.getById(update.parent.id) : null;

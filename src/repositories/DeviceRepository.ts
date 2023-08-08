@@ -10,7 +10,7 @@ const findAll = async () => {
             }
         },
         include: {
-            house: true,
+            home: true,
             preset: true
         }
     });
@@ -26,7 +26,7 @@ const findById = async (id: number) => {
             }
         },
         include: {
-            house: true,
+            home: true,
             preset: true
         }
     });
@@ -42,9 +42,9 @@ const save = async (device: Device) => {
             },
             data: {
                 name: device.name,
-                house: {
+                home: {
                     connect: {
-                        id: device.house_id
+                        id: device.home_id
                     }
                 },
                 type: device.type,
@@ -62,7 +62,7 @@ const save = async (device: Device) => {
                 updated_at: device.updated_at,
             },
             include: {
-                house: true,
+                home: true,
                 preset: true
             }
         });
@@ -70,9 +70,9 @@ const save = async (device: Device) => {
     return await prisma.device.create({
         data: {
             name: device.name,
-            house: {
+            home: {
                 connect: {
-                    id: device.house_id
+                    id: device.home_id
                 }
             },
             description: device.description,
@@ -88,7 +88,7 @@ const save = async (device: Device) => {
             attributes: device.attributes,
         },
         include: {
-            house: true,
+            home: true,
             preset: true
         }
     });

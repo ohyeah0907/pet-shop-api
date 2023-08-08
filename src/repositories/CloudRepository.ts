@@ -6,7 +6,7 @@ import { Cloud, ObjectState } from "@prisma/client";
 const findAll = async () => {
     const clouds = await prisma.cloud.findMany({
         include: {
-            house_clouds: true,
+            home_clouds: true,
         },
         where: {
             NOT: {
@@ -20,7 +20,7 @@ const findAll = async () => {
 const findById = async (id: number) => {
     const cloud = await prisma.cloud.findUnique({
         include: {
-            house_clouds: true,
+            home_clouds: true,
         },
         where: {
             id: id,
@@ -47,7 +47,7 @@ const save = async (cloud: Cloud) => {
                 updated_at: cloud.updated_at,
             },
             include: {
-                house_clouds: true,
+                home_clouds: true,
             },
         });
     }
@@ -57,7 +57,7 @@ const save = async (cloud: Cloud) => {
             domain: cloud.domain,
         },
         include: {
-            house_clouds: true,
+            home_clouds: true,
         },
     });
 

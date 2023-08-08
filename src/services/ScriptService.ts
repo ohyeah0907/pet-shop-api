@@ -1,5 +1,5 @@
 import ScriptRepository from "../repositories/ScriptRepository"
-import houseService from "./HouseService"
+import homeService from "./HomeService"
 import userService from "./UserService"
 import { ScriptCreate, ScriptUpdate } from "../dto/script";
 import { ObjectState } from "@prisma/client";
@@ -14,11 +14,11 @@ const service = {
         return script;
     },
     create: async (create: ScriptCreate) => {
-        const house = await houseService.getHouseById(create.house.id);
+        const home = await homeService.getHomeById(create.home.id);
         const script: any = {
             id: 0,
             name: create.name,
-            house_id: house.id,
+            home_id: home.id,
             entity_id: create.entity_id,
             description: create.description,
             accessed_at: new Date(create.accessed_at)
@@ -31,9 +31,9 @@ const service = {
         if (update.name) {
             script.name = update.name;
         }
-        if (update.house) {
-            const house = await houseService.getHouseById(update.house.id);
-            script.house_id = house.id;
+        if (update.home) {
+            const home = await homeService.getHomeById(update.home.id);
+            script.home_id = home.id;
         }
         if (update.entity_id) {
             script.entity_id = update.entity_id;

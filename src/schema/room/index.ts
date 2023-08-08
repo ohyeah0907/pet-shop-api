@@ -4,7 +4,7 @@ export default {
     roomCreate: Joi.object().keys({
         create: Joi.object().keys({
             name: Joi.string().required().trim(),
-            house: Joi.object().keys({
+            home: Joi.object().keys({
                 id: Joi.number().required(),
             }).required(),
             // parent: Joi.object().keys({
@@ -22,7 +22,7 @@ export default {
         update: Joi.object().keys({
             id: Joi.number().required(),
             name: Joi.string().allow(null),
-            house: Joi.object().keys({
+            home: Joi.object().keys({
                 id: Joi.number().required(),
             }),
             // parent: Joi.object().keys({

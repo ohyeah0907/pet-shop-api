@@ -10,7 +10,7 @@ const findAll = async () => {
             }
         },
         include: {
-            house: true
+            home: true
         }
     });
     return sensors;
@@ -25,7 +25,7 @@ const findById = async (id: number) => {
             }
         },
         include: {
-            house: true
+            home: true
         }
     });
     return sensor;
@@ -40,9 +40,9 @@ const save = async (sensor: Sensor) => {
             },
             data: {
                 name: sensor.name,
-                house: {
+                home: {
                     connect: {
-                        id: sensor.house_id
+                        id: sensor.home_id
                     }
                 },
                 entity_id: sensor.entity_id,
@@ -51,22 +51,22 @@ const save = async (sensor: Sensor) => {
                 updated_at: sensor.updated_at,
             },
             include: {
-                house: true
+                home: true
             }
         });
     }
     return await prisma.sensor.create({
         data: {
             name: sensor.name,
-            house: {
+            home: {
                 connect: {
-                    id: sensor.house_id
+                    id: sensor.home_id
                 }
             },
             entity_id: sensor.entity_id,
         },
         include: {
-            house: true
+            home: true
         }
     });
 

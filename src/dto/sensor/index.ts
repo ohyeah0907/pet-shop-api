@@ -1,14 +1,14 @@
-import { House } from "@prisma/client"
+import { Home } from "@prisma/client"
 
 export type SensorCreate = {
-    house: House,
+    home: Home,
     entity_id: string,
     name: string,
 }
 
 export type SensorUpdate = {
     id: number,
-    house: House,
+    home: Home,
     entity_id: string,
     name: string,
 }

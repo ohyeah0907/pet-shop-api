@@ -1,6 +1,6 @@
 import roleDeviceRepository from "../repositories/RoleDeviceRepository"
 import deviceService from "./DeviceService"
-import roleHouseService from "./RoleHouseService"
+import roleHomeService from "./RoleHomeService"
 import { RoleDeviceCreate, RoleDeviceUpdate } from "../dto/role_device";
 import { ObjectState } from "@prisma/client";
 const service = {
@@ -14,10 +14,10 @@ const service = {
     },
     create: async (create: RoleDeviceCreate) => {
         const device = await deviceService.getById(create.device.id);
-        const rolehouse = await roleHouseService.getById(create.role_house.id);
+        const rolehome = await roleHomeService.getById(create.role_home.id);
         const roleDevice: any = {
             id: 0,
-            role_house_id: rolehouse.id,
+            role_home_id: rolehome.id,
             device_id: device.id,
             enabled: create.enabled,
         }
@@ -30,9 +30,9 @@ const service = {
             const device = await deviceService.getById(update.device.id);
             roleDevice.device_id = device.id;
         }
-        if (update.role_house) {
-            const roleHouse = await roleHouseService.getById(update.role_house.id);
-            roleDevice.role_house_id = roleHouse.id;
+        if (update.role_home) {
+            const roleHome = await roleHomeService.getById(update.role_home.id);
+            roleDevice.role_home_id = roleHome.id;
         }
         if(update.enabled != null) {
             roleDevice.enable = update.enabled;

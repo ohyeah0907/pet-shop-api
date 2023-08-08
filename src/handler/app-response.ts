@@ -9,10 +9,10 @@ enum ErrorCode {
 
 enum ResponseStatusCode {
   SUCCESS = 200,
-  BAD_REQUEST = 400,
+  BAD_REQUEST = 200,
   UNAUTHORIZED = 401,
   FORBIDDEN = 403,
-  NOT_FOUND = 404,
+  NOT_FOUND = 200,
   INTERNAL_SERVER_ERROR = 500,
 }
 

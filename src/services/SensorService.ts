@@ -1,5 +1,5 @@
 import SensorRepository from "../repositories/SensorRepository"
-import houseService from "./HouseService"
+import homeService from "./HomeService"
 import userService from "./UserService"
 import { SensorCreate, SensorUpdate } from "../dto/sensor";
 import { ObjectState } from "@prisma/client";
@@ -14,12 +14,12 @@ const service = {
         return sensor;
     },
     create: async (create: SensorCreate) => {
-        const house = await houseService.getHouseById(create.house.id);
+        const home = await homeService.getHomeById(create.home.id);
         let parent: any = null;
         const sensor: any = {
             id: 0,
             name: create.name,
-            house_id: house.id,
+            home_id: home.id,
             entity_id: create.entity_id,
         }
         return await SensorRepository.save(sensor);
@@ -30,9 +30,9 @@ const service = {
         if (update.name) {
             sensor.name = update.name;
         }
-        if (update.house) {
-            const house = await houseService.getHouseById(update.house.id);
-            sensor.house_id = house.id;
+        if (update.home) {
+            const home = await homeService.getHomeById(update.home.id);
+            sensor.home_id = home.id;
         }
         if (update.entity_id) {
             sensor.entity_id = update.entity_id;

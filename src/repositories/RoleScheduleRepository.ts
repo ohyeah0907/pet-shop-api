@@ -3,7 +3,7 @@ import prisma from "../prisma";
 const findById = async (id: number) => {
     const roleSchedule = await prisma.roleSchedule.findUnique({
         include: {
-            role_house: true,
+            role_home: true,
             schedule_weeks: true,
         },
         where: {
@@ -19,7 +19,7 @@ const findById = async (id: number) => {
 const findAll = async () => {
     const roleSchedules = await prisma.roleSchedule.findMany({
         include: {
-            role_house: true,
+            role_home: true,
             schedule_weeks: true,
         },
         where: {
@@ -37,9 +37,9 @@ const save = async (roleSchedule: RoleSchedule) => {
                 id: roleSchedule.id
             },
             data: {
-                role_house: {
+                role_home: {
                     connect: {
-                        id: roleSchedule.role_house_id
+                        id: roleSchedule.role_home_id
                     }
                 },
                 started_at: roleSchedule.started_at,
@@ -48,22 +48,22 @@ const save = async (roleSchedule: RoleSchedule) => {
                 deleted_at: roleSchedule.deleted_at,
             },
             include: {
-                role_house: true,
+                role_home: true,
             }
         })
     }
     return prisma.roleSchedule.create({
         data: {
-            role_house: {
+            role_home: {
                 connect: {
-                    id: roleSchedule.role_house_id
+                    id: roleSchedule.role_home_id
                 }
             },
             started_at: roleSchedule.started_at,
             ended_at: roleSchedule.ended_at,
         },
         include: {
-            role_house: true,
+            role_home: true,
         }
     })
 }

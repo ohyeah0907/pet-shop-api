@@ -1,4 +1,5 @@
-import { AuthLogin, AuthLoginResponse } from "../dto/auth";
+import { User } from "@prisma/client";
+import { AuthLogin, AuthLoginResponse, UserInfo } from "../dto/auth";
 import { createTokens } from "../helper/token";
 import KeyStoreRepository from "../repositories/KeyStoreRepository";
 import userService from "./UserService";
@@ -23,6 +24,7 @@ const service = {
                 email: user.email,
                 phone: user.phone,
                 username: user.username,
+                isAdmin: user.is_admin,
             }
         }
         return result;
@@ -30,6 +32,17 @@ const service = {
     logout: async (user: any) => {
         await KeyStoreRepository.removeAllForClient(user);
         return true;
+    },
+    info: async (user: User) => {
+        const userResponse: UserInfo = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            username: user.username,
+            isAdmin: user.is_admin,
+        }
+        return userResponse;
     }
 }
 

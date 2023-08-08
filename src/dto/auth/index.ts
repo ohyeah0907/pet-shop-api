@@ -7,11 +7,14 @@ export type AuthLogin = {
 
 export type AuthLoginResponse = {
     tokens: Tokens;
-    user: {
-        id: number;
-        name: string;
-        email: string;
-        phone: string;
-        username: string;
-    }
+    user: UserInfo;
+}
+
+export type UserInfo = {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    isAdmin: boolean;
+    username: string;
 }
