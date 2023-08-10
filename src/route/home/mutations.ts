@@ -10,6 +10,7 @@ const router = Router();
 // router.use(authentication);
 
 router.post("/create", validator(schema.homeCreate), asyncHandler(homeController.createHome))
+router.post("/create-full-option",  asyncHandler(homeController.createFullOptionHomeRoleUser))
 router.put("/update", validator(schema.homeUpdate), asyncHandler(homeController.updateHome))
 router.delete("/delete/:id", asyncHandler(homeController.deleteHome))
 

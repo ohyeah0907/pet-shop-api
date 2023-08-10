@@ -23,6 +23,14 @@ const controller = {
             return new BadRequestResponse(error.message).send(res);
         }
     },
+    createAndUpdate: async (req: Request, res: Response) => {
+        try {
+            const roleHome = await roleHomeService.createAndUpdate(req.body.create);
+            return new SuccessResponse("Thành công!", roleHome).send(res);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
     update: async (req: Request, res: Response) => {
         try {
             const roleHome = await roleHomeService.update(req.body.update);

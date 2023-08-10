@@ -1,7 +1,6 @@
 import UserRepository from "../repositories/UserRepository"
 import { ObjectState } from "@prisma/client";
 import { UserCreate, UserUpdate } from "../dto/user";
-import roleService from "./RoleService";
 import bcrypt from "bcrypt";
 
 const service = {
@@ -21,7 +20,6 @@ const service = {
         return user;
     },
     createUser: async (create: UserCreate) => {
-        const role = await roleService.getRoleById(create.role.id);
         const user: any = {
             id: 0,
             name: create.name,
@@ -29,8 +27,7 @@ const service = {
             phone: create.phone,
             username: create.username,
             password: bcrypt.hashSync(create.password, 10),
-            role_id: role.id,
-            is_voice: create.is_voice,
+            is_voice: true,
         }
         return await UserRepository.save(user);
     },
@@ -52,17 +49,13 @@ const service = {
         if (update.password) {
             user.password = update.password;
         }
-        if (update.is_admin) {
+        if (update.is_admin !== null) {
             user.is_admin = update.is_admin;
         }
-        if (update.is_locked) {
+        if (update.is_locked !== null) {
             user.is_locked = update.is_locked;
         }
-        if (update.role) {
-            const role = await roleService.getRoleById(update.role.id);
-            user.role_id = role.id;
-        }
-        if (update.is_voice) {
+        if (update.is_voice !== null) {
             user.is_voice = update.is_voice;
         }
         return await UserRepository.save(user);

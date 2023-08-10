@@ -1,5 +1,5 @@
 import { Router } from "express";
-import controller from "../../controllers/RoleHomeController";
+import controller from "../../controllers/VoiceProjectController";
 import asyncHandler from "../../handler/asyncHandler";
 
 const router = Router();

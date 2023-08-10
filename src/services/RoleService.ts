@@ -2,7 +2,6 @@ import { Role } from "@prisma/client";
 import { BadRequestResponse, NotFoundResponse } from "../handler/app-response";
 import prisma from "../prisma";
 import roleRepository from "../repositories/RoleRepository"
-import homeService from "./HomeService"
 import { RoleCreate, RoleUpdate } from "../dto/role";
 import { ObjectState } from "@prisma/client";
 const service = {
@@ -15,12 +14,10 @@ const service = {
         return role;
     },
     createRole: async (create: RoleCreate) => {
-        const home = await homeService.getHomeById(create.home.id);
         const role: any = {
             id: 0,
             name: create.name,
-            home_id: home.id,
-            is_admin: create.is_admin,
+            is_owner: false,
         }
         return await roleRepository.save(role);
     },
@@ -32,10 +29,6 @@ const service = {
         }
         if (update.is_owner != null) {
             role.is_owner = update.is_owner;
-        }
-        if (update.home) {
-            const home = await homeService.getHomeById(update.home.id);
-            role.home_id = home.id;
         }
         return await roleRepository.save(role);
     },

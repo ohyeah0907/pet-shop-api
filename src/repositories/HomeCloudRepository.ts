@@ -35,7 +35,6 @@ const findById = async (id: number) => {
 }
 
 const save = async (homeCloud: HomeCloud) => {
-    console.log(homeCloud);
     if (homeCloud.id) {
         return await prisma.homeCloud.update({
             where: {

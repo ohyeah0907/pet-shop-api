@@ -12,6 +12,17 @@ export default {
         }).required(),
 
     }),
+    roleHomeCreateAndUpdate: Joi.object().keys({
+        create: Joi.object().keys({
+            roles: Joi.object().keys({
+                id: Joi.number().required(),
+            }).required(),
+            home: Joi.object().keys({
+                id: Joi.number().required(),
+            }).required(),
+        }).required(),
+
+    }),
     roleHomeUpdate: Joi.object().keys({
         update: Joi.object().keys({
             id: Joi.number().required(),

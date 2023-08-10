@@ -5,13 +5,13 @@ import { Role, ObjectState } from "@prisma/client";
 
 const findAll = async () => {
     const roles = await prisma.role.findMany({
-        include: {
-            home: true,
-        },
         where: {
             NOT: {
                 state: ObjectState.DELETED
             }
+        },
+        orderBy:{
+            id: 'asc'
         }
     });
     return roles;
@@ -19,9 +19,6 @@ const findAll = async () => {
 
 const findById = async (id: number) => {
     const role = await prisma.role.findUnique({
-        include: {
-            home: true,
-        },
         where: {
             id: id,
             NOT: {
@@ -42,11 +39,6 @@ const save = async (role: Role) => {
             data: {
                 name: role.name,
                 is_owner: role.is_owner,
-                home: {
-                    connect: {
-                        id: role.home_id
-                    }
-                },
                 state: role.state,
                 deleted_at: role.deleted_at,
             },
@@ -56,7 +48,6 @@ const save = async (role: Role) => {
                 created_at: true,
                 updated_at: true,
                 deleted_at: true,
-                home: true,
                 state: true,
                 is_owner: true,
             }
@@ -66,11 +57,6 @@ const save = async (role: Role) => {
         data: {
             name: role.name,
             is_owner: role.is_owner,
-            home: {
-                connect: {
-                    id: role.home_id
-                }
-            },
         },
         select: {
             id: true,
@@ -78,7 +64,6 @@ const save = async (role: Role) => {
             created_at: true,
             updated_at: true,
             deleted_at: true,
-            home: true,
             state: true,
             is_owner: true,
         }

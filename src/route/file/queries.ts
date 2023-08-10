@@ -21,7 +21,6 @@ router.get("/images/:url", asyncHandler(async (req, res, next) => {
         ps, // <---- this makes a trick with stream error handling
         (err) => {
             if (err) {
-                console.log(err) // No such file or any other kind of error
                 return res.sendStatus(400);
             }
         })

@@ -12,6 +12,10 @@ export default {
             image_url: Joi.string().required().trim(),
         }).required(),
     }),
+    createFullOptionHomeRoleUser: Joi.object().keys({
+        create: Joi.object().keys({
+        }).required(),
+    }),
     homeUpdate: Joi.object().keys({
         update: Joi.object().keys({
             id: Joi.number().required(),

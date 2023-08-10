@@ -6,7 +6,6 @@ import { Home, ObjectState } from "@prisma/client";
 const findAll = async () => {
     const homes = await prisma.home.findMany({
         include: {
-            roles: true,
             cameras: true,
             rooms: true,
             home_clouds: true,
@@ -25,7 +24,6 @@ const findAll = async () => {
 const findById = async (id: number) => {
     const home = await prisma.home.findUnique({
         include: {
-            roles: true,
             cameras: true,
             rooms: true,
             home_clouds: true,
@@ -44,7 +42,6 @@ const findById = async (id: number) => {
 const findByIdQueryHomeInfo = async (id: number) => {
     const home = await prisma.home.findUnique({
         include: {
-            roles: true,
             cameras: true,
             rooms: true,
             home_clouds: true,
@@ -98,7 +95,6 @@ const save = async (home: Home) => {
                 deleted_at: home.deleted_at,
             },
             include: {
-                roles: true,
                 active_home_cloud: {
                     include: {
                         cloud: true,

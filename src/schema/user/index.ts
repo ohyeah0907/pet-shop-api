@@ -6,12 +6,8 @@ export default {
             name: Joi.string().required().trim(),
             phone: Joi.string().required().trim(),
             email: Joi.string().email().required().trim(),
-            role: Joi.object().keys({
-                id: Joi.number().required(),
-            }).required(),
             username: Joi.string().required().trim(),
             password: Joi.string().required().trim(),
-            is_voice: Joi.boolean().required(),
         }).required(),
 
     }),
@@ -21,12 +17,11 @@ export default {
             name: Joi.string().allow(null),
             phone: Joi.string().allow(null),
             email: Joi.string().email().allow(null),
-            role: Joi.object().keys({
-                id: Joi.number().required(),
-            }),
             username: Joi.string().allow(null),
             password: Joi.string().allow(null),
             is_voice: Joi.boolean().allow(null),
+            is_admin: Joi.boolean().allow(null),
+            is_locked: Joi.boolean().allow(null),
         }),
     }),
 }

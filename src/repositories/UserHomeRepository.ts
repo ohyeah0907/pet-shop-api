@@ -1,18 +1,35 @@
 import { GetResult } from "@prisma/client/runtime/library";
 import prisma from "../prisma"
 import { UserHome, ObjectState } from "@prisma/client";
+import { UserHomeSearch } from "../dto/user_home";
 
 
-const findAll = async () => {
+const findAll = async (search: UserHomeSearch) => {
+    const condition: any = {
+        NOT: {
+            state: ObjectState.DELETED
+        },
+    }
+    if(search.home?.id){
+        condition['role_home'] = {
+            home_id: search.home?.id
+        }
+    }
+    if(search.user?.id){
+        condition['user_id'] = search.user?.id
+    }
     const userHomes = await prisma.userHome.findMany({
         include: {
             user: true,
-            role_home: true,
+            role_home: {
+                include: {
+                    home: true,
+                    role: true,
+                }
+            }
         },
         where: {
-            NOT: {
-                state: ObjectState.DELETED
-            }
+            ...condition
         }
     });
     return userHomes;
@@ -22,7 +39,12 @@ const findById = async (id: number) => {
     const userHome = await prisma.userHome.findUnique({
         include: {
             user: true,
-            role_home: true,
+            role_home: {
+                include: {
+                    home: true,
+                    role: true,
+                }
+            }
         },
         where: {
             id: id,

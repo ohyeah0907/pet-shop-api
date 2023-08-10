@@ -9,6 +9,9 @@ const findAll = async () => {
             NOT: {
                 state: ObjectState.DELETED,
             }
+        },
+        orderBy: {
+            id: 'asc'
         }
     });
     return users;

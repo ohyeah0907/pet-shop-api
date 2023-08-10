@@ -31,6 +31,8 @@ import roomShortcut from "./room_shortcut";
 import haEntity from "./ha_entity";
 import roleHome from "./role_home";
 import file from "./file";
+import voiceProject from "./voice_project";
+import oauth2 from "./oauth2";
 
 const router = Router();
 
@@ -66,6 +68,8 @@ router.use("/room-shortcut", roomShortcut)
 router.use("/ha-entity", haEntity)
 router.use("/role-home", roleHome)
 router.use("/file", file)
+router.use("/voice-project", voiceProject)
+router.use("/oauth2", oauth2)
 
 
 export default router;

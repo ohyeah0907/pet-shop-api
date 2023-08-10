@@ -1,12 +1,12 @@
 import UserHomeRepository from "../repositories/UserHomeRepository"
-import { UserHomeCreate, UserHomeUpdate } from "../dto/user_home";
+import { UserHomeCreate, UserHomeSearch, UserHomeUpdate } from "../dto/user_home";
 import roleHomeService from "./RoleHomeService";
 import userService from "./UserService";
 import { ObjectState } from "@prisma/client";
 
 const service = {
-    search: async (params: any) => {
-        return UserHomeRepository.findAll();
+    search: async (search: UserHomeSearch) => {
+        return UserHomeRepository.findAll(search);
     },
     getById: async (id: number) => {
         const userHome = await UserHomeRepository.findById(id);

@@ -36,73 +36,70 @@ enum ActionableType {
 // Model
 
 model Cloud {
-  id           Int          @id @default(autoincrement())
-  ip           String       @unique @db.VarChar(255)
-  domain       String       @unique @db.VarChar(255)
-  state        ObjectState  @default(ACTIVE)
-  created_at   DateTime     @default(now())
-  updated_at   DateTime     @updatedAt
-  deleted_at   DateTime?
+  id          Int         @id @default(autoincrement())
+  ip          String      @unique @db.VarChar(255)
+  domain      String      @unique @db.VarChar(255)
+  state       ObjectState @default(ACTIVE)
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+  deleted_at  DateTime?
   home_clouds HomeCloud[]
 }
 
 model HomeCloud {
-  id                  Int         @id @default(autoincrement())
-  cloud               Cloud       @relation(fields: [cloud_id], references: [id])
-  cloud_id            Int
-  home               Home       @relation("Home", fields: [home_id], references: [id])
+  id                 Int         @id @default(autoincrement())
+  cloud              Cloud       @relation(fields: [cloud_id], references: [id])
+  cloud_id           Int
+  home               Home        @relation("Home", fields: [home_id], references: [id])
   home_id            Int
-  vpn_ip              String      @db.VarChar(255)
-  private_key         String      @db.VarChar(255)
-  public_key          String      @db.VarChar(255)
-  pre_shared_key      String      @db.VarChar(255)
-  cloud_port          Int         @db.Integer
-  state               ObjectState @default(ACTIVE)
-  created_at          DateTime    @default(now())
-  updated_at          DateTime    @updatedAt
-  deleted_at          DateTime?
-  active_home_clouds Home[]     @relation("ActiveHomeCloud")
+  vpn_ip             String      @db.VarChar(255)
+  private_key        String      @db.VarChar(255)
+  public_key         String      @db.VarChar(255)
+  pre_shared_key     String      @db.VarChar(255)
+  cloud_port         Int         @db.Integer
+  state              ObjectState @default(ACTIVE)
+  created_at         DateTime    @default(now())
+  updated_at         DateTime    @updatedAt
+  deleted_at         DateTime?
+  active_home_clouds Home[]      @relation("ActiveHomeCloud")
 
   @@unique([cloud_id, home_id], name: "unique_cloud_home")
 }
 
 model Home {
-  id                    Int          @id @default(autoincrement())
-  name                  String       @db.VarChar(255)
-  address               String       @db.VarChar(255)
-  lan_ip                String       @db.VarChar(255)
-  lan_port              Int          @db.Integer
-  wan_domain            String       @unique @db.VarChar(255)
-  wan_port              Int          @db.Integer
-  image_url             String       @db.VarChar(255)
-  active_home_cloud    HomeCloud?  @relation("ActiveHomeCloud", fields: [active_home_cloud_id], references: [id])
+  id                   Int          @id @default(autoincrement())
+  name                 String       @db.VarChar(255)
+  address              String       @db.VarChar(255)
+  lan_ip               String       @db.VarChar(255)
+  lan_port             Int          @db.Integer
+  wan_domain           String       @unique @db.VarChar(255)
+  wan_port             Int          @db.Integer
+  image_url            String       @db.VarChar(255)
+  active_home_cloud    HomeCloud?   @relation("ActiveHomeCloud", fields: [active_home_cloud_id], references: [id])
   active_home_cloud_id Int?         @db.Integer
-  state                 ObjectState  @default(ACTIVE)
-  created_at            DateTime     @default(now())
-  updated_at            DateTime     @updatedAt
-  deleted_at            DateTime?
-  roles                 Role[]
-  home_clouds          HomeCloud[] @relation("Home")
-  rooms                 Room[]
-  cameras               Camera[]
-  scripts               Script[]
-  automations           Automation[]
-  devices               Device[]
-  sensors               Sensor[]
-  ha_entities           HAEntity[]
+  state                ObjectState  @default(ACTIVE)
+  created_at           DateTime     @default(now())
+  updated_at           DateTime     @updatedAt
+  deleted_at           DateTime?
+  home_clouds          HomeCloud[]  @relation("Home")
+  rooms                Room[]
+  cameras              Camera[]
+  scripts              Script[]
+  automations          Automation[]
+  devices              Device[]
+  sensors              Sensor[]
+  ha_entities          HAEntity[]
   role_homes           RoleHome[]
 }
 
 model Role {
-  id          Int         @id @default(autoincrement())
-  name        String      @db.VarChar(255)
-  home       Home       @relation(fields: [home_id], references: [id])
-  home_id    Int
-  is_owner    Boolean     @default(false)
-  state       ObjectState @default(ACTIVE)
-  created_at  DateTime    @default(now())
-  updated_at  DateTime    @updatedAt
-  deleted_at  DateTime?
+  id         Int         @id @default(autoincrement())
+  name       String      @db.VarChar(255)
+  is_owner   Boolean     @default(false)
+  state      ObjectState @default(ACTIVE)
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  deleted_at DateTime?
   role_homes RoleHome[]
 }
 
@@ -121,7 +118,7 @@ model User {
   updated_at         DateTime           @updatedAt
   deleted_at         DateTime?
   key_store          KeyStore[]
-  user_homes        UserHome[]
+  user_homes         UserHome[]
   sessions           Session[]
   rooms              Room[]
   user_tags          UserTag[]
@@ -129,18 +126,20 @@ model User {
 }
 
 model UserHome {
-  id            Int         @id @default(autoincrement())
-  user          User        @relation(fields: [user_id], references: [id])
-  user_id       Int
-  role_home    RoleHome   @relation(fields: [role_home_id], references: [id])
+  id           Int         @id @default(autoincrement())
+  user         User        @relation(fields: [user_id], references: [id])
+  user_id      Int
+  role_home    RoleHome    @relation(fields: [role_home_id], references: [id])
   role_home_id Int
-  ha_username   String      @db.VarChar(255)
-  ha_password   String      @db.VarChar(255)
-  ordering      Int         @db.Integer
-  state         ObjectState @default(ACTIVE)
-  created_at    DateTime    @default(now())
-  updated_at    DateTime    @updatedAt
-  deleted_at    DateTime?
+  ha_username  String      @db.VarChar(255)
+  ha_password  String      @db.VarChar(255)
+  ordering     Int         @db.Integer
+  state        ObjectState @default(ACTIVE)
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+  deleted_at   DateTime?
+
+  @@unique([user_id, role_home_id], name: "unique_user_role_home")
 }
 
 model KeyStore {
@@ -157,8 +156,8 @@ model KeyStore {
 
 model Room {
   id                   Int            @id @default(autoincrement())
-  home                Home          @relation(fields: [home_id], references: [id])
-  home_id             Int
+  home                 Home           @relation(fields: [home_id], references: [id])
+  home_id              Int
   // parent               Room?          @relation("ParentRoom", fields: [parent_id], references: [id])
   // parent_id            Int?           @db.Integer
   user                 User           @relation(fields: [user_id], references: [id])
@@ -215,8 +214,8 @@ model Filter {
 
 model Camera {
   id              Int          @id @default(autoincrement())
-  home           Home        @relation(fields: [home_id], references: [id])
-  home_id        Int
+  home            Home         @relation(fields: [home_id], references: [id])
+  home_id         Int
   camera_brand    CameraBrand  @relation(fields: [camera_brand_id], references: [id])
   camera_brand_id Int
   username        String       @db.VarChar(255)
@@ -270,8 +269,8 @@ model Preset {
 
 model Script {
   id          Int         @id @default(autoincrement())
-  home       Home       @relation(fields: [home_id], references: [id])
-  home_id    Int
+  home        Home        @relation(fields: [home_id], references: [id])
+  home_id     Int
   entity_id   String      @db.VarChar(255)
   name        String      @db.VarChar(255)
   description String      @db.VarChar(255)
@@ -286,8 +285,8 @@ model Script {
 
 model Automation {
   id          Int         @id @default(autoincrement())
-  home       Home       @relation(fields: [home_id], references: [id])
-  home_id    Int
+  home        Home        @relation(fields: [home_id], references: [id])
+  home_id     Int
   entity_id   String      @db.VarChar(255)
   name        String      @db.VarChar(255)
   description String      @db.VarChar(255)
@@ -302,8 +301,8 @@ model Automation {
 
 model Sensor {
   id         Int         @id @default(autoincrement())
-  home      Home       @relation(fields: [home_id], references: [id])
-  home_id   Int
+  home       Home        @relation(fields: [home_id], references: [id])
+  home_id    Int
   entity_id  String      @db.VarChar(255)
   name       String      @db.VarChar(255)
   state      ObjectState @default(ACTIVE)
@@ -316,8 +315,8 @@ model Sensor {
 
 model Device {
   id           Int          @id @default(autoincrement())
-  home        Home        @relation(fields: [home_id], references: [id])
-  home_id     Int
+  home         Home         @relation(fields: [home_id], references: [id])
+  home_id      Int
   entity_id    String       @db.VarChar(255)
   type         DeviceType
   sub_type     String       @db.VarChar(255)
@@ -365,8 +364,8 @@ model CameraBrand {
 
 model RoleSchedule {
   id             Int            @id @default(autoincrement())
-  role_home     RoleHome      @relation(fields: [role_home_id], references: [id])
-  role_home_id  Int
+  role_home      RoleHome       @relation(fields: [role_home_id], references: [id])
+  role_home_id   Int
   started_at     DateTime
   ended_at       DateTime
   state          ObjectState    @default(ACTIVE)
@@ -390,28 +389,28 @@ model ScheduleWeek {
 }
 
 model ScheduleHour {
-  id            Int          @id @default(autoincrement())
-  schedule_week ScheduleWeek @relation(fields: [schedule_week_id], references: [id])
-  schedule_week_id   Int
-  started_hour  Int
-  ended_hour    Int
-  state         ObjectState  @default(ACTIVE)
-  created_at    DateTime     @default(now())
-  updated_at    DateTime     @updatedAt
-  deleted_at    DateTime?
+  id               Int          @id @default(autoincrement())
+  schedule_week    ScheduleWeek @relation(fields: [schedule_week_id], references: [id])
+  schedule_week_id Int
+  started_hour     Int
+  ended_hour       Int
+  state            ObjectState  @default(ACTIVE)
+  created_at       DateTime     @default(now())
+  updated_at       DateTime     @updatedAt
+  deleted_at       DateTime?
 }
 
 model RoleDevice {
-  id            Int         @id @default(autoincrement())
-  role_home    RoleHome   @relation(fields: [role_home_id], references: [id])
+  id           Int         @id @default(autoincrement())
+  role_home    RoleHome    @relation(fields: [role_home_id], references: [id])
   role_home_id Int
-  device        Device      @relation(fields: [device_id], references: [id])
-  device_id     Int
-  enabled       Boolean     @default(false)
-  state         ObjectState @default(ACTIVE)
-  created_at    DateTime    @default(now())
-  updated_at    DateTime    @updatedAt
-  deleted_at    DateTime?
+  device       Device      @relation(fields: [device_id], references: [id])
+  device_id    Int
+  enabled      Boolean     @default(false)
+  state        ObjectState @default(ACTIVE)
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+  deleted_at   DateTime?
 
   @@unique([role_home_id, device_id], name: "role_device_unique")
 }
@@ -500,8 +499,8 @@ model RoomShortcut {
 
 model HAEntity {
   id          Int         @id @default(autoincrement())
-  home       Home       @relation(fields: [home_id], references: [id])
-  home_id    Int
+  home        Home        @relation(fields: [home_id], references: [id])
+  home_id     Int
   entity_id   String
   name        String      @db.VarChar(255)
   description String      @db.VarChar(255)
@@ -518,15 +517,28 @@ model RoleHome {
   id             Int            @id @default(autoincrement())
   role           Role           @relation(fields: [role_id], references: [id])
   role_id        Int
-  home          Home          @relation(fields: [home_id], references: [id])
-  home_id       Int
+  home           Home           @relation(fields: [home_id], references: [id])
+  home_id        Int
   state          ObjectState    @default(ACTIVE)
   created_at     DateTime       @default(now())
   updated_at     DateTime       @updatedAt
   deleted_at     DateTime?
-  user_homes    UserHome[]
+  user_homes     UserHome[]
   role_devices   RoleDevice[]
   role_schedules RoleSchedule[]
 
   @@unique([role_id, home_id], name: "role_home_unique")
+}
+
+model VoiceProject {
+  id            Int         @id @default(autoincrement())
+  project_id    String      @db.VarChar(255)
+  client_id     String      @unique @db.VarChar(255)
+  name          String      @db.VarChar(255)
+  client_secret String      @db.VarChar(255)
+  redirect_uris String[]    @db.VarChar(255)
+  state         ObjectState @default(ACTIVE)
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @updatedAt
+  deleted_at    DateTime?
 }
