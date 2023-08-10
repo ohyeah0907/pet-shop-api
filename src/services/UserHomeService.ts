@@ -13,6 +13,11 @@ const service = {
         if (!userHome) throw new Error("Không tìm thấy userHome");
         return userHome;
     },
+    getByRoleHomeIdAndUserId: async (roleHomeId: number, userId: number) => {
+        const userHome = await UserHomeRepository.findByRoleHomeIdAndUserId(roleHomeId, userId);
+        if (!userHome) throw new Error("Không tìm thấy userHome");
+        return userHome;
+    },
     create: async (create: UserHomeCreate) => {
         const roleHome = await roleHomeService.getById(create.role_home.id);
         const user = await userService.getUserById(create.user.id);

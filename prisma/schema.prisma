@@ -128,7 +128,7 @@ model User {
 model UserHome {
   id           Int         @id @default(autoincrement())
   user         User        @relation(fields: [user_id], references: [id])
-  user_id      Int
+  user_id      Int         @unique
   role_home    RoleHome    @relation(fields: [role_home_id], references: [id])
   role_home_id Int
   ha_username  String      @db.VarChar(255)
@@ -138,8 +138,6 @@ model UserHome {
   created_at   DateTime    @default(now())
   updated_at   DateTime    @updatedAt
   deleted_at   DateTime?
-
-  @@unique([user_id, role_home_id], name: "unique_user_role_home")
 }
 
 model KeyStore {
@@ -531,14 +529,28 @@ model RoleHome {
 }
 
 model VoiceProject {
-  id            Int         @id @default(autoincrement())
-  project_id    String      @db.VarChar(255)
-  client_id     String      @unique @db.VarChar(255)
-  name          String      @db.VarChar(255)
-  client_secret String      @db.VarChar(255)
-  redirect_uris String[]    @db.VarChar(255)
-  state         ObjectState @default(ACTIVE)
-  created_at    DateTime    @default(now())
-  updated_at    DateTime    @updatedAt
-  deleted_at    DateTime?
+  id             Int            @id @default(autoincrement())
+  project_id     String         @db.VarChar(255)
+  client_id      String         @unique @db.VarChar(255)
+  name           String         @db.VarChar(255)
+  client_secret  String         @db.VarChar(255)
+  redirect_uris  String[]       @db.VarChar(255)
+  state          ObjectState    @default(ACTIVE)
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+  deleted_at     DateTime?
+  voice_sessions VoiceSession[]
+}
+
+model VoiceSession {
+  id               Int          @id @default(autoincrement())
+  voice_project    VoiceProject @relation(fields: [voice_project_id], references: [id])
+  voice_project_id Int
+  access_token     String       @db.VarChar(255)
+  refresh_token    String       @db.VarChar(255)
+  expired_at       DateTime
+  state            ObjectState  @default(ACTIVE)
+  created_at       DateTime     @default(now())
+  updated_at       DateTime     @updatedAt
+  deleted_at       DateTime?
 }

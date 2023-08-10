@@ -7,9 +7,9 @@ import roleService from "./RoleService";
 import userService from "./UserService";
 import userHomeService from "./UserHomeService";
 import homeCloudService from "./HomeCloudService";
-import { HomeCreate, HomeRoleUserCreate, HomeUpdate } from "../dto/home";
-import { RoleHomeCreate } from "../dto/role_home";
-import { UserHomeCreate } from "../dto/user_home";
+import { HomeCreate, HomeRoleUserCreate, HomeRoleUserUpdate, HomeUpdate } from "../dto/home";
+import { RoleHomeCreate, RoleHomeUpdate } from "../dto/role_home";
+import { UserHomeCreate, UserHomeUpdate } from "../dto/user_home";
 
 const service = {
     getHomeSearch: async (params: any) => {
@@ -104,6 +104,47 @@ const service = {
             return userHome;
         })
     },
+
+    updateFullOptionHomeRoleUser: async (update: HomeRoleUserUpdate) => {
+        return prisma.$transaction(async () => {
+            const userHome = await userHomeService.getById(update.user_home.id);
+            let roleHome = await roleHomeService.getById(userHome.role_home.id);
+            let userHomeUpdate: UserHomeUpdate = {
+                ha_password: userHome.ha_password,
+                ha_username: userHome.ha_username,
+                id: userHome.id,
+                ordering: userHome.ordering,
+                user: userHome.user,
+                role_home: roleHome,
+            }
+            if (update.role) {
+                const role = await roleService.getRoleById(update.role.id);
+                let newRoleHome = null;
+                try {
+                    newRoleHome = await roleHomeService.getByRoleIdAndHomeId(update.home.id, role.id);
+                } catch (e: any) {
+                    newRoleHome = await roleHomeService.create({
+                        home: update.home,
+                        role: role,
+                    })
+                }
+                userHomeUpdate.role_home = newRoleHome;
+            }
+            if (update.user) {
+                const user = await userService.getUserById(update.user.id);
+                userHomeUpdate.user = user;
+            }
+            if (update.ha_password) {
+                userHome.ha_password = update.ha_password;
+            }
+            if (update.ha_username) {
+                userHome.ha_username = update.ha_username;
+            }
+
+            await userHomeService.update(userHomeUpdate);
+            return true;
+        })
+    }
 
 }
 

@@ -47,6 +47,14 @@ const controller = {
             return new BadRequestResponse(error.message).send(res);
         }
     },
+    updateFullOptionHomeRoleUser: async (req: Request, res: Response) => {
+        try {
+            const home = await homeService.updateFullOptionHomeRoleUser(req.body.update);
+            return new SuccessResponse("Thành công!", home).send(res);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
     deleteHome: async (req: Request, res: Response) => {
         try {
             const result = await homeService.deleteHome(parseInt(req.params.id));

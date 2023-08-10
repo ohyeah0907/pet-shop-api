@@ -1,4 +1,4 @@
-import { Home, HomeCloud, Role, User } from "@prisma/client";
+import { Home, HomeCloud, Role, User, UserHome } from "@prisma/client";
 
 export type HomeCreate = {
     name: string;
@@ -28,4 +28,13 @@ export type HomeRoleUserCreate = {
     user: User,
     ha_username: string,
     ha_password: string,
+}
+
+export type HomeRoleUserUpdate = {
+    home: Home,
+    user_home: UserHome,
+    role?: Role,
+    user?: User,
+    ha_username?: string,
+    ha_password?: string,
 }

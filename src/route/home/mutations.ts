@@ -12,6 +12,7 @@ const router = Router();
 router.post("/create", validator(schema.homeCreate), asyncHandler(homeController.createHome))
 router.post("/create-full-option",  asyncHandler(homeController.createFullOptionHomeRoleUser))
 router.put("/update", validator(schema.homeUpdate), asyncHandler(homeController.updateHome))
+router.put("/update-full-option", asyncHandler(homeController.updateFullOptionHomeRoleUser))
 router.delete("/delete/:id", asyncHandler(homeController.deleteHome))
 
 export default router;

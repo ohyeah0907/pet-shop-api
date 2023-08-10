@@ -10,12 +10,12 @@ const findAll = async (search: UserHomeSearch) => {
             state: ObjectState.DELETED
         },
     }
-    if(search.home?.id){
+    if (search.home?.id) {
         condition['role_home'] = {
             home_id: search.home?.id
         }
     }
-    if(search.user?.id){
+    if (search.user?.id) {
         condition['user_id'] = search.user?.id
     }
     const userHomes = await prisma.userHome.findMany({
@@ -30,6 +30,9 @@ const findAll = async (search: UserHomeSearch) => {
         },
         where: {
             ...condition
+        },
+        orderBy:{
+            id: "asc"
         }
     });
     return userHomes;
@@ -56,6 +59,31 @@ const findById = async (id: number) => {
     });
     return userHome;
 }
+const findByRoleHomeIdAndUserId = async (roleHomeId: number, userId: number) => {
+    const userHome = await prisma.userHome.findFirst({
+        include: {
+            user: true,
+            role_home: {
+                include: {
+                    home: true,
+                    role: true,
+                }
+            }
+        },
+        where: {
+            role_home_id: roleHomeId,
+            AND: {
+                user_id: userId
+            },
+            NOT: {
+                state: ObjectState.DELETED
+            }
+        }
+
+    });
+    return userHome;
+}
+
 
 const save = async (userHome: UserHome) => {
     if (userHome.id) {
@@ -112,5 +140,6 @@ const save = async (userHome: UserHome) => {
 export default {
     findAll,
     findById,
+    findByRoleHomeIdAndUserId,
     save
 }
