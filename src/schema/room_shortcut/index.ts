@@ -9,6 +9,8 @@ export default {
             room_other: Joi.object().keys({
                 id: Joi.number().required(),
             }).required(),
+            longtitude: Joi.bigint().allow(null),
+            latitude: Joi.bigint().allow(null),
         }).required(),
 
     }),
@@ -21,6 +23,8 @@ export default {
             room_other: Joi.object().keys({
                 id: Joi.number().required(),
             }),
+            longtitude: Joi.bigint().allow(null),
+            latitude: Joi.bigint().allow(null),
         }),
     }),
 }

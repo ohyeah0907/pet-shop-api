@@ -3,6 +3,14 @@ import { BadRequestResponse, SuccessResponse } from "../handler/app-response";
 import service from "../services/OAuth2Service";
 
 const controller = {
+    login: async (req: Request, res: Response) => {
+        try {
+            const result = await service.login(req.query as any);
+            res.redirect(result);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
     authorize: async (req: Request, res: Response) => {
         try {
             const result = await service.authorize(req.query as any);

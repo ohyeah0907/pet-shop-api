@@ -3,6 +3,7 @@ import { VoiceProjectCreate, VoiceProjectUpdate } from "../dto/voice_project";
 import { ObjectState } from "@prisma/client";
 import crypto from "crypto";
 import { generateClientId, generateSecret } from "../utils";
+import UserRepository from "../repositories/UserRepository";
 
 const service = {
     search: async (params: any) => {
@@ -13,7 +14,15 @@ const service = {
         if (!voiceProject) throw new Error("Không tìm thấy voiceProject");
         return voiceProject;
     },
+    verifyCredentials: async (username: string, password: string) => {
+        const userVoice = await UserRepository.findByVoiceUsername(username);
+        //jason.n
+        if (!userVoice) throw new Error("Không tìm thấy voiceProject");
+        //kiểm tra password -- jason.n
+        return userVoice;
+    },
     getByClientIdAndRedirectUrl: async (client_id: string, redirect_uri: string) => {
+        
         const voiceProject = await VoiceProjectRepository.findByClientIdAndRedirectUrl(client_id, redirect_uri);
         if (!voiceProject) throw new Error(`Không tìm thấy voiceProject với client_id: ${client_id} và redirect_uri: ${redirect_uri}`);
         return voiceProject;

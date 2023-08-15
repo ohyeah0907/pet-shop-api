@@ -4,6 +4,7 @@ import { encrypt, decrypt } from "../helper/code";
 import voiceProjectService from "./VoiceProjectService";
 import crypto from "crypto";
 const service = {
+   
     authorize: async (authorize: AuthorizeCodeLogin) => {
         const voiceProject = await voiceProjectService.getByClientIdAndRedirectUrl(authorize.client_id, authorize.redirect_uri);
 

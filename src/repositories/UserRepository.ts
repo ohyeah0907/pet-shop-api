@@ -39,6 +39,18 @@ const findByUsername = async (username: string) => {
     });
     return user;
 }
+const findByVoiceUsername = async (username: string) => {
+    const user = await prisma.user.findFirst({
+        where: {
+            username: username,
+            is_voice: true,
+            NOT: {
+                state: ObjectState.DELETED,
+            }
+        }
+    });
+    return user;
+}
 
 const save = async (user: User) => {
     if (user.id) {
