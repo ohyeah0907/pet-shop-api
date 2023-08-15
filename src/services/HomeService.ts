@@ -110,7 +110,7 @@ const service = {
             const userHome = await userHomeService.getById(update.user_home.id);
             let roleHome = await roleHomeService.getById(userHome.role_home.id);
             let userHomeUpdate: UserHomeUpdate = {
-                ha_password: userHome.ha_password,
+                ha_password: String(userHome.ha_password),
                 ha_username: userHome.ha_username,
                 id: userHome.id,
                 ordering: userHome.ordering,

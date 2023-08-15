@@ -1,15 +1,17 @@
 import { GetResult } from "@prisma/client/runtime/library";
 import prisma from "../prisma"
 import { CameraBrand, ObjectState, DeviceType } from "@prisma/client";
+import { CameraBrandSearch } from "../dto/camera_brand";
 
 
-const findAll = async () => {
-    const cameraBrands = await prisma.cameraBrand.findMany({
-        where: {
-            NOT: {
-                state: ObjectState.DELETED
-            }
+const findAll = async (search: CameraBrandSearch) => {
+    const condition: any = {
+        NOT: {
+            state: ObjectState.DELETED
         }
+    }
+    const cameraBrands = await prisma.cameraBrand.findMany({
+        where: condition
     });
     return cameraBrands;
 }

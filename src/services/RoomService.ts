@@ -1,12 +1,12 @@
 import RoomRepository from "../repositories/RoomRepository"
 import homeService from "./HomeService"
 import userService from "./UserService"
-import { RoomCreate, RoomUpdate } from "../dto/room";
+import { RoomCreate, RoomSearch, RoomUpdate } from "../dto/room";
 import { ObjectState } from "@prisma/client";
 
 const service = {
-    search: async (params: any) => {
-        return RoomRepository.findAll();
+    search: async (search: RoomSearch) => {
+        return RoomRepository.findAll(search);
     },
     getById: async (id: number) => {
         const room = await RoomRepository.findById(id);
@@ -27,7 +27,8 @@ const service = {
             user_id: user.id,
             // parent_id: parent?.id,
             image_url: create.image_url,
-            ordering: create.ordering,
+            is_home: false,
+            ordering: 0,
         }
         return await RoomRepository.save(room);
     },
@@ -52,6 +53,9 @@ const service = {
         }
         if (update.image_url) {
             room.image_url = update.image_url;
+        }
+        if(update.is_home !== null) {
+            room.is_home = update.is_home;
         }
         if (update.ordering) {
             room.ordering = update.ordering;

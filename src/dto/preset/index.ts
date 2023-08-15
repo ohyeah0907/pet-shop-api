@@ -12,3 +12,8 @@ export type PresetUpdate = {
     camera?: Camera,
     url?: string,
 }
+
+export type PresetSearch = {
+    name?: string,
+    camera?: Camera,
+}

@@ -10,7 +10,7 @@ export default {
                 id: Joi.number().required(),
             }).required(),
             entity_id: Joi.string().required().trim(),
-            accessed_at: Joi.date().required(),
+            // accessed_at: Joi.date().required(),
         }).required(),
 
     }),

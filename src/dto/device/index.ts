@@ -1,11 +1,10 @@
-import { DeviceType, Home, Preset } from "@prisma/client"
+import { DeviceType, HAEntity, Home, Preset } from "@prisma/client"
 
 export type DeviceCreate = {
     home: Home,
-    entity_id: string,
+    ha_entity: HAEntity,
     type: DeviceType,
     sub_type: string,
-    status: boolean,
     attributes: string,
     preset: Preset,
     name: string,
@@ -15,7 +14,7 @@ export type DeviceCreate = {
 export type DeviceUpdate = {
     id: number,
     home: Home,
-    entity_id: string,
+    ha_entity: HAEntity,
     name: string,
     type: DeviceType,
     sub_type: string,
@@ -24,4 +23,10 @@ export type DeviceUpdate = {
     preset: Preset,
     description: string
 
+}
+
+export type DeviceSearch = {
+    home: Home,
+    ha_entity: HAEntity,
+    preset: Preset,
 }

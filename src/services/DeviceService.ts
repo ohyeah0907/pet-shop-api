@@ -1,12 +1,13 @@
 import DeviceRepository from "../repositories/DeviceRepository"
 import homeService from "./HomeService"
 import presetService from "./PresetService"
-import { DeviceCreate, DeviceUpdate } from "../dto/device";
+import haEntityService from "./HAEntityService"
+import { DeviceCreate, DeviceSearch, DeviceUpdate } from "../dto/device";
 import { ObjectState } from "@prisma/client";
 
 const service = {
-    search: async (params: any) => {
-        return DeviceRepository.findAll();
+    search: async (search: DeviceSearch) => {
+        return DeviceRepository.findAll(search);
     },
     getById: async (id: number) => {
         const device = await DeviceRepository.findById(id);
@@ -16,14 +17,15 @@ const service = {
     create: async (create: DeviceCreate) => {
         const home = await homeService.getHomeById(create.home.id);
         const preset = await presetService.getById(create.preset.id);
+        const haEntity = await haEntityService.getByEntityId(create.ha_entity.entity_id)
         const device: any = {
             id: 0,
             name: create.name,
             home_id: home.id,
-            entity_id: create.entity_id,
+            ha_entity_id: haEntity.id,
             type: create.type,
             sub_type: create.sub_type,
-            status: create.status,
+            status: true,
             attributes: create.attributes,
             description: create.description,
             preset_id: preset.id,
@@ -40,8 +42,8 @@ const service = {
             const home = await homeService.getHomeById(update.home.id);
             device.home_id = home.id;
         }
-        if (update.entity_id) {
-            device.entity_id = update.entity_id;
+        if (update.ha_entity) {
+            device.ha_entity_id = update.ha_entity.id;
         }
         if (update.type) {
             device.type = update.type;

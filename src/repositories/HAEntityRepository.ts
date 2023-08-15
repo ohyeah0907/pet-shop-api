@@ -1,23 +1,48 @@
 import { GetResult } from "@prisma/client/runtime/library";
 import prisma from "../prisma"
 import { HAEntity, ObjectState, DeviceType } from "@prisma/client";
+import { HAEntitySearch } from "../dto/ha_entity";
 
 
-const findAll = async () => {
-    const haEntities = await prisma.hAEntity.findMany({
-        where: {
-            NOT: {
-                state: ObjectState.DELETED
-            }
+const findAll = async (search: HAEntitySearch) => {
+    const condition: any = {
+        NOT: {
+            state: ObjectState.DELETED
         }
+    }
+    if(search.home) {
+        condition.home_id = search.home.id;
+    }
+    const haEntities = await prisma.hAEntity.findMany({
+        include: {
+            home: true,
+        },
+        where: condition,
     });
     return haEntities;
 }
 
 const findById = async (id: number) => {
     const haEntity = await prisma.hAEntity.findUnique({
+        include: {
+            home: true,
+        },
         where: {
             id: id,
+            NOT: {
+                state: ObjectState.DELETED
+            }
+        }
+    });
+    return haEntity;
+}
+const findByEntityId = async (entityId: string) => {
+    const haEntity = await prisma.hAEntity.findFirst({
+        include: {
+            home: true,
+        },
+        where: {
+            entity_id: entityId,
             NOT: {
                 state: ObjectState.DELETED
             }
@@ -69,5 +94,6 @@ const save = async (haEntity: HAEntity) => {
 export default {
     findAll,
     findById,
+    findByEntityId,
     save
 }

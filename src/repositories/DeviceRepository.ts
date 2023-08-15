@@ -1,16 +1,28 @@
+import { DeviceSearch } from "../dto/device";
 import prisma from "../prisma"
 import { Device, ObjectState } from "@prisma/client";
 
 
-const findAll = async () => {
+const findAll = async (search: DeviceSearch) => {
+    const condition: any = {
+        NOT: {
+            state: ObjectState.DELETED
+        }
+    }
+    if (search.home) {
+        condition.home_id = search.home.id;
+    }
+    if (search.preset) {
+        condition.preset_id = search.preset.id;
+    }
+    if (search.ha_entity) {
+        condition.ha_entity_id = search.ha_entity.id;
+    }
     const devices = await prisma.device.findMany({
-        where: {
-            NOT: {
-                state: ObjectState.DELETED
-            }
-        },
+        where: condition,
         include: {
             home: true,
+            ha_entity: true,
             preset: true
         }
     });
@@ -27,6 +39,7 @@ const findById = async (id: number) => {
         },
         include: {
             home: true,
+            ha_entity: true,
             preset: true
         }
     });
@@ -48,7 +61,11 @@ const save = async (device: Device) => {
                     }
                 },
                 type: device.type,
-                entity_id: device.entity_id,
+                ha_entity: device.ha_entity_id ? {
+                    connect: {
+                        id: device.ha_entity_id
+                    }
+                } : undefined,
                 sub_type: device.sub_type,
                 status: device.status,
                 preset: {
@@ -77,7 +94,11 @@ const save = async (device: Device) => {
             },
             description: device.description,
             type: device.type,
-            entity_id: device.entity_id,
+            ha_entity: device.ha_entity_id ? {
+                connect: {
+                    id: device.ha_entity_id
+                }
+            } : undefined,
             sub_type: device.sub_type,
             status: device.status,
             preset: {

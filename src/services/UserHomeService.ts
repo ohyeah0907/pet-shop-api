@@ -55,10 +55,8 @@ const service = {
     },
     delete: async (id: number) => {
         const userHome: any = await service.getById(id);
-        userHome.state = ObjectState.DELETED;
-        userHome.deleted_at = new Date();
-        return !!(await UserHomeRepository.save(userHome));
-    }
+        return !!(await UserHomeRepository.deleteById(userHome.id));
+    },
 }
 
 export default service;

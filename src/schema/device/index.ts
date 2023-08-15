@@ -8,10 +8,11 @@ export default {
             home: Joi.object().keys({
                 id: Joi.number().required(),
             }).required(),
-            entity_id: Joi.string().required(),
+            ha_entity: Joi.object().keys({
+                entity_id: Joi.string().required(),
+            }).required(),
             sub_type: Joi.string().required(),
             type: Joi.string().required().valid(...Object.values(DeviceType)),
-            status: Joi.boolean().required(),
             attributes: Joi.string().required(),
             preset: Joi.object().keys({
                 id: Joi.number().required(),
@@ -27,7 +28,9 @@ export default {
             home: Joi.object().keys({
                 id: Joi.number().required(),
             }),
-            entity_id: Joi.string().allow(null),
+            ha_entity: Joi.object().keys({
+                entity_id: Joi.string().allow(null),
+            }).allow(null),
             sub_type: Joi.string().allow(null),
             type: Joi.string().allow(null).valid(...Object.values(DeviceType)),
             status: Joi.boolean().allow(null),

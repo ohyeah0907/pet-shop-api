@@ -1,11 +1,11 @@
 import PresetRepository from "../repositories/PresetRepository"
-import { PresetCreate, PresetUpdate } from "../dto/preset";
+import { PresetCreate, PresetSearch, PresetUpdate } from "../dto/preset";
 import { ObjectState } from "@prisma/client";
 import cameraService from "./CameraService";
 
 const service = {
-    search: async (params: any) => {
-        return PresetRepository.findAll();
+    search: async (search: PresetSearch) => {
+        return PresetRepository.findAll(search);
     },
     getById: async (id: number) => {
         const preset = await PresetRepository.findById(id);

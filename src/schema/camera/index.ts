@@ -12,6 +12,9 @@ export default {
             camera_brand: Joi.object().keys({
                 id: Joi.number().required(),
             }).required(),
+            ha_entity: Joi.object().keys({
+                entity_id: Joi.string().required(),
+            }).required(),
             lan_ip: Joi.string().required().trim(),
             lan_port: Joi.number().required(),
             lan_uri: Joi.string().required().trim(),
@@ -31,6 +34,9 @@ export default {
             home: Joi.object().keys({
                 id: Joi.number().required(),
             }),
+            ha_entity: Joi.object().keys({
+                entity_id: Joi.string().allow(null),
+            }).allow(null),
             username: Joi.string().allow(null),
             password: Joi.string().allow(null),
             camera_brand: Joi.object().keys({

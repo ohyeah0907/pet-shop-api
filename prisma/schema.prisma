@@ -20,8 +20,10 @@ enum ObjectState {
 enum DeviceType {
   LIGHT
   SWITCH
-  TV
+  MEDIA_PLAYER
   AIRCONDITION
+  CLIMATE
+  COVER
   CURTAIN
 }
 
@@ -129,7 +131,7 @@ model UserHome {
   id           Int         @id @default(autoincrement())
   user         User        @relation(fields: [user_id], references: [id])
   user_id      Int         @unique
-  role_home    RoleHome    @relation(fields: [role_home_id], references: [id])
+  role_home    RoleHome    @relation(fields: [role_home_id], references: [id], onDelete: Cascade)
   role_home_id Int
   ha_username  String      @db.VarChar(255)
   ha_password  String      @db.VarChar(255)
@@ -214,6 +216,8 @@ model Camera {
   id              Int          @id @default(autoincrement())
   home            Home         @relation(fields: [home_id], references: [id])
   home_id         Int
+  ha_entity       HAEntity?    @relation(fields: [ha_entity_id], references: [id])
+  ha_entity_id    Int?
   camera_brand    CameraBrand  @relation(fields: [camera_brand_id], references: [id])
   camera_brand_id Int
   username        String       @db.VarChar(255)
@@ -315,7 +319,8 @@ model Device {
   id           Int          @id @default(autoincrement())
   home         Home         @relation(fields: [home_id], references: [id])
   home_id      Int
-  entity_id    String       @db.VarChar(255)
+  ha_entity    HAEntity?    @relation(fields: [ha_entity_id], references: [id])
+  ha_entity_id Int?
   type         DeviceType
   sub_type     String       @db.VarChar(255)
   name         String       @db.VarChar(255)
@@ -331,7 +336,7 @@ model Device {
   role_device  RoleDevice[]
   room_devices RoomDevice[]
 
-  @@unique([home_id, entity_id], name: "device_entity_unique")
+  @@unique([home_id, ha_entity_id], name: "device_entity_unique")
 }
 
 model Actionable {
@@ -507,6 +512,8 @@ model HAEntity {
   created_at  DateTime    @default(now())
   updated_at  DateTime    @updatedAt
   deleted_at  DateTime?
+  cameras     Camera[]
+  devices     Device[]
 
   @@unique([home_id, entity_id], name: "home_entity_unique")
 }

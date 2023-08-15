@@ -1,14 +1,19 @@
 import HAEntityRepository from "../repositories/HAEntityRepository"
-import { HAEntityCreate, HAEntityUpdate } from "../dto/ha_entity";
+import { HAEntityCreate, HAEntitySearch, HAEntityUpdate } from "../dto/ha_entity";
 import { ObjectState } from "@prisma/client";
 import homeService from "./HomeService";
 
 const service = {
-    search: async (params: any) => {
-        return HAEntityRepository.findAll();
+    search: async (search: HAEntitySearch) => {
+        return HAEntityRepository.findAll(search);
     },
     getById: async (id: number) => {
         const haEntity = await HAEntityRepository.findById(id);
+        if (!haEntity) throw new Error("Không tìm thấy haEntity");
+        return haEntity;
+    },
+    getByEntityId: async (entityId: string) => {
+        const haEntity = await HAEntityRepository.findByEntityId(entityId);
         if (!haEntity) throw new Error("Không tìm thấy haEntity");
         return haEntity;
     },
@@ -20,7 +25,7 @@ const service = {
             description: create.description,
             entity_id: create.entity_id,
             home_id: home.id,
-            accessed_at: new Date(create.accessed_at),
+            accessed_at: new Date(),
         }
         return await HAEntityRepository.save(haEntity);
     },

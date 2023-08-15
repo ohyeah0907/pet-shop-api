@@ -1,15 +1,20 @@
 import { GetResult } from "@prisma/client/runtime/library";
 import prisma from "../prisma"
 import { Preset, ObjectState, DeviceType } from "@prisma/client";
+import { PresetSearch } from "../dto/preset";
 
 
-const findAll = async () => {
+const findAll = async (search: PresetSearch) => {
+    const condition: any = {
+        NOT: {
+            state: ObjectState.DELETED
+        }
+    }
+    if (search.camera) {
+        condition['camera_id'] = search.camera.id;
+    }
     const presets = await prisma.preset.findMany({
-        where: {
-            NOT: {
-                state: ObjectState.DELETED
-            }
-        },
+        where: condition,
         include: {
             camera: true,
             devices: true

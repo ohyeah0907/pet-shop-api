@@ -10,3 +10,9 @@ export type CameraBrandUpdate = {
     preset_pattern?: string,
     url_pattern?: string,
 }
+
+export type CameraBrandSearch = {
+    name?: string,
+    preset_pattern?: string,
+    url_pattern?: string,
+}

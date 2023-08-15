@@ -16,3 +16,7 @@ export type HAEntityUpdate = {
     entity_id?: string,
     accessed_at?: Date,
 }
+
+export type HAEntitySearch = {
+    home?: Home,
+}

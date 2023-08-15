@@ -32,6 +32,7 @@ export default {
                 id: Joi.number().required(),
             }),
             image_url: Joi.string().allow(null),
+            is_home: Joi.boolean().allow(null),
             ordering: Joi.number().allow(null),
         }),
     }),

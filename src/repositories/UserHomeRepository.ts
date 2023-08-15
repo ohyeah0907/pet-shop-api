@@ -28,10 +28,8 @@ const findAll = async (search: UserHomeSearch) => {
                 }
             }
         },
-        where: {
-            ...condition
-        },
-        orderBy:{
+        where: condition,
+        orderBy: {
             id: "asc"
         }
     });
@@ -137,9 +135,17 @@ const save = async (userHome: UserHome) => {
 
 }
 
+const deleteById = async (id: number) => {
+    return prisma.userHome.delete({
+        where: {
+            id: id
+        },
+    });
+}
 export default {
     findAll,
     findById,
     findByRoleHomeIdAndUserId,
-    save
+    save,
+    deleteById
 }

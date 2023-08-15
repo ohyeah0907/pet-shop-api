@@ -3,8 +3,8 @@ import { CameraBrandCreate, CameraBrandUpdate } from "../dto/camera_brand";
 import { ObjectState } from "@prisma/client";
 
 const service = {
-    search: async (params: any) => {
-        return CameraBrandRepository.findAll();
+    search: async (search: any) => {
+        return CameraBrandRepository.findAll(search);
     },
     getById: async (id: number) => {
         const cameraBrand = await CameraBrandRepository.findById(id);

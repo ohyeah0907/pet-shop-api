@@ -1,10 +1,12 @@
 import { Camera, ObjectState } from "@prisma/client";
 import prisma from "../prisma";
+import { CameraSearch } from "../dto/camera";
 const findById = async (id: number) => {
     const camera = await prisma.camera.findUnique({
         include: {
             home: true,
             camera_brand: true,
+            ha_entity: true,
             presets: true,
             room_cameras: true,
         },
@@ -18,19 +20,24 @@ const findById = async (id: number) => {
     return camera;
 }
 
-const findAll = async () => {
+const findAll = async (search: CameraSearch) => {
+    const condition: any = {
+        NOT: {
+            state: ObjectState.DELETED
+        }
+    }
+    if(search.home) {
+        condition.home_id = search.home.id;
+    }
     const cameras = await prisma.camera.findMany({
         include: {
             home: true,
             camera_brand: true,
+            ha_entity: true,
             presets: true,
             room_cameras: true,
         },
-        where: {
-            NOT: {
-                state: ObjectState.DELETED,
-            }
-        }
+        where: condition
     });
     return cameras;
 }
@@ -47,6 +54,11 @@ const save = async (camera: Camera) => {
                         id: camera.home_id
                     }
                 },
+                ha_entity: camera.ha_entity_id ? {
+                    connect: {
+                        id: camera.ha_entity_id
+                    }
+                }: undefined,
                 username: camera.username,
                 password: camera.password,
                 camera_brand: {
@@ -89,6 +101,11 @@ const save = async (camera: Camera) => {
                     id: camera.camera_brand_id
                 }
             },
+            ha_entity: camera.ha_entity_id ? {
+                connect: {
+                    id: camera.ha_entity_id
+                }
+            }: undefined,
             lan_ip: camera.lan_ip,
             lan_port: camera.lan_port,
             lan_uri: camera.lan_uri,

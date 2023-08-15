@@ -6,7 +6,6 @@ export type RoomCreate = {
     user: User,
     name: string,
     image_url: string,
-    ordering: number,
 }
 
 export type RoomUpdate = {
@@ -17,4 +16,10 @@ export type RoomUpdate = {
     name?: string,
     image_url?: string,
     ordering?: number,
+    is_home?: boolean,
+}
+
+export type RoomSearch = {
+    user: User,
+    home: Home,
 }

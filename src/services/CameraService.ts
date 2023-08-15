@@ -1,26 +1,29 @@
 import CameraRepository from "../repositories/CameraRepository"
 import homeService from "./HomeService"
-import userService from "./UserService"
-import { CameraCreate, CameraUpdate } from "../dto/camera";
+import haEntityService from "./HAEntityService"
+import { CameraCreate, CameraSearch, CameraUpdate } from "../dto/camera";
 import cameraBrandService from "./CameraBrandService"
 import { ObjectState } from "@prisma/client";
 
 const service = {
-    search: async (params: any) => {
-        return CameraRepository.findAll();
+    search: async (search: CameraSearch) => {
+        return CameraRepository.findAll(search);
     },
     getById: async (id: number) => {
         const camera = await CameraRepository.findById(id);
+        console.log(camera)
         if (!camera) throw new Error("Không tìm thấy camera");
         return camera;
     },
     create: async (create: CameraCreate) => {
         const home = await homeService.getHomeById(create.home.id);
         const cameraBrand = await cameraBrandService.getById(create.camera_brand.id);
+        const haEntity = await haEntityService.getByEntityId(create.ha_entity.entity_id)
         const camera: any = {
             id: 0,
             home_id: home.id,
             name: create.name,
+            ha_entity_id: haEntity.id,
             camera_brand_id: cameraBrand.id,
             username: create.username,
             password: create.password,
@@ -45,6 +48,10 @@ const service = {
         if (update.home) {
             const home = await homeService.getHomeById(update.home.id);
             camera.home_id = home.id;
+        }
+        if (update.ha_entity) {
+            const haEntity = await haEntityService.getByEntityId(update.ha_entity.entity_id);
+            camera.ha_entity_id = haEntity.id;
         }
         if (update.camera_brand) {
             const cameraBrand = await cameraBrandService.getById(update.camera_brand.id);
