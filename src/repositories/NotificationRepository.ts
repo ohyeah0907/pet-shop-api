@@ -36,6 +36,8 @@ const save = async (notification: Notification) => {
                 name: notification.name,
                 content: notification.content,
                 deep_link: notification.deep_link,
+                data: notification.data,
+                has_media: notification.has_media,
                 state: notification.state,
                 deleted_at: notification.deleted_at,
                 updated_at: notification.updated_at,
@@ -47,6 +49,8 @@ const save = async (notification: Notification) => {
             name: notification.name,
             content: notification.content,
             deep_link: notification.deep_link,
+            data: notification.data,
+            has_media: notification.has_media,
         },
     });
 

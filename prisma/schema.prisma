@@ -91,18 +91,7 @@ model Home {
   devices              Device[]
   sensors              Sensor[]
   ha_entities          HAEntity[]
-  role_homes           RoleHome[]
-}
-
-model Role {
-  id         Int         @id @default(autoincrement())
-  name       String      @db.VarChar(255)
-  is_owner   Boolean     @default(false)
-  state      ObjectState @default(ACTIVE)
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  role_homes RoleHome[]
+  UserHome             UserHome[]
 }
 
 model User {
@@ -125,21 +114,27 @@ model User {
   rooms              Room[]
   user_tags          UserTag[]
   user_notifications UserNotification[]
+  user_room_devices  UserRoomDevice[]
 }
 
 model UserHome {
-  id           Int         @id @default(autoincrement())
-  user         User        @relation(fields: [user_id], references: [id])
-  user_id      Int         @unique
-  role_home    RoleHome    @relation(fields: [role_home_id], references: [id], onDelete: Cascade)
-  role_home_id Int
-  ha_username  String      @db.VarChar(255)
-  ha_password  String      @db.VarChar(255)
-  ordering     Int         @db.Integer
-  state        ObjectState @default(ACTIVE)
-  created_at   DateTime    @default(now())
-  updated_at   DateTime    @updatedAt
-  deleted_at   DateTime?
+  id             Int            @id @default(autoincrement())
+  user           User           @relation(fields: [user_id], references: [id])
+  user_id        Int            @unique
+  home           Home           @relation(fields: [home_id], references: [id], onDelete: Cascade)
+  home_id        Int
+  ha_username    String         @db.VarChar(255)
+  ha_password    String         @db.VarChar(255)
+  lan_only       Boolean        @default(false)
+  is_owner       Boolean        @default(false)
+  ordering       Int            @db.Integer
+  state          ObjectState    @default(ACTIVE)
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+  deleted_at     DateTime?
+  user_schedules UserSchedule[]
+  voice_sessions VoiceSession[]
+  user_fcms        UserFCM[]
 }
 
 model KeyStore {
@@ -158,19 +153,17 @@ model Room {
   id                   Int            @id @default(autoincrement())
   home                 Home           @relation(fields: [home_id], references: [id])
   home_id              Int
-  // parent               Room?          @relation("ParentRoom", fields: [parent_id], references: [id])
-  // parent_id            Int?           @db.Integer
   user                 User           @relation(fields: [user_id], references: [id])
   user_id              Int
   name                 String         @db.VarChar(255)
-  image_url            String         @db.VarChar(255)
+  thumb_image          String         @db.VarChar(255)
+  panorama_image       String         @db.VarChar(255)
   is_home              Boolean        @default(false)
   ordering             Int            @db.Integer
   state                ObjectState    @default(ACTIVE)
   created_at           DateTime       @default(now())
   updated_at           DateTime       @updatedAt
   deleted_at           DateTime?
-  // children             Room[]         @relation("ParentRoom")
   room_cameras         RoomCamera[]
   actionables          Actionable[]
   room_devices         RoomDevice[]
@@ -333,10 +326,23 @@ model Device {
   created_at   DateTime     @default(now())
   updated_at   DateTime     @updatedAt
   deleted_at   DateTime?
-  role_device  RoleDevice[]
   room_devices RoomDevice[]
 
   @@unique([home_id, ha_entity_id], name: "device_entity_unique")
+}
+
+model UserRoomDevice {
+  id             Int         @id @default(autoincrement())
+  user           User        @relation(fields: [user_id], references: [id])
+  user_id        Int
+  room_device    RoomDevice  @relation(fields: [room_device_id], references: [id])
+  room_device_id Int
+  is_favorite    Boolean     @default(false)
+  enable         Boolean     @default(true)
+  state          ObjectState @default(ACTIVE)
+  created_at     DateTime    @default(now())
+  updated_at     DateTime    @updatedAt
+  deleted_at     DateTime?
 }
 
 model Actionable {
@@ -365,10 +371,10 @@ model CameraBrand {
   cameras        Camera[]
 }
 
-model RoleSchedule {
+model UserSchedule {
   id             Int            @id @default(autoincrement())
-  role_home      RoleHome       @relation(fields: [role_home_id], references: [id])
-  role_home_id   Int
+  user_home      UserHome       @relation(fields: [user_home_id], references: [id])
+  user_home_id   Int
   started_at     DateTime
   ended_at       DateTime
   state          ObjectState    @default(ACTIVE)
@@ -380,7 +386,7 @@ model RoleSchedule {
 
 model ScheduleWeek {
   id             Int            @id @default(autoincrement())
-  schedule       RoleSchedule   @relation(fields: [schedule_id], references: [id])
+  schedule       UserSchedule   @relation(fields: [schedule_id], references: [id])
   schedule_id    Int
   week_day       Int
   enable         Boolean        @default(false)
@@ -403,33 +409,21 @@ model ScheduleHour {
   deleted_at       DateTime?
 }
 
-model RoleDevice {
-  id           Int         @id @default(autoincrement())
-  role_home    RoleHome    @relation(fields: [role_home_id], references: [id])
-  role_home_id Int
-  device       Device      @relation(fields: [device_id], references: [id])
-  device_id    Int
-  enabled      Boolean     @default(false)
-  state        ObjectState @default(ACTIVE)
-  created_at   DateTime    @default(now())
-  updated_at   DateTime    @updatedAt
-  deleted_at   DateTime?
-
-  @@unique([role_home_id, device_id], name: "role_device_unique")
-}
-
 model RoomDevice {
-  id          Int         @id @default(autoincrement())
-  room        Room        @relation(fields: [room_id], references: [id])
-  room_id     Int
-  device      Device      @relation(fields: [device_id], references: [id])
-  device_id   Int
-  ordering    Int         @db.Integer
-  is_favorite Boolean     @default(false)
-  state       ObjectState @default(ACTIVE)
-  created_at  DateTime    @default(now())
-  updated_at  DateTime    @updatedAt
-  deleted_at  DateTime?
+  id                Int              @id @default(autoincrement())
+  room              Room             @relation(fields: [room_id], references: [id])
+  room_id           Int
+  device            Device           @relation(fields: [device_id], references: [id])
+  device_id         Int
+  ordering          Int              @db.Integer
+  longitude         Float            @db.DoublePrecision
+  latitude          Float            @db.DoublePrecision
+  is_favorite       Boolean          @default(false)
+  state             ObjectState      @default(ACTIVE)
+  created_at        DateTime         @default(now())
+  updated_at        DateTime         @updatedAt
+  deleted_at        DateTime?
+  user_room_devices UserRoomDevice[]
 
   @@unique([room_id, device_id], name: "room_device_unique")
 }
@@ -447,7 +441,9 @@ model Tag {
 model Notification {
   id                 Int                @id @default(autoincrement())
   name               String             @db.VarChar(255)
+  data               String             @db.Text
   content            String             @db.VarChar(255)
+  has_media          Boolean            @default(false)
   deep_link          String             @db.VarChar(255)
   state              ObjectState        @default(ACTIVE)
   created_at         DateTime           @default(now())
@@ -472,8 +468,8 @@ model UserTag {
 
 model UserNotification {
   id              Int          @id @default(autoincrement())
-  user            User         @relation(fields: [user_id], references: [id])
-  user_id         Int
+  user_fcm        UserFCM      @relation(fields: [user_fcm_id], references: [id])
+  user_fcm_id     Int
   notification    Notification @relation(fields: [notification_id], references: [id])
   notification_id Int
   is_sent         Boolean      @default(false)
@@ -484,6 +480,8 @@ model UserNotification {
   created_at      DateTime     @default(now())
   updated_at      DateTime     @updatedAt
   deleted_at      DateTime?
+  User            User?        @relation(fields: [userId], references: [id])
+  userId          Int?
 }
 
 model RoomShortcut {
@@ -492,6 +490,8 @@ model RoomShortcut {
   room_id       Int
   room_other    Room        @relation("OrtherRoom", fields: [room_other_id], references: [id])
   room_other_id Int
+  longitude     Float       @db.DoublePrecision
+  latitude      Float       @db.DoublePrecision
   state         ObjectState @default(ACTIVE)
   created_at    DateTime    @default(now())
   updated_at    DateTime    @updatedAt
@@ -518,23 +518,6 @@ model HAEntity {
   @@unique([home_id, entity_id], name: "home_entity_unique")
 }
 
-model RoleHome {
-  id             Int            @id @default(autoincrement())
-  role           Role           @relation(fields: [role_id], references: [id])
-  role_id        Int
-  home           Home           @relation(fields: [home_id], references: [id])
-  home_id        Int
-  state          ObjectState    @default(ACTIVE)
-  created_at     DateTime       @default(now())
-  updated_at     DateTime       @updatedAt
-  deleted_at     DateTime?
-  user_homes     UserHome[]
-  role_devices   RoleDevice[]
-  role_schedules RoleSchedule[]
-
-  @@unique([role_id, home_id], name: "role_home_unique")
-}
-
 model VoiceProject {
   id             Int            @id @default(autoincrement())
   project_id     String         @db.VarChar(255)
@@ -551,6 +534,8 @@ model VoiceProject {
 
 model VoiceSession {
   id               Int          @id @default(autoincrement())
+  user_home        UserHome     @relation(fields: [user_home_id], references: [id])
+  user_home_id     Int
   voice_project    VoiceProject @relation(fields: [voice_project_id], references: [id])
   voice_project_id Int
   access_token     String       @db.VarChar(255)
@@ -560,4 +545,21 @@ model VoiceSession {
   created_at       DateTime     @default(now())
   updated_at       DateTime     @updatedAt
   deleted_at       DateTime?
+}
+
+model UserFCM {
+  id                 Int                @id @default(autoincrement())
+  user_home          UserHome           @relation(fields: [user_home_id], references: [id])
+  user_home_id       Int
+  fcm_subcribe_id    String             @unique @db.VarChar(255)
+  device_name        String             @db.VarChar(255)
+  app_name           String             @db.VarChar(255)
+  subcribe_date      DateTime
+  other_info         String             @db.Text
+  status             Boolean            @default(true)
+  state              ObjectState        @default(ACTIVE)
+  created_at         DateTime           @default(now())
+  updated_at         DateTime           @updatedAt
+  deleted_at         DateTime?
+  user_notifications UserNotification[]
 }

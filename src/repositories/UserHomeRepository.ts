@@ -21,12 +21,7 @@ const findAll = async (search: UserHomeSearch) => {
     const userHomes = await prisma.userHome.findMany({
         include: {
             user: true,
-            role_home: {
-                include: {
-                    home: true,
-                    role: true,
-                }
-            }
+            home: true,
         },
         where: condition,
         orderBy: {
@@ -40,12 +35,7 @@ const findById = async (id: number) => {
     const userHome = await prisma.userHome.findUnique({
         include: {
             user: true,
-            role_home: {
-                include: {
-                    home: true,
-                    role: true,
-                }
-            }
+            home: true
         },
         where: {
             id: id,
@@ -57,22 +47,16 @@ const findById = async (id: number) => {
     });
     return userHome;
 }
-const findByRoleHomeIdAndUserId = async (roleHomeId: number, userId: number) => {
-    const userHome = await prisma.userHome.findFirst({
+
+const findByHomeIdAndUserId = async (homeId: number, userId: number) => {
+    const userHome = await prisma.userHome.findUnique({
         include: {
             user: true,
-            role_home: {
-                include: {
-                    home: true,
-                    role: true,
-                }
-            }
+            home: true
         },
         where: {
-            role_home_id: roleHomeId,
-            AND: {
-                user_id: userId
-            },
+            home_id: homeId,
+            user_id: userId,
             NOT: {
                 state: ObjectState.DELETED
             }
@@ -95,11 +79,14 @@ const save = async (userHome: UserHome) => {
                         id: userHome.user_id
                     }
                 },
-                role_home: {
+                home: {
                     connect: {
-                        id: userHome.role_home_id
+                        id: userHome.home_id
                     }
                 },
+                lan_only: userHome.lan_only,
+                ha_password: userHome.ha_password,
+                ha_username: userHome.ha_username,
                 ordering: userHome.ordering,
                 state: userHome.state,
                 deleted_at: userHome.deleted_at,
@@ -107,7 +94,7 @@ const save = async (userHome: UserHome) => {
             },
             include: {
                 user: true,
-                role_home: true,
+                home: true,
             }
         });
     }
@@ -118,18 +105,20 @@ const save = async (userHome: UserHome) => {
                     id: userHome.user_id
                 }
             },
-            role_home: {
+            home: {
                 connect: {
-                    id: userHome.role_home_id
+                    id: userHome.home_id
                 }
             },
             ha_username: userHome.ha_username,
             ha_password: userHome.ha_password,
+            lan_only: userHome.lan_only,
+            is_owner: userHome.is_owner,
             ordering: userHome.ordering,
         },
         include: {
             user: true,
-            role_home: true,
+            home: true,
         }
     });
 
@@ -145,7 +134,7 @@ const deleteById = async (id: number) => {
 export default {
     findAll,
     findById,
-    findByRoleHomeIdAndUserId,
+    findByHomeIdAndUserId,
     save,
     deleteById
 }

@@ -7,7 +7,7 @@ import roomService from "./RoomService"
 import { RoomDeviceCreate, RoomDeviceUpdate } from "../dto/room_device";
 import { ObjectState } from "@prisma/client";
 const service = {
-    search: async (params: any) => {
+    search: async (search: any) => {
         return RoomDeviceRepository.findAll();
     },
     getById: async (id: number) => {
@@ -23,6 +23,8 @@ const service = {
             room_id: room.id,
             device_id: device.id,
             ordering: create.ordering,
+            longitude: create.longitude,
+            latitude: create.latitude,
             is_favorite: create.is_favorite,
         }
         return await RoomDeviceRepository.save(roomDevice);
@@ -44,6 +46,13 @@ const service = {
         if(update.ordering) {
             roomDevice.ordering = update.ordering;
         }
+        if(update.longitude) {
+            roomDevice.longitude = update.longitude;
+        }
+        if(update.latitude) {
+            roomDevice.latitude = update.latitude;
+        }
+        
         return await RoomDeviceRepository.save(roomDevice);
     },
     delete: async (id: number) => {

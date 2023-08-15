@@ -2,7 +2,7 @@ import { UserNotificationCreate, UserNotificationUpdate } from "../dto/user_noti
 import { ObjectState } from "@prisma/client";
 import UserNotificationRepository from "../repositories/UserNotificationRepository";
 import notificationService from "./NotificationService";
-import userService from "./UserService";
+import userFCMService from "./UserFCMService";
 
 
 const service = {
@@ -16,11 +16,11 @@ const service = {
     },
     create: async (create: UserNotificationCreate) => {
         const notification = await notificationService.getById(create.notification.id);
-        const user = await userService.getUserById(create.user.id);
+        const userFCM = await userFCMService.getById(create.user_fcm.id);
         const usernotification: any = {
             id: 0,
             notification_id: notification.id,
-            user_id: user.id,
+            user_fcm_id: userFCM.id,
             is_sent: create.is_sent,
             sent_at: new Date(create.sent_at),
             is_viewed: create.is_viewed,
@@ -34,9 +34,9 @@ const service = {
             const notification = await notificationService.getById(update.notification.id);
             usernotification.notification_id = notification.id;
         }
-        if(update.user) {
-            const user = await userService.getUserById(update.user.id);
-            usernotification.user_id = user.id;
+        if(update.user_fcm) {
+            const userFCM = await userFCMService.getById(update.user_fcm.id);
+            usernotification.user_fcm_id = userFCM.id;
         }
         if(update.is_sent != null) {
             usernotification.is_sent = update.is_sent;

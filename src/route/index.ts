@@ -1,6 +1,5 @@
 import { Router } from "express";
 import home from "./home";
-import role from "./role";
 import auth from "./auth";
 import user from "./user";
 import cloud from "./cloud";
@@ -18,7 +17,6 @@ import sensor from "./sensor";
 import automation from "./automation";
 import device from "./device";
 import cameraBrand from "./camera_brand";
-import roleDevice from "./role_device";
 import roomDevice from "./room_device";
 import notification from "./notification";
 import tag from "./tag";
@@ -29,15 +27,14 @@ import scheduleWeek from "./schedule_week";
 import scheduleHour from "./schedule_hour";
 import roomShortcut from "./room_shortcut";
 import haEntity from "./ha_entity";
-import roleHome from "./role_home";
 import file from "./file";
 import voiceProject from "./voice_project";
 import oauth2 from "./oauth2";
+import userFCM from "./user_fcm";
 
 const router = Router();
 
 router.use("/home", home)
-router.use("/role", role)
 router.use("/auth", auth)
 router.use("/user", user)
 router.use("/cloud", cloud)
@@ -55,7 +52,6 @@ router.use("/sensor", sensor)
 router.use("/automation", automation)
 router.use("/device", device)
 router.use("/camera-brand", cameraBrand)
-router.use("/role-device", roleDevice)
 router.use("/room-device", roomDevice)
 router.use("/notification", notification)
 router.use("/tag", tag)
@@ -66,10 +62,10 @@ router.use("/schedule-week", scheduleWeek)
 router.use("/schedule-hour", scheduleHour)
 router.use("/room-shortcut", roomShortcut)
 router.use("/ha-entity", haEntity)
-router.use("/role-home", roleHome)
 router.use("/file", file)
 router.use("/voice-project", voiceProject)
 router.use("/oauth2", oauth2)
+router.use("/user_fcm", userFCM)
 
 
 export default router;

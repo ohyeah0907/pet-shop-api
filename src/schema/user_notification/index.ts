@@ -6,7 +6,7 @@ export default {
             notification: Joi.object().keys({
                 id: Joi.number().required(),
             }).required(),
-            user: Joi.object().keys({
+            userFCM: Joi.object().keys({
                 id: Joi.number().required(),
             }).required(),
             is_sent: Joi.boolean().required(),
@@ -22,7 +22,7 @@ export default {
             notification: Joi.object().keys({
                 id: Joi.number().required(),
             }),
-            user: Joi.object().keys({
+            userFCM: Joi.object().keys({
                 id: Joi.number().required(),
             }),
             is_sent: Joi.boolean().allow(null),

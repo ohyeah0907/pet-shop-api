@@ -18,20 +18,23 @@ const service = {
             name: create.name,
             content: create.content,
             deep_link: create.deep_link,
+            data: create.data,
+            has_media: create.has_media,
         }
         return await NotificationRepository.save(notification);
     },
     update: async (update: NotificationUpdate) => {
         const notification: any = await service.getById(update.id);
-        if(update.name) {
-            notification.name = update.name;
-        }
-        if(update.content) {
-            notification.content = update.content;
-        }
-        if(update.deep_link) {
-            notification.deep_link = update.deep_link;
-        }
+        if (update.name) notification.name = update.name;
+
+        if (update.content) notification.content = update.content;
+
+        if (update.deep_link) notification.deep_link = update.deep_link;
+
+        if (update.data) notification.data = update.data;
+
+        if (update.has_media != null) notification.has_media = update.has_media;
+
         return await NotificationRepository.save(notification);
     },
     delete: async (id: number) => {

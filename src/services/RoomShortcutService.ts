@@ -19,6 +19,8 @@ const service = {
             id: 0,
             room_id: room.id,
             room_other_id: roomOther.id,
+            longitude: create.longitude,
+            latitude: create.latitude,
         }
         return await roomShortcutRepository.save(roomShortcut);
     },
@@ -33,6 +35,8 @@ const service = {
             const roomOther = await roomService.getById(update.room_other.id);
             roomShortcut.room_other_id = roomOther.id;
         }
+        if (update.longitude) roomShortcut.longitude = update.longitude;
+        if (update.latitude) roomShortcut.latitude = update.latitude;
         return await roomShortcutRepository.save(roomShortcut);
     },
     delete: async (id: number) => {

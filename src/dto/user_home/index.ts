@@ -1,19 +1,23 @@
-import { Home, RoleHome, User } from "@prisma/client";
+import { Home, User } from "@prisma/client";
 
 export type UserHomeCreate = {
     user: User,
-    role_home: RoleHome,
+    home: Home,
     ha_username: string,
     ha_password: string,
+    lan_only: boolean,
+    is_owner: boolean,
     ordering: number,
 }
 
 export type UserHomeUpdate = {
     id: number,
     user: User,
-    role_home: RoleHome,
+    home: Home,
     ha_username: string,
     ha_password: string,
+    lan_only: boolean,
+    is_owner: boolean,
     ordering: number,
 }
 

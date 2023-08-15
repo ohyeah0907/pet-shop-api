@@ -50,6 +50,8 @@ const save = async (roomShortcut: RoomShortcut) => {
                         id: roomShortcut.room_other_id
                     }
                 },
+                longitude: roomShortcut.longitude,
+                latitude: roomShortcut.latitude,
                 state: roomShortcut.state,
                 deleted_at: roomShortcut.deleted_at,
             },
@@ -72,6 +74,8 @@ const save = async (roomShortcut: RoomShortcut) => {
                     id: roomShortcut.room_other_id
                 }
             },
+            longitude: roomShortcut.longitude,
+            latitude: roomShortcut.latitude,
         },
         include: {
             room: true,

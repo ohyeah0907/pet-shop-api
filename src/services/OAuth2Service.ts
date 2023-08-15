@@ -1,16 +1,25 @@
 import { codeConstants, tokenConstants } from "../constants";
-import { AccessTokenLogin, AuthorizeCodeLogin, AuthorizeCodeLoginResponse } from "../dto/oauth2";
+import { AccessTokenLogin, AuthorizeCodeLogin, AuthorizeCodeLoginResponse, CredentialLogin } from "../dto/oauth2";
 import { encrypt, decrypt } from "../helper/code";
 import voiceProjectService from "./VoiceProjectService";
+import userService from "./UserService";
 import crypto from "crypto";
+import bcrypt from "bcrypt";
+
 const service = {
    
+    login: async (authorize: CredentialLogin) => {
+        const user = await userService.getUserByUserName(authorize.username);
+
+        if(!bcrypt.compareSync(authorize.password, user.password)) throw new Error(`Sai mật khẩu`);
+
+        const redirect_link = `/oauth2/authorize?client_id=${authorize.client_id}&redirect_uri=${authorize.redirect_uri}&response_type=${authorize.response_type}&state=${authorize.state}`;
+        return redirect_link;
+    },
     authorize: async (authorize: AuthorizeCodeLogin) => {
-        const voiceProject = await voiceProjectService.verifyCredentials(authorize.username, authorize.password);
+        const voiceProject = await voiceProjectService.getByClientIdAndRedirectUrl(authorize.client_id, authorize.redirect_uri);
 
         if (!voiceProject) throw new Error(`Không tìm thấy voiceProject với client_id: ${authorize.client_id} và redirect_uri: ${authorize.redirect_uri}`);
-
-        authorize.secret_id = crypto.randomBytes(32).toString('hex');
 
         const text = JSON.stringify(authorize);
 

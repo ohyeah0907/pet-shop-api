@@ -47,6 +47,8 @@ const save = async (roomDevice: RoomDevice) => {
                         id: roomDevice.device_id
                     }
                 },
+                longitude: roomDevice.longitude,
+                latitude: roomDevice.latitude,
                 ordering: roomDevice.ordering,
                 is_favorite: roomDevice.is_favorite,
                 state: roomDevice.state,
@@ -70,6 +72,8 @@ const save = async (roomDevice: RoomDevice) => {
                     id: roomDevice.device_id
                 }
             },
+            latitude: roomDevice.latitude,
+            longitude : roomDevice.longitude,
             is_favorite: roomDevice.is_favorite,
             ordering: roomDevice.ordering,
         },

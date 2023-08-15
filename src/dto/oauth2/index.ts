@@ -1,9 +1,15 @@
 
 
-
-export type AuthorizeCodeLogin = {
+export type CredentialLogin = {
     username: string,
     password: string,
+    client_id: string,
+    redirect_uri: string,
+    state: string,
+    scope: string,
+    response_type: string,
+}
+export type AuthorizeCodeLogin = {
     client_id: string,
     redirect_uri: string,
     state: string,

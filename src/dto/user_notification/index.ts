@@ -1,7 +1,7 @@
-import { Notification, User } from "@prisma/client";
+import { Notification, User, UserFCM } from "@prisma/client";
 
 export type UserNotificationCreate = {
-    user: User,
+    user_fcm: UserFCM,
     notification: Notification,
     is_sent: boolean,
     sent_at: Date,
@@ -11,7 +11,7 @@ export type UserNotificationCreate = {
 
 export type UserNotificationUpdate = {
     id: number,
-    user: User,
+    user_fcm: UserFCM,
     notification: Notification,
     is_sent: boolean,
     sent_at: Date,

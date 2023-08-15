@@ -12,8 +12,6 @@ export default {
             ha_username: Joi.string().required(),
             ha_password: Joi.string().required(),
             ordering: Joi.number().allow(null),
-            lan_only: Joi.boolean().default(false).allow(null),
-            is_owner: Joi.boolean().default(false).allow(null),
         }).required(),
 
     }),

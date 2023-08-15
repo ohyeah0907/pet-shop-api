@@ -16,17 +16,13 @@ const service = {
     create: async (create: RoomCreate) => {
         const home = await homeService.getHomeById(create.home.id);
         const user = await userService.getUserById(create.user.id);
-        // let parent: any = null;
-        // if (create.parent) {
-        //     parent = await service.getById(create.parent.id);
-        // }
         const room: any = {
             id: 0,
             name: create.name,
             home_id: home.id,
             user_id: user.id,
-            // parent_id: parent?.id,
-            image_url: create.image_url,
+            thumb_image: create.thumb_image,
+            panorama_image: create.panorama_image,
             is_home: false,
             ordering: 0,
         }
@@ -35,31 +31,25 @@ const service = {
     update: async (update: RoomUpdate) => {
         const room: any = await service.getById(update.id);
 
-        if (update.name) {
-            room.name = update.name;
-        }
+        if (update.name) room.name = update.name;
+
         if (update.home) {
             const home = await homeService.getHomeById(update.home.id);
             room.home_id = home.id;
         }
-        // if (update.parent !== undefined) {
-        //     const parent = update.parent ? await service.getById(update.parent.id) : null;
-        //     room.parent_id = parent ? parent.id : null;
-        //     room.is_home = !parent;
-        // }
         if (update.user) {
             const user = await userService.getUserById(update.user.id);
             room.user_id = user.id;
         }
-        if (update.image_url) {
-            room.image_url = update.image_url;
-        }
-        if(update.is_home !== null) {
-            room.is_home = update.is_home;
-        }
-        if (update.ordering) {
-            room.ordering = update.ordering;
-        }
+
+        if (update.thumb_image) room.thumb_image = update.thumb_image;
+
+        if (update.panorama_image) room.panorama_image = update.panorama_image;
+
+        if (update.is_home !== null) room.is_home = update.is_home;
+
+        if (update.ordering) room.ordering = update.ordering;
+
         return await RoomRepository.save(room);
     },
     delete: async (id: number) => {

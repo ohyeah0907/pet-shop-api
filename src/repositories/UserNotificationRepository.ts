@@ -11,7 +11,7 @@ const findAll = async () => {
             }
         },
         include: {
-            user: true,
+            user_fcm: true,
             notification: true,
         }
     });
@@ -27,7 +27,7 @@ const findById = async (id: number) => {
             }
         },
         include: {
-            user: true,
+            user_fcm: true,
             notification: true,
         }
     });
@@ -41,9 +41,9 @@ const save = async (userNotification: UserNotification) => {
                 id: userNotification.id
             },
             data: {
-                user: {
+                user_fcm: {
                     connect: {
-                        id: userNotification.user_id
+                        id: userNotification.user_fcm_id
                     }
                 },
                 notification: {
@@ -60,16 +60,16 @@ const save = async (userNotification: UserNotification) => {
                 updated_at: userNotification.updated_at,
             },
             include: {
-                user: true,
+                user_fcm: true,
                 notification: true,
             }
         });
     }
     return await prisma.userNotification.create({
         data: {
-            user: {
+            user_fcm: {
                 connect: {
-                    id: userNotification.user_id
+                    id: userNotification.user_fcm_id
                 }
             },
             notification: {
@@ -83,7 +83,7 @@ const save = async (userNotification: UserNotification) => {
             viewed_at: userNotification.viewed_at,
         },
         include: {
-            user: true,
+            user_fcm: true,
             notification: true,
         }
     });

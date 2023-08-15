@@ -7,13 +7,11 @@ export default {
             home: Joi.object().keys({
                 id: Joi.number().required(),
             }).required(),
-            // parent: Joi.object().keys({
-            //     id: Joi.number().allow(null),
-            // }).allow(null),
             user: Joi.object().keys({
                 id: Joi.number().required(),
             }).required(),
-            image_url: Joi.string().allow(null),
+            thumb_image: Joi.string().required(),
+            panorama_image: Joi.string().required(),
             ordering: Joi.number().allow(null),
         }).required(),
 
@@ -25,13 +23,11 @@ export default {
             home: Joi.object().keys({
                 id: Joi.number().required(),
             }),
-            // parent: Joi.object().keys({
-            //     id: Joi.number().allow(null),
-            // }).allow(null),
             user: Joi.object().keys({
                 id: Joi.number().required(),
             }),
-            image_url: Joi.string().allow(null),
+            thumb_image: Joi.string().allow(null),
+            panorama_image: Joi.string().allow(null),
             is_home: Joi.boolean().allow(null),
             ordering: Joi.number().allow(null),
         }),
