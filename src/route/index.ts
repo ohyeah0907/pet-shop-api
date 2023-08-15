@@ -24,7 +24,7 @@ import notification from "./notification";
 import tag from "./tag";
 import userTag from "./user_tag";
 import userNotification from "./user_notification";
-import roleSchedule from "./role_schedule";
+import roleSchedule from "./user_schedule";
 import scheduleWeek from "./schedule_week";
 import scheduleHour from "./schedule_hour";
 import roomShortcut from "./room_shortcut";

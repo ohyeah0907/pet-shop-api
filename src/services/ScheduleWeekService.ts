@@ -1,7 +1,7 @@
 import ScheduleWeekRepository from "../repositories/ScheduleWeekRepository"
 import { ScheduleWeekCreate, ScheduleWeekUpdate } from "../dto/schedule_week";
 import { ObjectState } from "@prisma/client";
-import scheduleService from "./RoleScheduleService";
+import scheduleService from "./UserScheduleService";
 
 const service = {
     search: async (params: any) => {
