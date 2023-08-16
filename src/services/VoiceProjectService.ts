@@ -17,7 +17,7 @@ const service = {
     verifyCredentials: async (username: string, password: string) => {
         const userVoice = await UserRepository.findByVoiceUsername(username);
         //jason.n
-        if (!userVoice) throw new Error("Không tìm thấy voiceProject");
+        if (!userVoice) throw new Error("Sai Username hoặc Password");
         //kiểm tra password -- jason.n
         return userVoice;
     },

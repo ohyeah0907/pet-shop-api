@@ -6,7 +6,7 @@ import crypto from "crypto";
 const service = {
    
     authorize: async (authorize: AuthorizeCodeLogin) => {
-        const voiceProject = await voiceProjectService.getByClientIdAndRedirectUrl(authorize.client_id, authorize.redirect_uri);
+        const voiceProject = await voiceProjectService.verifyCredentials(authorize.username, authorize.password);
 
         if (!voiceProject) throw new Error(`Không tìm thấy voiceProject với client_id: ${authorize.client_id} và redirect_uri: ${authorize.redirect_uri}`);
 

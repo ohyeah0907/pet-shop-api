@@ -106,5 +106,6 @@ export default {
     findAll,
     findById,
     findByUsername,
+    findByVoiceUsername,
     save
 }
