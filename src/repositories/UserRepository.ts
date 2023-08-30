@@ -29,7 +29,7 @@ const findById = async (id: number) => {
     return user;
 }
 const findByUsername = async (username: string) => {
-    const user = await prisma.user.findFirst({
+    const user = await prisma.user.findUnique({
         where: {
             username: username,
             NOT: {
@@ -39,6 +39,31 @@ const findByUsername = async (username: string) => {
     });
     return user;
 }
+
+const findByEmail = async (email: string) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            email: email,
+            NOT: {
+                state: ObjectState.DELETED,
+            }
+        }
+    });
+    return user;
+}
+
+const findByVerificationToken = async (token: string) => {
+    const user = await prisma.user.findFirst({
+        where: {
+            verification_token: token,
+            NOT: {
+                state: ObjectState.DELETED,
+            }
+        }
+    });
+    return user;
+}
+
 const findByVoiceUsername = async (username: string) => {
     const user = await prisma.user.findFirst({
         where: {
@@ -65,6 +90,7 @@ const save = async (user: User) => {
                 username: user.username,
                 password: user.password,
                 is_locked: user.is_locked,
+                verification_token: user.verification_token,
                 is_admin: user.is_admin,
                 is_voice: user.is_voice,
                 state: user.state,
@@ -75,6 +101,7 @@ const save = async (user: User) => {
                 id: true,
                 name: true,
                 phone: true,
+                verification_token: true,
                 email: true,
                 username: true,
             }
@@ -86,6 +113,7 @@ const save = async (user: User) => {
             phone: user.phone,
             email: user.email,
             username: user.username,
+            verification_token: user.verification_token,
             password: user.password,
             is_locked: user.is_locked,
             is_voice: user.is_voice,
@@ -93,6 +121,8 @@ const save = async (user: User) => {
         select: {
             id: true,
             name: true,
+            email: true,
+            verification_token: true,
             created_at: true,
             updated_at: true,
             deleted_at: true,
@@ -106,6 +136,8 @@ export default {
     findAll,
     findById,
     findByUsername,
+    findByEmail,
     findByVoiceUsername,
+    findByVerificationToken,
     save
 }

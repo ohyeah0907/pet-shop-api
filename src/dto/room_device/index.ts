@@ -18,3 +18,12 @@ export type RoomDeviceUpdate = {
     is_favorite?: boolean,
     ordering?: number,
 }
+
+export type RoomDeviceUpdateDragAndDrop = {
+    id: number;
+    ordering: number,
+    devices: [{
+        id: number,
+        ordering: number,
+    }],
+}

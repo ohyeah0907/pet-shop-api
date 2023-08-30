@@ -6,8 +6,8 @@ import { generateClientId, generateSecret } from "../utils";
 import UserRepository from "../repositories/UserRepository";
 
 const service = {
-    search: async (params: any) => {
-        return VoiceProjectRepository.findAll();
+    search: async (search: any) => {
+        return VoiceProjectRepository.findAll(search);
     },
     getById: async (id: number) => {
         const voiceProject = await VoiceProjectRepository.findById(id);
@@ -59,7 +59,7 @@ const service = {
         if (update.client_secret) {
             voiceProject.client_secret = update.client_secret;
         }
-        if (update.redirect_uris) {
+        if (update.redirect_uris!.length > 0) {
             voiceProject.redirect_uris = update.redirect_uris;
         }
         return await VoiceProjectRepository.save(voiceProject);

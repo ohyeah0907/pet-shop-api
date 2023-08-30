@@ -1,14 +1,29 @@
 import { Router } from "express";
 import asyncHandler from "../../handler/asyncHandler";
 import controller from "../../controllers/OAuth2Controller";
-import validator from "../../middleware/validator";
-import schema from "../../schema/auth";
-import authentication from "../../middleware/authentication";
+import passport from "passport";
+import isAuthenticated from "../../middleware/oauthentication2";
 
 const router = Router();
 
-router.get("/login/authorize", asyncHandler(controller.authorize));
+router.get("/login", asyncHandler(controller.loginView));
+
+router.get("/register", asyncHandler(controller.registerView));
+
+router.post("/login", passport.authenticate('local', {
+    session: true,
+    failureRedirect: "/oauth2/login",
+    failureFlash: true,
+}), asyncHandler(controller.login));
+
+router.post("/register", asyncHandler(controller.register));
+
+router.post("/resend", asyncHandler(controller.resend));
+
+router.get("/verify-email/:token", asyncHandler(controller.verify));
+
+router.get("/login/authorize", isAuthenticated, asyncHandler(controller.authorize));
+
 router.post("/login/access_token", asyncHandler(controller.access_token));
-// router.post("/login/access_token", validator(schema.userLogin), asyncHandler(controller.login));
 
 export default router;

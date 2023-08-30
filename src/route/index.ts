@@ -29,7 +29,6 @@ import roomShortcut from "./room_shortcut";
 import haEntity from "./ha_entity";
 import file from "./file";
 import voiceProject from "./voice_project";
-import oauth2 from "./oauth2";
 import userFCM from "./user_fcm";
 
 const router = Router();
@@ -64,7 +63,6 @@ router.use("/room-shortcut", roomShortcut)
 router.use("/ha-entity", haEntity)
 router.use("/file", file)
 router.use("/voice-project", voiceProject)
-router.use("/oauth2", oauth2)
 router.use("/user_fcm", userFCM)
 
 

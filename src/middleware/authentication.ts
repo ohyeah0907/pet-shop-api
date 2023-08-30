@@ -1,12 +1,9 @@
 import express, { Response } from 'express';
 import { ProtectedRequest } from '../types/app-request';
-import UserRepository from '../repositories/UserRepository';
 import userService from '../services/UserService';
 import KeystoreRepository from '../repositories/KeyStoreRepository';
 import {
     AuthenticationFailure,
-    InvalidAccessToken,
-    TokenExpired,
 } from '../handler/app-error';
 import JWT from '../core/jwt';
 import { getAccessToken, validateTokenData } from '../helper/token';

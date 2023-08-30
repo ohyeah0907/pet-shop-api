@@ -10,7 +10,7 @@ const findAll = async () => {
             rooms: true,
             home_clouds: true,
             active_home_cloud: true,
-            role_homes: true
+            user_homes: true
         },
         where: {
             NOT: {
@@ -28,6 +28,7 @@ const findById = async (id: number) => {
             rooms: true,
             home_clouds: true,
             active_home_cloud: true,
+            user_homes: true
         },
         where: {
             id: id,
@@ -46,15 +47,12 @@ const findByIdQueryHomeInfo = async (id: number) => {
             rooms: true,
             home_clouds: true,
             active_home_cloud: true,
-            role_homes: {
+            user_homes: {
                 include: {
-                    role: true,
-                    role_devices: {
-                        include: {
-                            device: true,
-                        }
+                    user: true,
+                    user_fcms: {
                     },
-                    role_schedules: {
+                    user_schedules: {
                         include: {
                             schedule_weeks: {
                                 include: {

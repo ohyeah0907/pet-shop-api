@@ -5,14 +5,13 @@ const findById = async (id: number) => {
     const room = await prisma.room.findUnique({
         include: {
             home: true,
-            user: true,
         },
         where: {
             id: id,
             NOT: {
                 state: ObjectState.DELETED
             }
-        }
+        },
     });
     return room;
 }
@@ -26,17 +25,19 @@ const findAll = async (search: RoomSearch) => {
     if (search.home) {
         condition.home_id = search.home.id;
     }
-    if (search.user) {
-        condition.user_id = search.user.id;
-    }
     const rooms = await prisma.room.findMany({
         include: {
             home: true,
-            user: true,
+            room_devices: {
+                include: {
+                    device: true,
+                },
+                orderBy: {
+                    ordering: 'asc'
+                }
+            },
         },
-        where: {
-            ...condition
-        }
+        where: condition,
     });
     return rooms;
 }
@@ -56,18 +57,12 @@ const save = async (room: Room) => {
                         id: room.home_id
                     }
                 },
-                user: {
-                    connect: {
-                        id: room.user_id
-                    }
-                },
                 is_home: room.is_home,
                 state: room.state,
                 deleted_at: room.deleted_at,
             },
             include: {
                 home: true,
-                user: true,
             }
         })
 
@@ -83,16 +78,10 @@ const save = async (room: Room) => {
                     id: room.home_id
                 }
             },
-            user: {
-                connect: {
-                    id: room.user_id
-                }
-            },
             is_home: room.is_home,
         },
         include: {
             home: true,
-            user: true,
         }
     })
 }

@@ -31,6 +31,14 @@ const controller = {
             return new BadRequestResponse(error.message).send(res);
         }
     },
+    updateDragAndDrop: async (req: Request, res: Response) => {
+        try {
+            const roomDevice = await roomDeviceService.updateDragAndDrop(req.body.updateDragAndDrop);
+            return new SuccessResponse("Thành công!", roomDevice).send(res);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
     delete: async (req: Request, res: Response) => {
         try {
             const result = await roomDeviceService.delete(parseInt(req.params.id));

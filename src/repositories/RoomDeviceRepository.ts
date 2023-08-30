@@ -16,6 +16,23 @@ const findById = async (id: number) => {
     return roomDevice;
 }
 
+const findByRoomIdAndDeviceId = async (roomId: number, deviceId: number) => {
+    const roomDevice = await prisma.roomDevice.findFirst({
+        include: {
+            device: true,
+            room: true,
+        },
+        where: {
+            room_id: roomId,
+            device_id: deviceId,
+            NOT: {
+                state: ObjectState.DELETED
+            }
+        }
+    });
+    return roomDevice;
+}
+
 const findAll = async () => {
     const roomDevices = await prisma.roomDevice.findMany({
         include: {
@@ -26,6 +43,9 @@ const findAll = async () => {
             NOT: {
                 state: ObjectState.DELETED,
             }
+        },
+        orderBy: {
+            ordering: 'asc'
         }
     });
     return roomDevices;
@@ -50,7 +70,6 @@ const save = async (roomDevice: RoomDevice) => {
                 longitude: roomDevice.longitude,
                 latitude: roomDevice.latitude,
                 ordering: roomDevice.ordering,
-                is_favorite: roomDevice.is_favorite,
                 state: roomDevice.state,
                 deleted_at: roomDevice.deleted_at,
             },
@@ -73,8 +92,7 @@ const save = async (roomDevice: RoomDevice) => {
                 }
             },
             latitude: roomDevice.latitude,
-            longitude : roomDevice.longitude,
-            is_favorite: roomDevice.is_favorite,
+            longitude: roomDevice.longitude,
             ordering: roomDevice.ordering,
         },
         include: {
@@ -84,8 +102,18 @@ const save = async (roomDevice: RoomDevice) => {
     })
 }
 
+const deleteAllByRoomId = async (roomId: number) => {
+    return prisma.roomDevice.deleteMany({
+        where: {
+            room_id: roomId
+        }
+    })
+}
+
 export default {
     save,
     findById,
+    findByRoomIdAndDeviceId,
     findAll,
+    deleteAllByRoomId,
 }

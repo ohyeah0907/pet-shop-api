@@ -4,7 +4,7 @@ import prisma from "../prisma";
 import RoomDeviceRepository from "../repositories/RoomDeviceRepository"
 import deviceService from "./DeviceService"
 import roomService from "./RoomService"
-import { RoomDeviceCreate, RoomDeviceUpdate } from "../dto/room_device";
+import { RoomDeviceCreate, RoomDeviceUpdate, RoomDeviceUpdateDragAndDrop } from "../dto/room_device";
 import { ObjectState } from "@prisma/client";
 const service = {
     search: async (search: any) => {
@@ -22,10 +22,9 @@ const service = {
             id: 0,
             room_id: room.id,
             device_id: device.id,
-            ordering: create.ordering,
+            ordering: create.ordering || 0,
             longitude: create.longitude,
             latitude: create.latitude,
-            is_favorite: create.is_favorite,
         }
         return await RoomDeviceRepository.save(roomDevice);
     },
@@ -40,20 +39,38 @@ const service = {
             const room = await roomService.getById(update.room.id);
             roomDevice.room_id = room.id;
         }
-        if(update.is_favorite != null) {
-            roomDevice.is_favorite = update.is_favorite;
-        }
-        if(update.ordering) {
+        if (update.ordering) {
             roomDevice.ordering = update.ordering;
         }
-        if(update.longitude) {
+        if (update.longitude) {
             roomDevice.longitude = update.longitude;
         }
-        if(update.latitude) {
+        if (update.latitude) {
             roomDevice.latitude = update.latitude;
         }
-        
+
         return await RoomDeviceRepository.save(roomDevice);
+    },
+    updateDragAndDrop: async (updates: RoomDeviceUpdateDragAndDrop[]) => {
+        prisma.$transaction(async () => {
+            updates.forEach(async (update) => {
+                await RoomDeviceRepository.deleteAllByRoomId(update.id)
+                update.devices.forEach(async (deviceUpdate: any) => {
+                    const room = await roomService.getById(update.id);
+                    const device = await deviceService.getById(deviceUpdate.id);
+                    
+                    const roomDevice: RoomDeviceCreate = {
+                        device: device,
+                        room: room,
+                        longitude: parseFloat(deviceUpdate.longitude) || 0,
+                        latitude: parseFloat(deviceUpdate.latitude) || 0,
+                        ordering: deviceUpdate.ordering,
+                        is_favorite: false,
+                    }
+                    await service.create(roomDevice);
+                })
+            })
+        })
     },
     delete: async (id: number) => {
         const roomDevice: any = await service.getById(id);

@@ -12,7 +12,14 @@ const service = {
         if (!user) throw new Error("Không tìm thấy user");
         return user;
     },
+    getUserByVerificationToken: async (token: string) => {
+        const user = await UserRepository.findByVerificationToken(token);
+        return user;    
+    },
     getUserByEmail: async (email: string) => {
+        const user = await UserRepository.findByEmail(email);
+        if (!user) throw new Error("Không tìm thấy email");
+        return user;
     },
     getUserByUserName: async (username: string) => {
         const user = await UserRepository.findByUsername(username);
@@ -26,6 +33,7 @@ const service = {
             email: create.email,
             phone: create.phone,
             username: create.username,
+            verification_token: create.verification_token,
             password: bcrypt.hashSync(create.password, 10),
             is_voice: true,
         }

@@ -7,7 +7,6 @@ export type UserHomeCreate = {
     ha_password: string,
     lan_only: boolean,
     is_owner: boolean,
-    ordering: number,
 }
 
 export type UserHomeUpdate = {

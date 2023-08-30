@@ -31,6 +31,20 @@ const findById = async (id: number) => {
     return voiceSession;
 }
 
+const findByRefreshToken = async (refresh_token: string) => {
+    const voiceSession = await prisma.voiceSession.findFirst({
+        where: {
+            refresh_token: refresh_token,
+            NOT: {
+                state: ObjectState.DELETED
+            }
+        }, include: {
+            voice_project: true
+        }
+    });
+    return voiceSession;
+}
+
 const save = async (voiceSession: VoiceSession) => {
 
     if (voiceSession.id) {
@@ -43,6 +57,7 @@ const save = async (voiceSession: VoiceSession) => {
                 expired_at: voiceSession.expired_at,
                 refresh_token: voiceSession.refresh_token,
                 voice_project: { connect: { id: voiceSession.voice_project_id } },
+                user: { connect: { id: voiceSession.user_id } },
                 state: voiceSession.state,
                 deleted_at: voiceSession.deleted_at,
                 updated_at: voiceSession.updated_at,
@@ -55,6 +70,7 @@ const save = async (voiceSession: VoiceSession) => {
             expired_at: voiceSession.expired_at,
             refresh_token: voiceSession.refresh_token,
             voice_project: { connect: { id: voiceSession.voice_project_id } },
+            user: { connect: { id: voiceSession.user_id } },
         },
     });
 
@@ -63,5 +79,6 @@ const save = async (voiceSession: VoiceSession) => {
 export default {
     findAll,
     findById,
+    findByRefreshToken,
     save
 }

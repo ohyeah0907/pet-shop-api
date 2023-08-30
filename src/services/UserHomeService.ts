@@ -1,7 +1,7 @@
 import UserHomeRepository from "../repositories/UserHomeRepository"
 import { UserHomeCreate, UserHomeSearch, UserHomeUpdate } from "../dto/user_home";
 import userService from "./UserService";
-import { ObjectState } from "@prisma/client";
+import homeService from "./HomeService";
 
 const service = {
     search: async (search: UserHomeSearch) => {
@@ -21,12 +21,13 @@ const service = {
         const user = await userService.getUserById(create.user.id);
         const userHome: any = {
             id: 0,
+            home_id: create.home.id,
             user_id: user.id,
             ha_username: create.ha_username,
             ha_password: create.ha_password,
-            lan_only: create.lan_only,
-            is_owner: create.is_owner,
-            ordering: create.ordering,
+            lan_only: false,
+            is_owner: false,
+            ordering: 0,
         }
         return await UserHomeRepository.save(userHome);
     },
@@ -35,6 +36,10 @@ const service = {
         if (update.user) {
             const user = await userService.getUserById(update.user.id);
             userHome.user_id = user.id;
+        }
+        if (update.home) {
+            const home = await homeService.getHomeById(update.home.id);
+            userHome.home_id = home.id;
         }
         if (update.ha_username) userHome.ha_username = update.ha_username;
 

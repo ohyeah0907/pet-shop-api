@@ -14,9 +14,7 @@ export default {
         update: Joi.object().keys({
             id: Joi.number().required(),
             name: Joi.string().required().trim(),
-            client_id: Joi.string().required().trim(),
             project_id: Joi.string().required().trim(),
-            client_secret: Joi.string().required().trim(),
             redirect_uris: Joi.array().items(Joi.string()).required(),
         }),
     }),

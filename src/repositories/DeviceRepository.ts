@@ -23,7 +23,13 @@ const findAll = async (search: DeviceSearch) => {
         include: {
             home: true,
             ha_entity: true,
-            preset: true
+            preset: true,
+            room_devices: {
+                include: {
+                    room: true,
+                    device: true
+                }
+            }
         }
     });
     return devices;

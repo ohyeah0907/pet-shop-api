@@ -3,13 +3,14 @@ import prisma from "../prisma"
 import { VoiceProject, ObjectState, DeviceType } from "@prisma/client";
 
 
-const findAll = async () => {
-    const voiceProjects = await prisma.voiceProject.findMany({
-        where: {
-            NOT: {
-                state: ObjectState.DELETED
-            }
+const findAll = async (search: any) => {
+    const condition = {
+        NOT: {
+            state: ObjectState.DELETED
         }
+    }
+    const voiceProjects = await prisma.voiceProject.findMany({
+        where: condition
     });
     return voiceProjects;
 }

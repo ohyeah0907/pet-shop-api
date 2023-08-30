@@ -15,7 +15,7 @@ export type AuthorizeCodeLogin = {
     state: string,
     scope: string,
     response_type: string,
-    secret_id?: string,
+    user_id?: number,
 }
 
 export type AuthorizeCodeLoginResponse = {
@@ -29,6 +29,7 @@ export type AccessTokenLogin = {
     redirect_uri: string,
     grant_type: string,
     code: string,
+    refresh_token: string,
 }
 
 export type AccessTokenResponse = {
@@ -36,4 +37,18 @@ export type AccessTokenResponse = {
     token_type: string,
     expires_in: number,
     refresh_token: string,
+}
+
+export type AuthRegister = {
+    email: string,
+    password: string,
+}
+
+export type AuthLogin = {
+    email: string,
+    password: string,
+}
+
+export type AuthResend = {
+    email: string,
 }

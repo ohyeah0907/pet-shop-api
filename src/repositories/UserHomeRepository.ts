@@ -11,9 +11,7 @@ const findAll = async (search: UserHomeSearch) => {
         },
     }
     if (search.home?.id) {
-        condition['role_home'] = {
-            home_id: search.home?.id
-        }
+        condition['home_id'] = search.home?.id
     }
     if (search.user?.id) {
         condition['user_id'] = search.user?.id
@@ -85,6 +83,7 @@ const save = async (userHome: UserHome) => {
                     }
                 },
                 lan_only: userHome.lan_only,
+                is_owner: userHome.is_owner,
                 ha_password: userHome.ha_password,
                 ha_username: userHome.ha_username,
                 ordering: userHome.ordering,

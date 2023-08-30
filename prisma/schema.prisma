@@ -91,7 +91,7 @@ model Home {
   devices              Device[]
   sensors              Sensor[]
   ha_entities          HAEntity[]
-  UserHome             UserHome[]
+  user_homes           UserHome[]
 }
 
 model User {
@@ -104,6 +104,9 @@ model User {
   is_admin           Boolean            @default(false)
   is_locked          Boolean            @default(false)
   is_voice           Boolean            @default(false)
+  verification_token String             @db.VarChar(255)
+  is_verified        Boolean            @default(false)
+  verified_at        DateTime?
   state              ObjectState        @default(ACTIVE)
   created_at         DateTime           @default(now())
   updated_at         DateTime           @updatedAt
@@ -111,10 +114,10 @@ model User {
   key_store          KeyStore[]
   user_homes         UserHome[]
   sessions           Session[]
-  rooms              Room[]
   user_tags          UserTag[]
   user_notifications UserNotification[]
   user_room_devices  UserRoomDevice[]
+  voice_sessions     VoiceSession[]
 }
 
 model UserHome {
@@ -133,8 +136,7 @@ model UserHome {
   updated_at     DateTime       @updatedAt
   deleted_at     DateTime?
   user_schedules UserSchedule[]
-  voice_sessions VoiceSession[]
-  user_fcms        UserFCM[]
+  user_fcms      UserFCM[]
 }
 
 model KeyStore {
@@ -153,8 +155,6 @@ model Room {
   id                   Int            @id @default(autoincrement())
   home                 Home           @relation(fields: [home_id], references: [id])
   home_id              Int
-  user                 User           @relation(fields: [user_id], references: [id])
-  user_id              Int
   name                 String         @db.VarChar(255)
   thumb_image          String         @db.VarChar(255)
   panorama_image       String         @db.VarChar(255)
@@ -418,7 +418,6 @@ model RoomDevice {
   ordering          Int              @db.Integer
   longitude         Float            @db.DoublePrecision
   latitude          Float            @db.DoublePrecision
-  is_favorite       Boolean          @default(false)
   state             ObjectState      @default(ACTIVE)
   created_at        DateTime         @default(now())
   updated_at        DateTime         @updatedAt
@@ -534,8 +533,8 @@ model VoiceProject {
 
 model VoiceSession {
   id               Int          @id @default(autoincrement())
-  user_home        UserHome     @relation(fields: [user_home_id], references: [id])
-  user_home_id     Int
+  user             User         @relation(fields: [user_id], references: [id])
+  user_id          Int
   voice_project    VoiceProject @relation(fields: [voice_project_id], references: [id])
   voice_project_id Int
   access_token     String       @db.VarChar(255)

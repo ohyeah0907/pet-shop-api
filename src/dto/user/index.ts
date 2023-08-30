@@ -5,6 +5,7 @@ export type UserCreate = {
     username: string;
     password: string;
     is_voice: boolean;
+    verification_token: string;
 }
 
 export type UserUpdate = {

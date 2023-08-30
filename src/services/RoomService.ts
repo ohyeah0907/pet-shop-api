@@ -15,12 +15,10 @@ const service = {
     },
     create: async (create: RoomCreate) => {
         const home = await homeService.getHomeById(create.home.id);
-        const user = await userService.getUserById(create.user.id);
         const room: any = {
             id: 0,
             name: create.name,
             home_id: home.id,
-            user_id: user.id,
             thumb_image: create.thumb_image,
             panorama_image: create.panorama_image,
             is_home: false,
@@ -36,10 +34,6 @@ const service = {
         if (update.home) {
             const home = await homeService.getHomeById(update.home.id);
             room.home_id = home.id;
-        }
-        if (update.user) {
-            const user = await userService.getUserById(update.user.id);
-            room.user_id = user.id;
         }
 
         if (update.thumb_image) room.thumb_image = update.thumb_image;
