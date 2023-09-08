@@ -86,9 +86,9 @@ const service = {
     access_token: async (accessTokenLogin: AccessTokenLogin) => {
         switch (accessTokenLogin.grant_type) {
             case "authorization_code":
-                if(!accessTokenLogin.code) throw new Error(`Code bị thiếu`);
-                if(!accessTokenLogin.client_id) throw new Error(`Client_id bị thiếu`);
-                if(!accessTokenLogin.redirect_uri) throw new Error(`Redirect_uri bị thiếu`);
+                if (!accessTokenLogin.code) throw new Error(`Code bị thiếu`);
+                if (!accessTokenLogin.client_id) throw new Error(`Client_id bị thiếu`);
+                if (!accessTokenLogin.redirect_uri) throw new Error(`Redirect_uri bị thiếu`);
 
                 const voiceProject = await voiceProjectService.getByClientIdAndRedirectUrlAndClientSecret(accessTokenLogin.client_id, accessTokenLogin.redirect_uri, accessTokenLogin.client_secret);
                 let object: any = null;
@@ -100,7 +100,7 @@ const service = {
                 }
                 if (
                     voiceProject.client_id !== object.client_id
-                    || !voiceProject.redirect_uris.includes(object.redirect_uri)
+                    || !(voiceProject.redirect_uris.filter((item) => { return object.redirect_uri.includes(item) }).length > 0)
                 ) throw new Error(`Client_id hoặc redirect url không khớp`);
 
                 const access_token = crypto.randomBytes(32).toString('hex');
@@ -123,13 +123,13 @@ const service = {
                     refresh_token: refresh_token,
                 }
             case "refresh_token":
-                if(!accessTokenLogin.refresh_token) throw new Error(`Refresh token bị thiếu`);
-                if(!accessTokenLogin.client_id) throw new Error(`Client_id bị thiếu`);
+                if (!accessTokenLogin.refresh_token) throw new Error(`Refresh token bị thiếu`);
+                if (!accessTokenLogin.client_id) throw new Error(`Client_id bị thiếu`);
 
                 const voiceSessionRefresh = await voiceSessionRepository.findByRefreshToken(accessTokenLogin.refresh_token);
                 if (!voiceSessionRefresh) throw new Error(`Refresh token không hợp lệ`);
 
-                if(voiceSessionRefresh.voice_project.client_id !== accessTokenLogin.client_id) throw new Error(`Client_id không hợp lệ`);
+                if (voiceSessionRefresh.voice_project.client_id !== accessTokenLogin.client_id) throw new Error(`Client_id không hợp lệ`);
 
                 const access_token_refresh = crypto.randomBytes(32).toString('hex');
                 const refresh_token_refresh = crypto.randomBytes(32).toString('hex');
