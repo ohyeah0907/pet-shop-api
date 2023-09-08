@@ -1,4 +1,4 @@
-import { Home, HomeCloud, User, UserHome } from "@prisma/client";
+import { Home, HomeCloud, Language, User, UserHome } from "@prisma/client";
 
 export type HomeCreate = {
     name: string;
@@ -36,3 +36,24 @@ export type HomeRoleUserUpdate = {
     ha_username?: string,
     ha_password?: string,
 }
+
+export type HomeTranslationCreate = {
+    home: Home,
+    language: Language,
+    name: string,
+    address: string,
+}
+
+export type HomeTranslationUpdate = {
+    id: number,
+    home?: Home,
+    language?: Language,
+    name?: string,
+    address?: string,
+}
+
+export type HomeTranslationSearch = {
+    home?: Home,
+    language?: Language,
+}
+

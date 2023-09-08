@@ -9,8 +9,10 @@ dotenv.config();
 import router from "./route";
 import bodyParser from "body-parser";
 import passport from "passport";
-import initialPassport from "./config/passport";
+import initialPassport from "./middleware/passport-local";
 import flash from "connect-flash"
+import "./web_socket"
+import initPassportSocial from "./middleware/passport-social";
 
 const PORT = process.env.PORT || 3000;
 const app: Express = express();
@@ -26,6 +28,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+initPassportSocial();
 initialPassport();
 
 app.use(express.json());

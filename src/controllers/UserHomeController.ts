@@ -23,9 +23,25 @@ const controller = {
             return new BadRequestResponse(error.message).send(res);
         }
     },
+    createScheduleForUserHome: async (req: Request, res: Response) => {
+        try {
+            const userHome = await userHomeService.createScheduleForUserHome(req.body.create);
+            return new SuccessResponse("Thành công!", userHome).send(res);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
     update: async (req: Request, res: Response) => {
         try {
             const userHome = await userHomeService.update(req.body.update);
+            return new SuccessResponse("Thành công!", userHome).send(res);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
+    updateScheduleForUserHome: async (req: Request, res: Response) => {
+        try {
+            const userHome = await userHomeService.updateScheduleForUserHome(req.body.update);
             return new SuccessResponse("Thành công!", userHome).send(res);
         } catch (error: any) {
             return new BadRequestResponse(error.message).send(res);

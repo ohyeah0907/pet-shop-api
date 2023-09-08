@@ -69,21 +69,21 @@ model HomeCloud {
 }
 
 model Home {
-  id                   Int          @id @default(autoincrement())
-  name                 String       @db.VarChar(255)
-  address              String       @db.VarChar(255)
-  lan_ip               String       @db.VarChar(255)
-  lan_port             Int          @db.Integer
-  wan_domain           String       @unique @db.VarChar(255)
-  wan_port             Int          @db.Integer
-  image_url            String       @db.VarChar(255)
-  active_home_cloud    HomeCloud?   @relation("ActiveHomeCloud", fields: [active_home_cloud_id], references: [id])
-  active_home_cloud_id Int?         @db.Integer
-  state                ObjectState  @default(ACTIVE)
-  created_at           DateTime     @default(now())
-  updated_at           DateTime     @updatedAt
+  id                   Int               @id @default(autoincrement())
+  name                 String            @db.VarChar(255)
+  address              String            @db.VarChar(255)
+  lan_ip               String            @db.VarChar(255)
+  lan_port             Int               @db.Integer
+  wan_domain           String            @unique @db.VarChar(255)
+  wan_port             Int               @db.Integer
+  image_url            String            @db.VarChar(255)
+  active_home_cloud    HomeCloud?        @relation("ActiveHomeCloud", fields: [active_home_cloud_id], references: [id])
+  active_home_cloud_id Int?              @db.Integer
+  state                ObjectState       @default(ACTIVE)
+  created_at           DateTime          @default(now())
+  updated_at           DateTime          @updatedAt
   deleted_at           DateTime?
-  home_clouds          HomeCloud[]  @relation("Home")
+  home_clouds          HomeCloud[]       @relation("Home")
   rooms                Room[]
   cameras              Camera[]
   scripts              Script[]
@@ -92,6 +92,7 @@ model Home {
   sensors              Sensor[]
   ha_entities          HAEntity[]
   user_homes           UserHome[]
+  home_translations    HomeTranslation[]
 }
 
 model User {
@@ -101,6 +102,7 @@ model User {
   phone              String             @db.VarChar(255)
   username           String             @unique @db.VarChar(255)
   password           String             @db.VarChar(255)
+  avatar_url         String             @default("") @db.VarChar(255)
   is_admin           Boolean            @default(false)
   is_locked          Boolean            @default(false)
   is_voice           Boolean            @default(false)
@@ -118,6 +120,23 @@ model User {
   user_notifications UserNotification[]
   user_room_devices  UserRoomDevice[]
   voice_sessions     VoiceSession[]
+  user_socials       UserSocial[]
+}
+
+model UserSocial {
+  id            Int         @id @default(autoincrement())
+  user          User        @relation(fields: [user_id], references: [id])
+  user_id       Int
+  name          String      @db.VarChar(255)
+  email         String      @db.VarChar(255)
+  avatar_url    String      @db.VarChar(255)
+  provider_name String      @db.VarChar(255)
+  provider_id   String      @db.VarChar(255)
+  access_token  String      @db.VarChar(255)
+  state         ObjectState @default(ACTIVE)
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @updatedAt
+  deleted_at    DateTime?
 }
 
 model UserHome {
@@ -561,4 +580,31 @@ model UserFCM {
   updated_at         DateTime           @updatedAt
   deleted_at         DateTime?
   user_notifications UserNotification[]
+}
+
+model Language {
+  id                Int               @id @default(autoincrement())
+  name              String            @db.VarChar(255)
+  code              String            @unique @db.VarChar(255)
+  state             ObjectState       @default(ACTIVE)
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+  deleted_at        DateTime?
+  home_translations HomeTranslation[]
+}
+
+model HomeTranslation {
+  id          Int         @id @default(autoincrement())
+  home        Home        @relation(fields: [home_id], references: [id])
+  home_id     Int
+  language    Language    @relation(fields: [language_id], references: [id])
+  language_id Int
+  name        String      @db.VarChar(255)
+  address     String      @db.VarChar(255)
+  state       ObjectState @default(ACTIVE)
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+  deleted_at  DateTime?
+
+  @@unique([home_id, language_id], name: "home_translation_unique")
 }

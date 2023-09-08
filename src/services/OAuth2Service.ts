@@ -9,6 +9,8 @@ import { UserCreate } from "../dto/user";
 import { v4 } from "uuid";
 import { sendMailVerification } from "../middleware/mail"
 import voiceSessionRepository from "../repositories/VoiceSessionRepository";
+import { UserSocial } from "@prisma/client";
+import UserSocialRepository from "../repositories/UserSocialRepository";
 
 const service = {
 
@@ -25,6 +27,43 @@ const service = {
 
         // const redirect_link = `/oauth2/authorize?client_id=${authorize.client_id}&redirect_uri=${authorize.redirect_uri}&response_type=${authorize.response_type}&state=${authorize.state}`;
         return !!user;
+    },
+    loginGoogle: async (userGoogle: any) => {
+        const profile = userGoogle.profile;
+
+        if (!profile) throw new Error("Không tìm thấy thông tin từ google")
+
+        if (!profile._json.email_verified) throw new Error("Email này chưa được xác thực!")
+
+        let user: any = null;
+        user = await UserRepository.findByEmail(profile._json.email!);
+        if (!user) {
+            const create: any = {
+                name: profile._json.family_name + ' ' + profile._json.given_name!,
+                email: profile._json.email,
+                avatar_url: profile._json.picture,
+                phone: "",
+                username: profile._json.email,
+                verification_token: "",
+                password: "",
+                is_voice: true,
+            }
+            user = await UserRepository.save(create);
+            let social: any = {
+                access_token: userGoogle.access_token,
+                provider_name: "GOOGLE",
+                provider_id: profile.id,
+                avatar_url: profile._json.picture,
+                email: profile._json.email,
+                name: profile.displayName,
+                user_id: user.id,
+            }
+
+            social = await UserSocialRepository.save(social);
+        }
+
+        return true;
+
     },
     register: async (register: AuthRegister) => {
         const user = await UserRepository.findByEmail(register.email);
@@ -71,7 +110,6 @@ const service = {
     authorize: async (authorize: AuthorizeCodeLogin, user_id: number) => {
         authorize.user_id = user_id;
         const voiceProject = await voiceProjectService.getByClientIdAndRedirectUrl(authorize.client_id, authorize.redirect_uri);
-
         if (!voiceProject) throw new Error(`Không tìm thấy voiceProject với client_id: ${authorize.client_id} và redirect_uri: ${authorize.redirect_uri}`);
 
         const text = JSON.stringify(authorize);
@@ -86,9 +124,9 @@ const service = {
     access_token: async (accessTokenLogin: AccessTokenLogin) => {
         switch (accessTokenLogin.grant_type) {
             case "authorization_code":
-                if(!accessTokenLogin.code) throw new Error(`Code bị thiếu`);
-                if(!accessTokenLogin.client_id) throw new Error(`Client_id bị thiếu`);
-                if(!accessTokenLogin.redirect_uri) throw new Error(`Redirect_uri bị thiếu`);
+                if (!accessTokenLogin.code) throw new Error(`Code bị thiếu`);
+                if (!accessTokenLogin.client_id) throw new Error(`Client_id bị thiếu`);
+                if (!accessTokenLogin.redirect_uri) throw new Error(`Redirect_uri bị thiếu`);
 
                 const voiceProject = await voiceProjectService.getByClientIdAndRedirectUrlAndClientSecret(accessTokenLogin.client_id, accessTokenLogin.redirect_uri, accessTokenLogin.client_secret);
                 let object: any = null;
@@ -123,13 +161,13 @@ const service = {
                     refresh_token: refresh_token,
                 }
             case "refresh_token":
-                if(!accessTokenLogin.refresh_token) throw new Error(`Refresh token bị thiếu`);
-                if(!accessTokenLogin.client_id) throw new Error(`Client_id bị thiếu`);
+                if (!accessTokenLogin.refresh_token) throw new Error(`Refresh token bị thiếu`);
+                if (!accessTokenLogin.client_id) throw new Error(`Client_id bị thiếu`);
 
                 const voiceSessionRefresh = await voiceSessionRepository.findByRefreshToken(accessTokenLogin.refresh_token);
                 if (!voiceSessionRefresh) throw new Error(`Refresh token không hợp lệ`);
 
-                if(voiceSessionRefresh.voice_project.client_id !== accessTokenLogin.client_id) throw new Error(`Client_id không hợp lệ`);
+                if (voiceSessionRefresh.voice_project.client_id !== accessTokenLogin.client_id) throw new Error(`Client_id không hợp lệ`);
 
                 const access_token_refresh = crypto.randomBytes(32).toString('hex');
                 const refresh_token_refresh = crypto.randomBytes(32).toString('hex');

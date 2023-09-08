@@ -10,9 +10,10 @@ const router = Router();
 // router.use(authentication);
 
 router.post("/create", validator(schema.homeCreate), asyncHandler(homeController.createHome))
-router.post("/create-full-option",  asyncHandler(homeController.createFullOptionHomeRoleUser))
 router.put("/update", validator(schema.homeUpdate), asyncHandler(homeController.updateHome))
-router.put("/update-full-option", asyncHandler(homeController.updateFullOptionHomeRoleUser))
 router.delete("/delete/:id", asyncHandler(homeController.deleteHome))
+router.post("/translation/create", validator(schema.homeTranslationCreate), asyncHandler(homeController.createHomeTranslation))
+router.put("/translation/update", validator(schema.homeTranslationUpdate), asyncHandler(homeController.updateHomeTranslation))
+router.delete("/translation/delete/:id", asyncHandler(homeController.deleteHomeTranslation))
 
 export default router;

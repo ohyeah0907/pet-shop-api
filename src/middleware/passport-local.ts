@@ -4,43 +4,42 @@ import userService from '../services/UserService';
 import bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
 import { Request } from 'express';
+import { BadRequestResponse } from '../handler/app-response';
 
 const LocalStrategy = passportLocal.Strategy;
 let initPassportLocal = () => {
     passport.use(new LocalStrategy({
         usernameField: 'email',
+        passwordField: 'password',
         session: true,
-        passReqToCallback: true
+        passReqToCallback: true,
     }, async (req: Request, email: string, password: string, done) => {
-        console.log(req.user)
         try {
             const user: any = await userService.getUserByEmail(email);
             if (!user) return done(null, false, { message: `Không tìm thấy email` });
 
             const isMatch = bcrypt.compareSync(password, user.password);
-            if (!isMatch) return done(null, false, { message: `Sai mật khẩu` });
+            if (!isMatch) throw new Error("Sai thông tin tài khoản");
 
-            if (!user.is_verified) return done(null, false, { message: `Tài khoản chưa được xác thực` });
+            if (!user.is_verified) throw new Error(`Tài khoản chưa được xác thực`);
 
-            if (user.is_locked) return done(null, false, { message: `Tài khoản đã bị khóa` });
+            if (user.is_locked) throw new Error(`Tài khoản chưa được kích hoạt. Liên hệ với admin để được giải quyết!`);
 
             return done(null, user);
         } catch (error: any) {
-            return done(null, false, { message: error.message });
+            return new BadRequestResponse(error.message).send(req.res!)
         }
     }
     ));
 
 }
-passport.serializeUser(function (user: any, done) {
-    done(null, user.id);
+
+passport.serializeUser((user, done: any) => {
+    done(null, user);
 });
 
-passport.deserializeUser(async function (id: number, done) {
-    const user: any = await userService.getUserById(id);
+passport.deserializeUser((user: any, done) => {
     done(null, user);
-})
-
-
+});
 
 export default initPassportLocal;

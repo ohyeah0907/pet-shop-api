@@ -12,8 +12,16 @@ export default {
             image_url: Joi.string().required().trim(),
         }).required(),
     }),
-    createFullOptionHomeRoleUser: Joi.object().keys({
+    homeTranslationCreate: Joi.object().keys({
         create: Joi.object().keys({
+            name: Joi.string().required().trim(),
+            address: Joi.string().required().trim(),
+            language: Joi.object().keys({
+                id: Joi.number().required(),
+            }).required(),
+            home: Joi.object().keys({
+                id: Joi.number().required(),
+            }).required(),
         }).required(),
     }),
     homeUpdate: Joi.object().keys({
@@ -28,7 +36,20 @@ export default {
             image_url: Joi.string().allow(null),
             active_home_cloud: Joi.object().keys({
                 id: Joi.number().required(),
-            }).allow(null), 
+            }).allow(null),
+        })
+    }),
+    homeTranslationUpdate: Joi.object().keys({
+        update: Joi.object().keys({
+            id: Joi.number().required(),
+            name: Joi.string().allow(null),
+            address: Joi.string().allow(null),
+            language: Joi.object().keys({
+                id: Joi.number().required(),
+            }).allow(null),
+            home: Joi.object().keys({
+                id: Joi.number().required(),
+            }).allow(null),
         })
     })
 }
