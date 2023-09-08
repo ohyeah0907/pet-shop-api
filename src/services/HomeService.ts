@@ -1,12 +1,11 @@
 import { ObjectState } from "@prisma/client";
-import { BadRequestResponse, NotFoundResponse } from "../handler/app-response";
 import prisma from "../prisma";
 import HomeRepository from "../repositories/HomeRepository"
-import userService from "./UserService";
 import userHomeService from "./UserHomeService";
 import homeCloudService from "./HomeCloudService";
-import { HomeCreate, HomeUpdate } from "../dto/home";
-import { UserHomeCreate, UserHomeUpdate } from "../dto/user_home";
+import languageService from "./LanguageService";
+import { HomeCreate, HomeTranslationCreate, HomeTranslationSearch, HomeTranslationUpdate, HomeUpdate } from "../dto/home";
+import HomeTranslationRepository from "../repositories/HomeTranslationRepository";
 
 const service = {
     getHomeSearch: async (params: any) => {
@@ -94,6 +93,54 @@ const service = {
 
             return true;
         })
+    },
+    getAllHomeTranslation: async (search: HomeTranslationSearch) => {
+        return await HomeTranslationRepository.findAll(search);
+    },
+    getByIdHomeTranslation: async (id: number) => {
+        const homeTranslation = await HomeTranslationRepository.findById(id);
+        if (!homeTranslation) throw new Error("Không tìm thấy home translation");
+        return homeTranslation;
+    },
+
+    createHomeTranslation: async (create: HomeTranslationCreate) => {
+        const homeTranslation: any = {
+            language_id: create.language.id,
+            home_id: create.home.id,
+            name: create.name,
+            address: create.address,
+        }
+        return await HomeTranslationRepository.save(homeTranslation);
+    },
+
+    updateHomeTranslation: async (update: HomeTranslationUpdate) => {
+        const homeTranslation: any = await service.getByIdHomeTranslation(update.id);
+        if (!homeTranslation) throw new Error("Không tìm thấy home translation");
+
+        if (update.home) {
+            const home = await service.getHomeById(update.home.id);
+            homeTranslation.home_id = home.id;
+        }
+
+        if (update.language) {
+            const language = await languageService.getById(update.language.id);
+            homeTranslation.language_id = language.id;
+        }
+
+        if (update.name) {
+            homeTranslation.name = update.name;
+        }
+        if (update.address) {
+            homeTranslation.address = update.address;
+        }
+        return await HomeTranslationRepository.save(homeTranslation);
+    },
+
+    deleteHomeTranslation: async (id: number) => {
+        const homeTranslation: any = await service.getByIdHomeTranslation(id);
+        homeTranslation.state = ObjectState.DELETED;
+        homeTranslation.deleted_at = new Date();
+        return !!(await HomeTranslationRepository.save(homeTranslation));
     }
 
 }

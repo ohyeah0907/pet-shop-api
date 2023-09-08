@@ -1,10 +1,22 @@
 import { UserSchedule, ObjectState } from "@prisma/client";
 import prisma from "../prisma";
+import { UserScheduleSearch } from "../dto/user_schedule";
 const findById = async (id: number) => {
     const userSchedule = await prisma.userSchedule.findUnique({
         include: {
             user_home: true,
-            schedule_weeks: true,
+            schedule_weeks: {
+                include: {
+                    schedule_hours: {
+                        orderBy: {
+                            started_hour: 'asc',
+                        }
+                    },
+                },
+                orderBy: {
+                    week_day: 'asc',
+                }
+            },
         },
         where: {
             id: id,
@@ -16,16 +28,32 @@ const findById = async (id: number) => {
     return userSchedule;
 }
 
-const findAll = async () => {
+const findAll = async (search: UserScheduleSearch) => {
+    const condition: any = {
+        NOT: {
+            state: ObjectState.DELETED
+        },
+    }
+
+    if (search.user_home?.id) {
+        condition['user_home_id'] = search.user_home?.id
+    }
+
     const userSchedules = await prisma.userSchedule.findMany({
         include: {
             user_home: true,
-            schedule_weeks: true,
+            schedule_weeks: {
+                include: {
+                    schedule_hours: true,
+                },
+                orderBy: {
+                    week_day: 'asc',
+                }
+            },
         },
-        where: {
-            NOT: {
-                state: ObjectState.DELETED,
-            }
+        where: condition,
+        orderBy: {
+            id: 'asc',
         }
     });
     return userSchedules;

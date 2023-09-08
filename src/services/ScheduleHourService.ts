@@ -25,14 +25,14 @@ const service = {
     update: async (update: ScheduleHourUpdate) => {
         const scheduleHour: any = await service.getById(update.id);
 
-        if(update.schedule_week) {
+        if (update.schedule_week) {
             const scheduleWeek = await scheduleWeekService.getById(update.schedule_week.id);
             scheduleHour.schedule_week_id = scheduleWeek.id;
         }
-        if(update.started_hour) {
+        if (update.started_hour) {
             scheduleHour.started_hour = update.started_hour;
         }
-        if(update.ended_hour) {
+        if (update.ended_hour) {
             scheduleHour.ended_hour = update.ended_hour;
         }
 
@@ -43,6 +43,9 @@ const service = {
         scheduleHour.state = ObjectState.DELETED;
         scheduleHour.deleted_at = new Date();
         return !!(await ScheduleHourRepository.save(scheduleHour));
+    },
+    deleteByScheduleId: async (scheduleId: number) => {
+        return await ScheduleHourRepository.deleteByScheduleId(scheduleId);
     }
 }
 

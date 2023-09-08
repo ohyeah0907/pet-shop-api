@@ -66,8 +66,19 @@ const save = async (scheduleHour: ScheduleHour) => {
     })
 }
 
+const deleteByScheduleId = async (scheduleId: number) => {
+    return prisma.scheduleHour.deleteMany({
+        where: {
+            schedule_week: {
+                schedule_id: scheduleId
+            }
+        }
+    })
+}
+
 export default {
     save,
     findById,
     findAll,
+    deleteByScheduleId,
 }

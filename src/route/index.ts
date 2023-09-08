@@ -22,7 +22,7 @@ import notification from "./notification";
 import tag from "./tag";
 import userTag from "./user_tag";
 import userNotification from "./user_notification";
-import roleSchedule from "./user_schedule";
+import userSchedule from "./user_schedule";
 import scheduleWeek from "./schedule_week";
 import scheduleHour from "./schedule_hour";
 import roomShortcut from "./room_shortcut";
@@ -30,6 +30,8 @@ import haEntity from "./ha_entity";
 import file from "./file";
 import voiceProject from "./voice_project";
 import userFCM from "./user_fcm";
+import language from "./language";
+import userRoomDevice from "./user_room_device"
 
 const router = Router();
 
@@ -56,7 +58,7 @@ router.use("/notification", notification)
 router.use("/tag", tag)
 router.use("/user-tag", userTag)
 router.use("/user-notification", userNotification)
-router.use("/role-schedule", roleSchedule)
+router.use("/user-schedule", userSchedule)
 router.use("/schedule-week", scheduleWeek)
 router.use("/schedule-hour", scheduleHour)
 router.use("/room-shortcut", roomShortcut)
@@ -64,6 +66,8 @@ router.use("/ha-entity", haEntity)
 router.use("/file", file)
 router.use("/voice-project", voiceProject)
 router.use("/user_fcm", userFCM)
+router.use("/language", language)
+router.use("user-room-device", userRoomDevice)
 
 
 export default router;

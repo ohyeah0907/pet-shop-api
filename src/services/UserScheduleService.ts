@@ -1,11 +1,11 @@
 import UserScheduleRepository from "../repositories/UserScheduleRepository"
-import { UserScheduleCreate, UserScheduleUpdate } from "../dto/user_schedule";
+import { UserScheduleCreate, UserScheduleSearch, UserScheduleUpdate } from "../dto/user_schedule";
 import { ObjectState } from "@prisma/client";
 import userHomeService from "./UserHomeService";
 
 const service = {
-    search: async (params: any) => {
-        return UserScheduleRepository.findAll();
+    search: async (search: UserScheduleSearch) => {
+        return UserScheduleRepository.findAll(search);
     },
     getById: async (id: number) => {
         const userSchedule = await UserScheduleRepository.findById(id);

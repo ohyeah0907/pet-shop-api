@@ -10,5 +10,8 @@ router.get("/:id", asyncHandler(homeController.getHomeById))
 
 router.get("/home-info/:id", asyncHandler(homeController.getHomeInfo))
 
+router.post("/translation/search", asyncHandler(homeController.getAllHomeTranslation));
+
+router.get("/translation/:id", asyncHandler(homeController.getByIdHomeTranslation))
 
 export default router;

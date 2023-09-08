@@ -21,8 +21,27 @@ const controller = {
     },
     login: async (req: Request, res: Response) => {
         const authorize = req.query as any;
+        if (!authorize.client_id || !authorize.redirect_uri || !authorize.response_type || !authorize.state)
+            return new BadRequestResponse("Invalid").send(res);
         try {
-            res.redirect(`/oauth2/login/authorize?client_id=${authorize.client_id}&redirect_uri=${authorize.redirect_uri}&response_type=${authorize.response_type}&state=${authorize.state}`);
+            res.redirect(`http://localhost:4000/oauth2/login/authorize?client_id=${authorize.client_id}&redirect_uri=${authorize.redirect_uri}&response_type=${authorize.response_type}&state=${authorize.state}`);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
+    loginGoogle: async (req: Request, res: Response) => {
+        try {
+            const session = req.session as any;
+
+            const authorize = session.passport.user.authorize
+            if (!authorize.client_id || !authorize.redirect_uri || !authorize.response_type || !authorize.state)
+                return new BadRequestResponse("Invalid").send(res);
+
+            const result = await service.loginGoogle(session.passport.user);
+            if (result) {
+                const redirectUrl = `/oauth2/login/authorize?client_id=${authorize.client_id}&redirect_uri=${authorize.redirect_uri}&response_type=${authorize.response_type}&state=${authorize.state}`;
+                res.redirect(redirectUrl);
+            }
         } catch (error: any) {
             return new BadRequestResponse(error.message).send(res);
         }

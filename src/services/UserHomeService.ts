@@ -1,11 +1,16 @@
 import UserHomeRepository from "../repositories/UserHomeRepository"
-import { UserHomeCreate, UserHomeSearch, UserHomeUpdate } from "../dto/user_home";
+import { UserHomeCreate, UserHomeScheduleCreate, UserHomeScheduleUpdate, UserHomeSearch, UserHomeUpdate } from "../dto/user_home";
 import userService from "./UserService";
 import homeService from "./HomeService";
+import userScheduleService from "./UserScheduleService";
+import scheduleWeekService from "./ScheduleWeekService";
+import scheduleHourService from "./ScheduleHourService";
+import prisma from "../prisma";
+import { seperateArray } from "../utils";
 
 const service = {
     search: async (search: UserHomeSearch) => {
-        return UserHomeRepository.findAll(search);
+        return await UserHomeRepository.findAll(search);
     },
     getById: async (id: number) => {
         const userHome = await UserHomeRepository.findById(id);
@@ -31,6 +36,35 @@ const service = {
         }
         return await UserHomeRepository.save(userHome);
     },
+    createScheduleForUserHome: async (create: UserHomeScheduleCreate) => {
+        return prisma.$transaction(async () => {
+            const userSchedule = await userScheduleService.create({
+                user_home: create.user_home,
+                started_at: new Date(create.started_at),
+                ended_at: new Date(create.ended_at),
+            });
+
+            create.days.forEach(async (day: any, index) => {
+                const scheduleWeek = await scheduleWeekService.create({
+                    schedule: userSchedule,
+                    week_day: index,
+                    enable: day.length > 0,
+                });
+                const hours = seperateArray(day);
+                console.log(hours)
+                hours.forEach(async (hour: any) => {
+                    const scheduleHour = await scheduleHourService.create({
+                        schedule_week: scheduleWeek,
+                        started_hour: hour[0],
+                        ended_hour: hour[hour.length - 1] + 1,
+                    });
+                });
+            });
+
+            return true
+        });
+
+    },
     update: async (update: UserHomeUpdate) => {
         const userHome: any = await service.getById(update.id);
         if (update.user) {
@@ -53,6 +87,36 @@ const service = {
 
 
         return await UserHomeRepository.save(userHome);
+    },
+    updateScheduleForUserHome: async (update: UserHomeScheduleUpdate) => {
+        return prisma.$transaction(async () => {
+            const userSchedule = await userScheduleService.getById(update.id);
+
+            await scheduleHourService.deleteByScheduleId(userSchedule.id);
+
+            userSchedule.schedule_weeks.forEach(async (scheduleWeek: any, index: number) => {
+                await scheduleWeekService.update({
+                    id: scheduleWeek.id,
+                    week_day: index,
+                    schedule: userSchedule,
+                    enable: update.days[index].length > 0,
+                });
+                const hours = seperateArray(update.days[index]);
+                hours.forEach(async (hour: any) => {
+                    await scheduleHourService.create({
+                        schedule_week: scheduleWeek,
+                        started_hour: hour[0],
+                        ended_hour: hour[hour.length - 1] + 1,
+                    });
+                });
+            });
+
+            if (update.started_at) userSchedule.started_at = update.started_at;
+
+            if (update.ended_at) userSchedule.ended_at = update.ended_at;
+
+            return !!await userScheduleService.update(userSchedule);
+        })
     },
     delete: async (id: number) => {
         const userHome: any = await service.getById(id);

@@ -12,3 +12,7 @@ export type UserScheduleUpdate = {
     started_at: Date,
     ended_at: Date,
 }
+
+export type UserScheduleSearch = {
+    user_home: UserHome,
+}
