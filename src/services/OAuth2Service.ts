@@ -47,6 +47,7 @@ const service = {
                 verification_token: "",
                 password: "",
                 is_voice: true,
+                is_locked: true,
             }
             user = await UserRepository.save(create);
             let social: any = {
@@ -77,6 +78,7 @@ const service = {
             username: register.email,
             password: bcrypt.hashSync(register.password, 10),
             is_voice: true,
+            is_locked: true,
         }
         const newUser = await UserRepository.save(userCreate);
 
@@ -116,7 +118,7 @@ const service = {
 
         // Defining iv
         const code = encrypt(text);
-        const redirect_link = `${authorize.redirect_uri}?code=${code}&state=${authorize.state}&redirect_uri=https://api-v2.mobieyes.vn/oauth2/google/callback`;
+        const redirect_link = `${authorize.redirect_uri}?code=${code}&state=${authorize.state}`;
         console.log(redirect_link);
 
         return redirect_link;
