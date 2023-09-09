@@ -48,7 +48,9 @@ app.use(cors(
     {
         origin: [
             portalUrl
-        ]
+        ],
+        optionsSuccessStatus: 200,
+        credentials: true,
     }
 ))
 app.use(express.static("public"));
