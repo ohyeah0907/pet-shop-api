@@ -116,7 +116,7 @@ const service = {
 
         // Defining iv
         const code = encrypt(text);
-        const redirect_link = `${authorize.redirect_uri}?code=${code}&state=${authorize.state}`;
+        const redirect_link = `${authorize.redirect_uri}?code=${code}&state=${authorize.state}&redirect_uri=https://api-v2.mobieyes.vn/oauth2/google/callback`;
         console.log(redirect_link);
 
         return redirect_link;
