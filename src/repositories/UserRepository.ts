@@ -12,6 +12,23 @@ const findAll = async () => {
         },
         orderBy: {
             id: 'asc'
+        },
+        select: {
+            avatar_url: true,
+            created_at: true,
+            email: true,
+            phone: true,
+            verification_token: true,
+            name: true,
+            is_verified: true,
+            is_admin: true,
+            is_locked: true,
+            is_voice: true,
+            user_homes: true,
+            user_tags: true,
+            user_notifications: true,
+            user_socials: true,
+            user_room_devices: true,
         }
     });
     return users;
@@ -24,6 +41,23 @@ const findById = async (id: number) => {
             NOT: {
                 state: ObjectState.DELETED
             }
+        },
+        select: {
+            avatar_url: true,
+            created_at: true,
+            email: true,
+            phone: true,
+            verification_token: true,
+            name: true,
+            is_verified: true,
+            is_admin: true,
+            is_locked: true,
+            is_voice: true,
+            user_homes: true,
+            user_tags: true,
+            user_notifications: true,
+            user_socials: true,
+            user_room_devices: true,
         }
     });
     return user;
