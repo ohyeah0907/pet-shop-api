@@ -39,7 +39,7 @@ const controller = {
 
             const result = await service.loginGoogle(session.passport.user);
             if (result) {
-                const redirectUrl = `/oauth2/login/authorize?client_id=${authorize.client_id}&redirect_uri=${authorize.redirect_uri}&response_type=${authorize.response_type}&state=${authorize.state}`;
+                const redirectUrl = `https://api-v2.mobieyes.vn/oauth2/login/authorize?client_id=${authorize.client_id}&redirect_uri=${authorize.redirect_uri}&response_type=${authorize.response_type}&state=${authorize.state}`;
                 res.redirect(redirectUrl);
             }
         } catch (error: any) {
