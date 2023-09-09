@@ -14,6 +14,7 @@ const findAll = async () => {
             id: 'asc'
         },
         select: {
+            id: true,
             avatar_url: true,
             created_at: true,
             email: true,
@@ -43,6 +44,7 @@ const findById = async (id: number) => {
             }
         },
         select: {
+            id: true,
             avatar_url: true,
             created_at: true,
             email: true,

@@ -22,6 +22,7 @@ export default {
             is_voice: Joi.boolean().allow(null),
             is_admin: Joi.boolean().allow(null),
             is_locked: Joi.boolean().allow(null),
+            is_verified: Joi.boolean().allow(null),
         }),
     }),
 }
