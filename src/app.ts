@@ -43,10 +43,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(flash());
 
+const portalUrl = process.env.PORTAL_URL || ''
 app.use(cors(
     {
         origin: [
-            process.env.PORTAL_URL || ''
+            portalUrl
         ]
     }
 ))

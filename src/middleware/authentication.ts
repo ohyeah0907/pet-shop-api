@@ -22,7 +22,7 @@ export default router.use(
             const payload = await JWT.validate(req.accessToken);
             validateTokenData(payload);
 
-            const user = await userService.getUserById(parseInt(payload.sub));
+            const user: any = await userService.getUserById(parseInt(payload.sub));
             if (!user) throw new AuthenticationFailure('Người dùng chưa được tạo');
             req.user = user;
 
