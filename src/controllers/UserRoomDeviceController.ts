@@ -31,6 +31,14 @@ const controller = {
             return new BadRequestResponse(error.message).send(res);
         }
     },
+    updateTableCheck: async (req: Request, res: Response) => {
+        try {
+            const userRoomDevice = await userRoomDeviceService.updateTableCheck(req.body.update);
+            return new SuccessResponse("Thành công!", userRoomDevice).send(res);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
     delete: async (req: Request, res: Response) => {
         try {
             const result = await userRoomDeviceService.delete(parseInt(req.params.id));

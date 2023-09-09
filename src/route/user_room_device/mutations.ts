@@ -8,6 +8,7 @@ const router = Router();
 
 router.post("/create", validator(schema.userRoomDeviceCreate), asyncHandler(controller.create))
 router.put("/update", validator(schema.userRoomDeviceUpdate), asyncHandler(controller.update))
+router.put("/updateTableCheck", asyncHandler(controller.updateTableCheck))
 router.delete("/delete/:id", asyncHandler(controller.delete))
 
 export default router;

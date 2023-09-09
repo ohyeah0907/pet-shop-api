@@ -19,7 +19,7 @@ const findAll = async (search: UserRoomDeviceSearch) => {
     const userRoomDevices = await prisma.userRoomDevice.findMany({
         where: condition
     });
-    
+
     return userRoomDevices;
 }
 
@@ -27,6 +27,18 @@ const findById = async (id: number) => {
     const userRoomDevice = await prisma.userRoomDevice.findUnique({
         where: {
             id: id,
+            NOT: {
+                state: ObjectState.DELETED
+            }
+        }
+    });
+    return userRoomDevice;
+}
+const findByUserIdAndRoomDeviceId = async (userId: number, roomDeviceId: number) => {
+    const userRoomDevice = await prisma.userRoomDevice.findFirst({
+        where: {
+            user_id: userId,
+            room_device_id: roomDeviceId,
             NOT: {
                 state: ObjectState.DELETED
             }
@@ -83,5 +95,6 @@ const save = async (userRoomDevice: UserRoomDevice) => {
 export default {
     findAll,
     findById,
+    findByUserIdAndRoomDeviceId,
     save
 }

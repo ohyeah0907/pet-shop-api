@@ -67,7 +67,7 @@ router.use("/file", file)
 router.use("/voice-project", voiceProject)
 router.use("/user_fcm", userFCM)
 router.use("/language", language)
-router.use("user-room-device", userRoomDevice)
+router.use("/user-room-device", userRoomDevice)
 
 
 export default router;

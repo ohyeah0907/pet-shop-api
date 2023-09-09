@@ -24,7 +24,7 @@ const controller = {
         if (!authorize.client_id || !authorize.redirect_uri || !authorize.response_type || !authorize.state)
             return new BadRequestResponse("Invalid").send(res);
         try {
-            res.redirect(`http://localhost:4000/oauth2/login/authorize?client_id=${authorize.client_id}&redirect_uri=${authorize.redirect_uri}&response_type=${authorize.response_type}&state=${authorize.state}`);
+            res.redirect(`/oauth2/login/authorize?client_id=${authorize.client_id}&redirect_uri=${authorize.redirect_uri}&response_type=${authorize.response_type}&state=${authorize.state}`);
         } catch (error: any) {
             return new BadRequestResponse(error.message).send(res);
         }
