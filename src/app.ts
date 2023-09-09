@@ -25,7 +25,15 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
 }));
+app.enable('trust proxy');
 
+app.use((req, res, next) => {
+    if (req.secure || req.headers.host?.startsWith('localhost')) {
+        next();
+    } else {
+        res.redirect('https://' + req.headers.host + req.url);
+    }
+});
 app.use(passport.initialize());
 app.use(passport.session());
 initPassportSocial();
