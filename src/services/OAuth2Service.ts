@@ -138,7 +138,7 @@ const service = {
                 }
                 if (
                     voiceProject.client_id !== object.client_id
-                    || !voiceProject.redirect_uris.includes(object.redirect_uri)
+                    || !(voiceProject.redirect_uris.filter((item) => { return object.redirect_uri.includes(item) }).length > 0)
                 ) throw new Error(`Client_id hoặc redirect url không khớp`);
 
                 const access_token = crypto.randomBytes(32).toString('hex');
