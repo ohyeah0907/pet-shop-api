@@ -66,6 +66,9 @@ const service = {
         if (update.is_voice !== null) {
             user.is_voice = update.is_voice;
         }
+        if (update.is_verified !== null) {
+            user.is_verified = update.is_verified;
+        }
         return await UserRepository.save(user);
     },
     deleteUser: async (id: number) => {

@@ -21,4 +21,5 @@ export type UserUpdate = {
     is_admin?: boolean;
     is_locked?: boolean;
     is_voice?: boolean;
+    is_verified?: boolean;
 }

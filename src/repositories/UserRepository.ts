@@ -94,6 +94,7 @@ const save = async (user: User) => {
                 verification_token: user.verification_token,
                 is_admin: user.is_admin,
                 is_voice: user.is_voice,
+                is_verified: user.is_verified,
                 state: user.state,
                 deleted_at: user.deleted_at,
                 updated_at: user.updated_at,
@@ -119,6 +120,7 @@ const save = async (user: User) => {
             password: user.password,
             is_locked: user.is_locked,
             is_voice: user.is_voice,
+            is_verified: user.is_verified
         },
         select: {
             id: true,

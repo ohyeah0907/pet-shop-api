@@ -48,6 +48,7 @@ const service = {
                 password: "",
                 is_voice: true,
                 is_locked: true,
+                is_verified: true,
             }
             user = await UserRepository.save(create);
             let social: any = {
@@ -79,6 +80,7 @@ const service = {
             password: bcrypt.hashSync(register.password, 10),
             is_voice: true,
             is_locked: true,
+            is_verified: false
         }
         const newUser = await UserRepository.save(userCreate);
 
