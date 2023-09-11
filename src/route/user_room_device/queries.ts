@@ -1,10 +1,10 @@
 import { Router } from "express";
-import controller from "../../controllers/TagController";
+import controller from "../../controllers/UserRoomDeviceController";
 import asyncHandler from "../../handler/asyncHandler";
 
 const router = Router();
 
-router.get("/search", asyncHandler(controller.getSearch));
+router.post("/search", asyncHandler(controller.getSearch));
 
 router.get("/:id", asyncHandler(controller.getById))
 

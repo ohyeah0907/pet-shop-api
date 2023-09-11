@@ -47,7 +47,8 @@ const portalUrl = process.env.PORTAL_URL || ''
 app.use(cors(
     {
         origin: [
-            portalUrl
+            portalUrl,
+            "http://localhost:4003"
         ],
         optionsSuccessStatus: 200,
         credentials: true,

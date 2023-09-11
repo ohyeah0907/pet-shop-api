@@ -9,7 +9,17 @@ const findAll = async (search: UserRoomDeviceSearch) => {
             state: ObjectState.DELETED
         }
     }
-
+    if (search.home) {
+        condition["user"] = {
+            user_homes: {
+                some: {
+                    home: {
+                        id: search.home.id
+                    }
+                }
+            }
+        }
+    }
     if (search.user)
         condition["user_id"] = search.user.id
 
@@ -17,7 +27,8 @@ const findAll = async (search: UserRoomDeviceSearch) => {
         condition["room_device_id"] = search.room_device.id
 
     const userRoomDevices = await prisma.userRoomDevice.findMany({
-        where: condition
+        where: {
+        }
     });
 
     return userRoomDevices;

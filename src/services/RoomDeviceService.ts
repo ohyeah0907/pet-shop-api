@@ -52,7 +52,7 @@ const service = {
         return await RoomDeviceRepository.save(roomDevice);
     },
     updateDragAndDrop: async (updates: RoomDeviceUpdateDragAndDrop[]) => {
-        prisma.$transaction(async () => {
+        return prisma.$transaction(async () => {
             updates.forEach(async (update) => {
                 await RoomDeviceRepository.deleteAllByRoomId(update.id)
                 update.devices.forEach(async (deviceUpdate: any) => {
@@ -70,6 +70,7 @@ const service = {
                     await service.create(roomDevice);
                 })
             })
+            return true
         })
     },
     delete: async (id: number) => {

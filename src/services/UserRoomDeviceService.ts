@@ -68,13 +68,14 @@ const service = {
                         }
                         await UserRoomDeviceRepository.save(create);
                     } else {
-                        if (userRoomDevice.enable) userRoomDevice.enable = room_device.enable
+                        if (room_device.enable != undefined) userRoomDevice.enable = room_device.enable
+
                         await UserRoomDeviceRepository.save(userRoomDevice);
                     }
                 })
 
-                return true
             })
+            return true
         })
     },
 

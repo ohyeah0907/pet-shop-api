@@ -1,4 +1,4 @@
-import { RoomDevice, User } from "@prisma/client"
+import { Home, RoomDevice, User } from "@prisma/client"
 
 export type UserRoomDeviceCreate = {
     room_device: RoomDevice,
@@ -21,5 +21,6 @@ export type UserRoomDeviceTableCheckUpdate = {
 
 export type UserRoomDeviceSearch = {
     user: User,
-    room_device: RoomDevice
+    room_device: RoomDevice,
+    home?: Home
 }
