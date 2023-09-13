@@ -33,7 +33,7 @@ const service = {
             email: create.email,
             phone: create.phone,
             username: create.username,
-            verification_token: create.verification_token,
+            verification_token: create.verification_token || '',
             password: bcrypt.hashSync(create.password, 10),
             is_voice: true,
         }

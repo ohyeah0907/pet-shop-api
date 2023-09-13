@@ -31,7 +31,7 @@ import file from "./file";
 import voiceProject from "./voice_project";
 import userFCM from "./user_fcm";
 import language from "./language";
-import userRoomDevice from "./user_room_device"
+import userDevice from "./user_device"
 
 const router = Router();
 
@@ -67,7 +67,7 @@ router.use("/file", file)
 router.use("/voice-project", voiceProject)
 router.use("/user_fcm", userFCM)
 router.use("/language", language)
-router.use("/user-room-device", userRoomDevice)
+router.use("/user-device", userDevice)
 
 
 export default router;

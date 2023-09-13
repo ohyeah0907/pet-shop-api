@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 export default {
-    userRoomDeviceCreate: Joi.object().keys({
+    userDeviceCreate: Joi.object().keys({
         create: Joi.object().keys({
             user: Joi.object().keys({
                 id: Joi.number().required(),
@@ -13,7 +13,7 @@ export default {
         }).required(),
 
     }),
-    userRoomDeviceUpdate: Joi.object().keys({
+    userDeviceUpdate: Joi.object().keys({
         update: Joi.object().keys({
             id: Joi.number().required(),
             user: Joi.object().keys({

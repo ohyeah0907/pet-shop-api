@@ -118,7 +118,7 @@ model User {
   sessions           Session[]
   user_tags          UserTag[]
   user_notifications UserNotification[]
-  user_room_devices  UserRoomDevice[]
+  user_room_devices  UserDevice[]
   voice_sessions     VoiceSession[]
   user_socials       UserSocial[]
 }
@@ -346,22 +346,23 @@ model Device {
   updated_at   DateTime     @updatedAt
   deleted_at   DateTime?
   room_devices RoomDevice[]
+  user_devices UserDevice[]
 
   @@unique([home_id, ha_entity_id], name: "device_entity_unique")
 }
 
-model UserRoomDevice {
-  id             Int         @id @default(autoincrement())
-  user           User        @relation(fields: [user_id], references: [id])
-  user_id        Int
-  room_device    RoomDevice  @relation(fields: [room_device_id], references: [id], onDelete: Cascade)
-  room_device_id Int
-  is_favorite    Boolean     @default(false)
-  enable         Boolean     @default(true)
-  state          ObjectState @default(ACTIVE)
-  created_at     DateTime    @default(now())
-  updated_at     DateTime    @updatedAt
-  deleted_at     DateTime?
+model UserDevice {
+  id          Int         @id @default(autoincrement())
+  user        User        @relation(fields: [user_id], references: [id])
+  user_id     Int
+  device      Device      @relation(fields: [device_id], references: [id], onDelete: Cascade)
+  device_id   Int
+  is_favorite Boolean     @default(false)
+  enable      Boolean     @default(true)
+  state       ObjectState @default(ACTIVE)
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+  deleted_at  DateTime?
 }
 
 model Actionable {
@@ -429,19 +430,19 @@ model ScheduleHour {
 }
 
 model RoomDevice {
-  id                Int              @id @default(autoincrement())
-  room              Room             @relation(fields: [room_id], references: [id])
-  room_id           Int
-  device            Device           @relation(fields: [device_id], references: [id])
-  device_id         Int
-  ordering          Int              @db.Integer
-  longitude         Float            @db.DoublePrecision
-  latitude          Float            @db.DoublePrecision
-  state             ObjectState      @default(ACTIVE)
-  created_at        DateTime         @default(now())
-  updated_at        DateTime         @updatedAt
-  deleted_at        DateTime?
-  user_room_devices UserRoomDevice[]
+  id         Int         @id @default(autoincrement())
+  room       Room        @relation(fields: [room_id], references: [id])
+  room_id    Int
+  device     Device      @relation(fields: [device_id], references: [id])
+  device_id  Int
+  ordering   Int         @db.Integer
+  longitude  Float       @db.DoublePrecision
+  latitude   Float       @db.DoublePrecision
+  is_clone   Boolean     @default(true)
+  state      ObjectState @default(ACTIVE)
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  deleted_at DateTime?
 
   @@unique([room_id, device_id], name: "room_device_unique")
 }

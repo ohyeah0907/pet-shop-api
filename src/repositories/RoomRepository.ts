@@ -34,6 +34,11 @@ const findAll = async (search: RoomSearch) => {
                 },
                 orderBy: {
                     ordering: 'asc'
+                },
+                where: {
+                    NOT: {
+                        state: ObjectState.DELETED
+                    }
                 }
             },
         },

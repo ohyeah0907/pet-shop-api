@@ -1,5 +1,6 @@
 import { RoomDevice, ObjectState } from "@prisma/client";
 import prisma from "../prisma";
+import { RoomDeviceSearch } from "../dto/room_device";
 const findById = async (id: number) => {
     const roomDevice = await prisma.roomDevice.findUnique({
         include: {
@@ -25,25 +26,46 @@ const findByRoomIdAndDeviceId = async (roomId: number, deviceId: number) => {
         where: {
             room_id: roomId,
             device_id: deviceId,
-            NOT: {
-                state: ObjectState.DELETED
-            }
         }
     });
     return roomDevice;
 }
 
-const findAll = async () => {
+const findAll = async (search: RoomDeviceSearch) => {
+    let condition: any = {
+        NOT: {
+            state: ObjectState.DELETED,
+        }
+    }
+
+    if (search.room) condition.room_id = search.room.id
+
+    if (search.device) condition.device_id = search.device.id
+
+    if (search.home) condition = {
+        ...condition,
+        room: {
+            home_id: search.home.id
+        },
+        device: {
+            home_id: search.home.id
+        }
+    }
+
     const roomDevices = await prisma.roomDevice.findMany({
         include: {
-            device: true,
+            device: {
+                include: {
+                    user_devices: {
+                        include: {
+                            user: true
+                        }
+                    }
+                }
+            },
             room: true,
         },
-        where: {
-            NOT: {
-                state: ObjectState.DELETED,
-            }
-        },
+        where: condition,
         orderBy: {
             ordering: 'asc'
         }
@@ -70,6 +92,7 @@ const save = async (roomDevice: RoomDevice) => {
                 longitude: roomDevice.longitude,
                 latitude: roomDevice.latitude,
                 ordering: roomDevice.ordering,
+                is_clone: roomDevice.is_clone,
                 state: roomDevice.state,
                 deleted_at: roomDevice.deleted_at,
             },
@@ -94,6 +117,7 @@ const save = async (roomDevice: RoomDevice) => {
             latitude: roomDevice.latitude,
             longitude: roomDevice.longitude,
             ordering: roomDevice.ordering,
+            is_clone: roomDevice.is_clone,
         },
         include: {
             device: true,
@@ -101,6 +125,8 @@ const save = async (roomDevice: RoomDevice) => {
         }
     })
 }
+
+
 
 const deleteAllByRoomId = async (roomId: number) => {
     return prisma.roomDevice.deleteMany({

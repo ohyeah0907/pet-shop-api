@@ -1,4 +1,4 @@
-import { Device, Room } from "@prisma/client";
+import { Device, Home, Room } from "@prisma/client";
 
 export type RoomDeviceCreate = {
     room: Room,
@@ -7,6 +7,7 @@ export type RoomDeviceCreate = {
     longitude: number,
     latitude: number,
     ordering: number,
+    is_clone: boolean,
 }
 
 export type RoomDeviceUpdate = {
@@ -17,6 +18,13 @@ export type RoomDeviceUpdate = {
     latitude?: number,
     is_favorite?: boolean,
     ordering?: number,
+    is_clone?: boolean
+}
+
+export type RoomDeviceSearch = {
+    room?: Room,
+    device?: Device,
+    home?: Home
 }
 
 export type RoomDeviceUpdateDragAndDrop = {
@@ -25,5 +33,6 @@ export type RoomDeviceUpdateDragAndDrop = {
     devices: [{
         id: number,
         ordering: number,
+        is_clone: boolean
     }],
 }

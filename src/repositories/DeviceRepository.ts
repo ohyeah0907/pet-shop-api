@@ -27,7 +27,12 @@ const findAll = async (search: DeviceSearch) => {
             room_devices: {
                 include: {
                     room: true,
-                    device: true
+                    device: true,
+                },
+                where: {
+                    NOT: {
+                        state: ObjectState.DELETED
+                    }
                 }
             }
         }

@@ -4,11 +4,11 @@ import prisma from "../prisma";
 import RoomDeviceRepository from "../repositories/RoomDeviceRepository"
 import deviceService from "./DeviceService"
 import roomService from "./RoomService"
-import { RoomDeviceCreate, RoomDeviceUpdate, RoomDeviceUpdateDragAndDrop } from "../dto/room_device";
+import { RoomDeviceCreate, RoomDeviceSearch, RoomDeviceUpdate, RoomDeviceUpdateDragAndDrop } from "../dto/room_device";
 import { ObjectState } from "@prisma/client";
 const service = {
-    search: async (search: any) => {
-        return RoomDeviceRepository.findAll();
+    search: async (search: RoomDeviceSearch) => {
+        return RoomDeviceRepository.findAll(search);
     },
     getById: async (id: number) => {
         const roomDevice = await RoomDeviceRepository.findById(id);
@@ -25,6 +25,7 @@ const service = {
             ordering: create.ordering || 0,
             longitude: create.longitude,
             latitude: create.latitude,
+            is_clone: create.is_clone,
         }
         return await RoomDeviceRepository.save(roomDevice);
     },
@@ -48,26 +49,43 @@ const service = {
         if (update.latitude) {
             roomDevice.latitude = update.latitude;
         }
+        if (update.is_clone != undefined) {
+            roomDevice.is_clone = update.is_clone;
+        }
 
         return await RoomDeviceRepository.save(roomDevice);
     },
     updateDragAndDrop: async (updates: RoomDeviceUpdateDragAndDrop[]) => {
         return prisma.$transaction(async () => {
             updates.forEach(async (update) => {
-                await RoomDeviceRepository.deleteAllByRoomId(update.id)
+                await service.deleteAllByRoomId(update.id)
                 update.devices.forEach(async (deviceUpdate: any) => {
-                    const room = await roomService.getById(update.id);
                     const device = await deviceService.getById(deviceUpdate.id);
-                    
-                    const roomDevice: RoomDeviceCreate = {
-                        device: device,
-                        room: room,
-                        longitude: parseFloat(deviceUpdate.longitude) || 0,
-                        latitude: parseFloat(deviceUpdate.latitude) || 0,
-                        ordering: deviceUpdate.ordering,
-                        is_favorite: false,
+                    const room = await roomService.getById(update.id);
+
+                    const roomDevice = await RoomDeviceRepository.findByRoomIdAndDeviceId(room.id, device.id);
+
+                    if (roomDevice) {
+                        roomDevice.longitude = deviceUpdate.longitude;
+                        roomDevice.latitude = deviceUpdate.latitude;
+                        roomDevice.ordering = deviceUpdate.ordering;
+                        roomDevice.is_clone = deviceUpdate.is_clone;
+                        roomDevice.state = ObjectState.ACTIVE;
+
+                        await RoomDeviceRepository.save(roomDevice)
+                    } else {
+                        const roomDeviceCreate: RoomDeviceCreate = {
+                            device: device,
+                            room: room,
+                            longitude: parseFloat(deviceUpdate.longitude) || 0,
+                            latitude: parseFloat(deviceUpdate.latitude) || 0,
+                            ordering: deviceUpdate.ordering,
+                            is_clone: deviceUpdate.is_clone,
+                            is_favorite: false,
+                        }
+                        await service.create(roomDeviceCreate);
                     }
-                    await service.create(roomDevice);
+
                 })
             })
             return true
@@ -78,7 +96,25 @@ const service = {
         roomDevice.state = ObjectState.DELETED;
         roomDevice.deleted_at = new Date();
         return !!(await RoomDeviceRepository.save(roomDevice));
-    }
+    },
+    deleteAllByRoomId: async (roomId: number) => {
+        prisma.$transaction(async () => {
+            const search: any = {
+                room: {
+                    id: roomId
+                }
+            }
+            const roomDevices: any = await service.search(search);
+
+            roomDevices.forEach((item: any) => {
+                item.state = ObjectState.DELETED;
+                item.deleted_at = new Date();
+                RoomDeviceRepository.save(item);
+            })
+            return true
+        })
+    },
+
 }
 
 export default service;
