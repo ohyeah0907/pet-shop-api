@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import oauth2 from "./route/oauth2";
+import ha from "./route/ha";
 import session from "express-session";
 
 dotenv.config();
@@ -59,5 +60,6 @@ app.set("view engine", "ejs");
 
 app.use("/api/v2", router);
 app.use("/oauth2", oauth2);
+app.use("/ha", ha)
 
 app.listen(PORT, () => console.log(`Running on ${PORT} ⚡`));

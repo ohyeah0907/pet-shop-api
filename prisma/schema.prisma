@@ -147,6 +147,9 @@ model UserHome {
   home_id        Int
   ha_username    String         @db.VarChar(255)
   ha_password    String         @db.VarChar(255)
+  access_token   String?        @db.VarChar(255)
+  refresh_token  String?        @db.VarChar(255)
+  expired_at     DateTime?
   lan_only       Boolean        @default(false)
   is_owner       Boolean        @default(false)
   ordering       Int            @db.Integer
