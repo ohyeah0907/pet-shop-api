@@ -1,6 +1,6 @@
 import AutomationRepository from "../repositories/AutomationRepository"
 import homeService from "./HomeService"
-import userService from "./UserService"
+import haService from "./HAEntityService"
 import { AutomationCreate, AutomationUpdate } from "../dto/automation";
 import { ObjectState } from "@prisma/client";
 
@@ -13,15 +13,21 @@ const service = {
         if (!automation) throw new Error("Không tìm thấy automation");
         return automation;
     },
+    getByHomeIdAndEntityId: async (homeId: number, entity_id: string) => {
+        const automation = await AutomationRepository.findByHomeIdAndEntityId(homeId, entity_id);
+        if (!automation) throw new Error("Không tìm thấy automation");
+        return automation;
+    },
     create: async (create: AutomationCreate) => {
         const home = await homeService.getHomeById(create.home.id);
+        const haEntity = await haService.getById(create.ha_entity.id);
         const automation: any = {
             id: 0,
             name: create.name,
             description: create.description,
             home_id: home.id,
             accessed_at: new Date(create.accessed_at),
-            entity_id: create.entity_id,
+            ha_entity_id: haEntity.id,
         }
         return await AutomationRepository.save(automation);
     },
@@ -35,8 +41,9 @@ const service = {
             const home = await homeService.getHomeById(update.home.id);
             automation.home_id = home.id;
         }
-        if (update.entity_id) {
-            automation.entity_id = update.entity_id;
+        if (update.ha_entity) {
+            const haEntity = await haService.getById(update.ha_entity.id);
+            automation.entity_id = haEntity.entity_id;
         }
         if (update.description) {
             automation.description = update.description;

@@ -1,4 +1,3 @@
-import { DeviceType } from "@prisma/client";
 import Joi from "joi";
 
 export default {
@@ -12,7 +11,9 @@ export default {
                 entity_id: Joi.string().required(),
             }).required(),
             sub_type: Joi.string().required(),
-            type: Joi.string().required().valid(...Object.values(DeviceType)),
+            type: Joi.object().keys({
+                id: Joi.number().required(),
+            }).required(),
             attributes: Joi.string().required(),
             preset: Joi.object().keys({
                 id: Joi.number().required(),
@@ -32,7 +33,9 @@ export default {
                 entity_id: Joi.string().allow(null),
             }).allow(null),
             sub_type: Joi.string().allow(null),
-            type: Joi.string().allow(null).valid(...Object.values(DeviceType)),
+            type: Joi.object().keys({
+                id: Joi.number().required(),
+            }),
             status: Joi.boolean().allow(null),
             attributes: Joi.string().allow(null),
             preset: Joi.object().keys({

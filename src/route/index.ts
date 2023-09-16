@@ -32,6 +32,7 @@ import voiceProject from "./voice_project";
 import userFCM from "./user_fcm";
 import language from "./language";
 import userDevice from "./user_device"
+import deviceType from "./device_type";
 
 const router = Router();
 
@@ -68,6 +69,7 @@ router.use("/voice-project", voiceProject)
 router.use("/user_fcm", userFCM)
 router.use("/language", language)
 router.use("/user-device", userDevice)
+router.use("/device-type", deviceType)
 
 
 export default router;

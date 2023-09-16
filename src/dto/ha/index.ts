@@ -5,6 +5,9 @@ export type HATokenRequest = {
     home: Home;
     grant_type: GrantType,
 }
+export type HASyncRequest = {
+    home: Home;
+}
 
 export type HATokenResponse = {
     access_token: string,

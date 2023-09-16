@@ -34,7 +34,8 @@ const findAll = async (search: DeviceSearch) => {
                         state: ObjectState.DELETED
                     }
                 }
-            }
+            },
+            type: true,
         }
     });
     return devices;
@@ -51,14 +52,34 @@ const findById = async (id: number) => {
         include: {
             home: true,
             ha_entity: true,
-            preset: true
+            preset: true,
+            type: true,
+        }
+    });
+    return device;
+}
+const findByHomeIdAndEntityId = async (homeId: number, entity_id: string) => {
+    const device = await prisma.device.findFirst({
+        where: {
+            home_id: homeId,
+            ha_entity: {
+                entity_id: entity_id
+            },
+            NOT: {
+                state: ObjectState.DELETED
+            }
+        },
+        include: {
+            home: true,
+            ha_entity: true,
+            preset: true,
+            type: true,
         }
     });
     return device;
 }
 
 const save = async (device: Device) => {
-
     if (device.id) {
         return await prisma.device.update({
             where: {
@@ -71,7 +92,11 @@ const save = async (device: Device) => {
                         id: device.home_id
                     }
                 },
-                type: device.type,
+                type: {
+                    connect: {
+                        id: device.type_id || undefined
+                    }
+                },
                 ha_entity: device.ha_entity_id ? {
                     connect: {
                         id: device.ha_entity_id
@@ -79,11 +104,11 @@ const save = async (device: Device) => {
                 } : undefined,
                 sub_type: device.sub_type,
                 status: device.status,
-                preset: {
+                preset: device.preset_id ? {
                     connect: {
                         id: device.preset_id || undefined
                     }
-                },
+                } : undefined,
                 attributes: device.attributes,
                 state: device.state,
                 deleted_at: device.deleted_at,
@@ -104,7 +129,11 @@ const save = async (device: Device) => {
                 }
             },
             description: device.description,
-            type: device.type,
+            type: {
+                connect: {
+                    id: device.type_id || undefined
+                }
+            },
             ha_entity: device.ha_entity_id ? {
                 connect: {
                     id: device.ha_entity_id
@@ -112,11 +141,11 @@ const save = async (device: Device) => {
             } : undefined,
             sub_type: device.sub_type,
             status: device.status,
-            preset: {
+            preset: device.preset_id ? {
                 connect: {
-                    id: device.preset_id || undefined
+                    id: device.preset_id 
                 }
-            },
+            } : undefined,
             attributes: device.attributes,
         },
         include: {
@@ -130,5 +159,6 @@ const save = async (device: Device) => {
 export default {
     findAll,
     findById,
+    findByHomeIdAndEntityId,
     save
 }

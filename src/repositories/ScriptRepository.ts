@@ -30,6 +30,23 @@ const findById = async (id: number) => {
     });
     return script;
 }
+const findByHomeIdAndEntityId = async (homeId: number, entity_id: string) => {
+    const script = await prisma.script.findFirst({
+        where: {
+            home_id: homeId,
+            ha_entity: {
+                entity_id: entity_id
+            },
+            NOT: {
+                state: ObjectState.DELETED
+            }
+        },
+        include: {
+            home: true
+        }
+    });
+    return script;
+}
 
 const save = async (script: Script) => {
 
@@ -46,7 +63,11 @@ const save = async (script: Script) => {
                         id: script.home_id
                     }
                 },
-                entity_id: script.entity_id,
+                ha_entity: {
+                    connect: {
+                        id: script.ha_entity_id
+                    }
+                },
                 state: script.state,
                 deleted_at: script.deleted_at,
                 updated_at: script.updated_at,
@@ -66,7 +87,11 @@ const save = async (script: Script) => {
                     id: script.home_id
                 }
             },
-            entity_id: script.entity_id,
+            ha_entity: {
+                connect: {
+                    id: script.ha_entity_id
+                }
+            }
         },
         include: {
             home: true
@@ -78,5 +103,6 @@ const save = async (script: Script) => {
 export default {
     findAll,
     findById,
+    findByHomeIdAndEntityId,
     save
 }

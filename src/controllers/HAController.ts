@@ -13,6 +13,14 @@ const controller = {
             return new BadRequestResponse(error.message).send(res);
         }
     },
+    syncDevicefromHAServer: async (req: Request, res: Response) => {
+        try {
+            const result = await service.syncDevicefromHAServer(req.body);
+            return new SuccessResponse("Thành công!", result).send(res);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
 
 }
 

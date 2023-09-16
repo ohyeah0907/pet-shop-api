@@ -31,6 +31,24 @@ const findById = async (id: number) => {
     return automation;
 }
 
+const findByHomeIdAndEntityId = async (homeId: number, entity_id: string) => {
+    const script = await prisma.automation.findFirst({
+        where: {
+            home_id: homeId,
+            ha_entity: {
+                entity_id: entity_id
+            },
+            NOT: {
+                state: ObjectState.DELETED
+            }
+        },
+        include: {
+            home: true
+        }
+    });
+    return script;
+}
+
 const save = async (automation: Automation) => {
 
     if (automation.id) {
@@ -46,7 +64,11 @@ const save = async (automation: Automation) => {
                         id: automation.home_id
                     }
                 },
-                entity_id: automation.entity_id,
+                ha_entity: {
+                    connect: {
+                        id: automation.ha_entity_id
+                    }
+                },
                 state: automation.state,
                 deleted_at: automation.deleted_at,
                 updated_at: automation.updated_at,
@@ -66,7 +88,11 @@ const save = async (automation: Automation) => {
                     id: automation.home_id
                 }
             },
-            entity_id: automation.entity_id,
+            ha_entity: {
+                connect: {
+                    id: automation.ha_entity_id
+                }
+            },
         },
         include: {
             home: true
@@ -78,5 +104,6 @@ const save = async (automation: Automation) => {
 export default {
     findAll,
     findById,
-    save
+    save,
+    findByHomeIdAndEntityId
 }

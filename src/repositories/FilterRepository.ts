@@ -40,7 +40,11 @@ const save = async (filter: Filter) => {
                 icon: filter.icon,
                 color_off: filter.color_off,
                 color_on: filter.color_on,
-                device_type: filter.device_type,
+                device_type: {
+                    connect: {
+                        id: filter.device_type_id
+                    }
+                },
                 state: filter.state,
                 deleted_at: filter.deleted_at,
                 updated_at: filter.updated_at,
@@ -55,7 +59,11 @@ const save = async (filter: Filter) => {
             icon: filter.icon,
             color_off: filter.color_off,
             color_on: filter.color_on,
-            device_type: filter.device_type
+            device_type: {
+                connect: {
+                    id: filter.device_type_id
+                }
+            },
         },
     });
 

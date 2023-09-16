@@ -6,7 +6,7 @@ export type DeviceCreate = {
     type: DeviceType,
     sub_type: string,
     attributes: string,
-    preset: Preset,
+    preset?: Preset|null,
     name: string,
     description: string
 }

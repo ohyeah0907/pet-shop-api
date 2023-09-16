@@ -8,6 +8,7 @@ const router = Router();
 
 
 router.post("/token", asyncHandler(controller.token));
+router.post("/sync", asyncHandler(controller.syncDevicefromHAServer));
 
 
 export default router;

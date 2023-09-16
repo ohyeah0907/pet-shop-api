@@ -5,7 +5,9 @@ export default {
     filterCreate: Joi.object().keys({
         create: Joi.object().keys({
             name: Joi.string().required().trim(),
-            devicetype: Joi.string().required().valid(...Object.values(DeviceType)),
+            device_type: Joi.object().keys({
+                id: Joi.number().required(),
+            }).required(),
             icon: Joi.string().required().trim(),
             background_on: Joi.string().required().trim(),
             background_off: Joi.string().required().trim(),
@@ -18,7 +20,9 @@ export default {
         update: Joi.object().keys({
             id: Joi.number().required(),
             name: Joi.string().allow(null),
-            devicetype: Joi.string().allow(null).valid(...Object.values(DeviceType)),
+            device_type: Joi.object().keys({
+                id: Joi.number().required(),
+            }),
             icon: Joi.string().allow(null),
             background_on: Joi.string().allow(null),
             background_off: Joi.string().allow(null),

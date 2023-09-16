@@ -1,8 +1,8 @@
-import { Home } from "@prisma/client"
+import { HAEntity, Home } from "@prisma/client"
 
 export type AutomationCreate = {
     home: Home,
-    entity_id: string,
+    ha_entity: HAEntity,
     name: string,
     description: string,
     accessed_at: Date,
@@ -11,7 +11,7 @@ export type AutomationCreate = {
 export type AutomationUpdate = {
     id: number,
     home: Home,
-    entity_id: string,
+    ha_entity: HAEntity,
     name: string,
     description: string,
     accessed_at: Date,

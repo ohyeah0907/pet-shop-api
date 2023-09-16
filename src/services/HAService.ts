@@ -5,13 +5,23 @@ import voiceProjectService from './VoiceProjectService';
 import UserRepository from '../repositories/UserRepository';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
-import { HARefreshTokenResponse, HATokenRequest, HATokenResponse } from '../dto/ha';
+import { HARefreshTokenResponse, HASyncRequest, HATokenRequest, HATokenResponse } from '../dto/ha';
 import homeService from '../services/HomeService'
 import UserHomeRepository from '../repositories/UserHomeRepository'
 import axios from 'axios'
 import { GrantType } from '../constants/enum';
 import authorization from '../middleware/authorization';
-import { Home, UserHome } from '@prisma/client';
+import { DeviceTypeCode, Home, UserHome } from '@prisma/client';
+import deviceTypeService from '../services/DeviceTypeService'
+import automationService from '../services/AutomationService'
+import scriptService from '../services/ScriptService'
+import haEntityService from '../services/HAEntityService';
+import deviceService from '../services/DeviceService';
+import { DeviceCreate } from '../dto/device';
+import prisma from '../prisma';
+import { HAEntityCreate } from '../dto/ha_entity';
+import { ScriptCreate } from '../dto/script';
+import { AutomationCreate } from '../dto/automation';
 
 const service = {
 
@@ -40,6 +50,125 @@ const service = {
 
         }
     },
+    syncDevicefromHAServer: async (syncRequest: HASyncRequest) => {
+        return await prisma.$transaction(async () => {
+            const home = await homeService.getHomeById(syncRequest.home.id);
+
+            let owner = home.user_homes.find(userHome => userHome.is_owner);
+            if (!owner) throw new Error('Nhà hiện chưa có chủ!');
+
+            let accessToken: string | null = owner.access_token;
+            if (accessToken == null) {
+                const authorizationCodeResponse: HATokenResponse = await authorization_code(home, owner);
+                accessToken = authorizationCodeResponse.access_token;
+            } else {
+                // Check valid access token
+                if (owner.expired_at! < new Date()) {
+                    const refreshToken = await refresh_token(home, owner);
+                    accessToken = refreshToken.access_token
+                } else {
+                    accessToken = owner.access_token
+                }
+            }
+
+            const syncDeviceUrl = `${home.wan_domain}/api/states`;
+            const headers = {
+                'Authorization': `Bearer ${owner.access_token}`
+            }
+            const getStates = await axios.get(syncDeviceUrl, {
+                headers: headers
+            })
+                .then((response: any) => {
+                    return response.data;
+                }).catch((error: any) => {
+                    console.log(error.response.data);
+                })
+            
+            await Promise.all(
+                getStates.map(async (state: any) => {
+                    const entity_id = state.entity_id;
+                    const domain: DeviceTypeCode = entity_id.substring(0, entity_id.indexOf('.'))
+    
+                    if (Object.values(DeviceTypeCode).includes(domain)) {
+                        let haEntity: any = null;
+    
+                        try {
+                            haEntity = await haEntityService.getByEntityId(entity_id);
+                        } catch (error) {
+                            const haEntityCreate: HAEntityCreate = {
+                                name: state.attributes.friendly_name,
+                                entity_id: entity_id,
+                                home: home,
+                                description: state.attributes.friendly_name,
+                                accessed_at: new Date(state.attributes.last_triggered || state.last_updated)
+                            }
+    
+                            haEntity = await haEntityService.create(haEntityCreate)
+                        }
+    
+                        switch (domain) {
+                            case DeviceTypeCode.script:
+                                let script: any = null
+    
+                                try {
+                                    script = await scriptService.getByHomeIdAndId(home.id, entity_id);
+                                } catch (error) {
+                                    const scriptCreate: ScriptCreate = {
+                                        home: home,
+                                        ha_entity: haEntity,
+                                        accessed_at: new Date(state.attributes.last_triggered || state.last_updated),
+                                        name: state.attributes.friendly_name,
+                                        description: state.attributes.friendly_name,
+                                    }
+    
+                                    await scriptService.create(scriptCreate);
+                                }
+                                break;
+                            case DeviceTypeCode.scene:
+                                let automation: any = null
+    
+                                try {
+                                    automation = await automationService.getByHomeIdAndEntityId(home.id, entity_id);
+                                } catch (error) {
+                                    const automationCreate: AutomationCreate = {
+                                        home: home,
+                                        ha_entity: haEntity,
+                                        accessed_at: new Date(state.attributes.last_triggered || state.last_updated),
+                                        name: state.attributes.friendly_name,
+                                        description: state.attributes.friendly_name,
+                                    }
+    
+                                    await automationService.create(automationCreate);
+                                }
+                                break;
+                            default:
+                                let device: any = null;
+                                const deviceType = await deviceTypeService.getByCode(domain)
+    
+                                try {
+                                    device = await deviceService.getByHomeIdAndEntityId(home.id, entity_id);
+                                } catch (error) {
+                                    const deviceCreate: DeviceCreate = {
+                                        home: home,
+                                        ha_entity: haEntity,
+                                        type: deviceType,
+                                        name: state.attributes.friendly_name,
+                                        description: state.attributes.friendly_name,
+                                        preset: null,
+                                        sub_type: state.attributes.friendly_name,
+                                        attributes: JSON.stringify(state.attributes),
+                                    }
+    
+                                    await deviceService.create(deviceCreate);
+                                }
+                                break;
+                        }
+                    }
+                })
+            )
+            return true;
+        })
+    }
 
 }
 

@@ -6,6 +6,9 @@
   "repository": {
     "type": "git"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "scripts": {
     "build": "rimraf build && tsc",
     "predev": "npm install && npm run build",

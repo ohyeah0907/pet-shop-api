@@ -17,14 +17,28 @@ enum ObjectState {
   DELETED
 }
 
-enum DeviceType {
-  LIGHT
-  SWITCH
-  MEDIA_PLAYER
-  AIRCONDITION
-  CLIMATE
-  COVER
-  CURTAIN
+enum DeviceTypeCode {
+  alarm_control_panel
+  binary_sensor
+  button
+  camera
+  climate
+  cover
+  fan
+  group
+  humidifier
+  input_boolean
+  input_button
+  input_select
+  light
+  lock
+  media_player
+  scene
+  script
+  select
+  sensor
+  switch
+  vacuum
 }
 
 enum ActionableType {
@@ -214,7 +228,8 @@ model Session {
 
 model Filter {
   id             Int         @id @default(autoincrement())
-  device_type    DeviceType  @unique
+  device_type    DeviceType  @relation(fields: [device_type_id], references: [id])
+  device_type_id Int
   name           String      @db.VarChar(255)
   icon           String      @db.VarChar(255)
   background_on  String      @db.VarChar(255)
@@ -285,35 +300,37 @@ model Preset {
 }
 
 model Script {
-  id          Int         @id @default(autoincrement())
-  home        Home        @relation(fields: [home_id], references: [id])
-  home_id     Int
-  entity_id   String      @db.VarChar(255)
-  name        String      @db.VarChar(255)
-  description String      @db.VarChar(255)
-  accessed_at DateTime
-  state       ObjectState @default(ACTIVE)
-  created_at  DateTime    @default(now())
-  updated_at  DateTime    @updatedAt
-  deleted_at  DateTime?
+  id           Int         @id @default(autoincrement())
+  home         Home        @relation(fields: [home_id], references: [id])
+  home_id      Int
+  ha_entity    HAEntity    @relation(fields: [ha_entity_id], references: [id])
+  ha_entity_id Int
+  name         String      @db.VarChar(255)
+  description  String      @db.VarChar(255)
+  accessed_at  DateTime
+  state        ObjectState @default(ACTIVE)
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+  deleted_at   DateTime?
 
-  @@unique([home_id, entity_id], name: "script_entity_unique")
+  @@unique([home_id, ha_entity_id], name: "script_entity_unique")
 }
 
 model Automation {
-  id          Int         @id @default(autoincrement())
-  home        Home        @relation(fields: [home_id], references: [id])
-  home_id     Int
-  entity_id   String      @db.VarChar(255)
-  name        String      @db.VarChar(255)
-  description String      @db.VarChar(255)
-  accessed_at DateTime
-  state       ObjectState @default(ACTIVE)
-  created_at  DateTime    @default(now())
-  updated_at  DateTime    @updatedAt
-  deleted_at  DateTime?
+  id           Int         @id @default(autoincrement())
+  home         Home        @relation(fields: [home_id], references: [id])
+  home_id      Int
+  ha_entity    HAEntity    @relation(fields: [ha_entity_id], references: [id])
+  ha_entity_id Int
+  name         String      @db.VarChar(255)
+  description  String      @db.VarChar(255)
+  accessed_at  DateTime
+  state        ObjectState @default(ACTIVE)
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+  deleted_at   DateTime?
 
-  @@unique([home_id, entity_id], name: "automation_entity_unique")
+  @@unique([home_id, ha_entity_id], name: "automation_entity_unique")
 }
 
 model Sensor {
@@ -336,7 +353,8 @@ model Device {
   home_id      Int
   ha_entity    HAEntity?    @relation(fields: [ha_entity_id], references: [id])
   ha_entity_id Int?
-  type         DeviceType
+  type         DeviceType?  @relation(fields: [type_id], references: [id])
+  type_id      Int?
   sub_type     String       @db.VarChar(255)
   name         String       @db.VarChar(255)
   description  String       @db.VarChar(255)
@@ -352,6 +370,18 @@ model Device {
   user_devices UserDevice[]
 
   @@unique([home_id, ha_entity_id], name: "device_entity_unique")
+}
+
+model DeviceType {
+  id         Int            @id @default(autoincrement())
+  code       DeviceTypeCode @unique
+  name       String         @db.VarChar(255)
+  state      ObjectState    @default(ACTIVE)
+  created_at DateTime       @default(now())
+  updated_at DateTime       @updatedAt
+  deleted_at DateTime?
+  devices    Device[]
+  filters    Filter[]
 }
 
 model UserDevice {
@@ -523,19 +553,21 @@ model RoomShortcut {
 }
 
 model HAEntity {
-  id          Int         @id @default(autoincrement())
-  home        Home        @relation(fields: [home_id], references: [id])
+  id          Int          @id @default(autoincrement())
+  home        Home         @relation(fields: [home_id], references: [id])
   home_id     Int
   entity_id   String
-  name        String      @db.VarChar(255)
-  description String      @db.VarChar(255)
+  name        String       @db.VarChar(255)
+  description String       @db.VarChar(255)
   accessed_at DateTime
-  state       ObjectState @default(ACTIVE)
-  created_at  DateTime    @default(now())
-  updated_at  DateTime    @updatedAt
+  state       ObjectState  @default(ACTIVE)
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
   deleted_at  DateTime?
   cameras     Camera[]
   devices     Device[]
+  scripts     Script[]
+  automations Automation[]
 
   @@unique([home_id, entity_id], name: "home_entity_unique")
 }
