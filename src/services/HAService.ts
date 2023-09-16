@@ -83,15 +83,15 @@ const service = {
                 }).catch((error: any) => {
                     console.log(error.response.data);
                 })
-            
+
             await Promise.all(
                 getStates.map(async (state: any) => {
                     const entity_id = state.entity_id;
                     const domain: DeviceTypeCode = entity_id.substring(0, entity_id.indexOf('.'))
-    
+
                     if (Object.values(DeviceTypeCode).includes(domain)) {
                         let haEntity: any = null;
-    
+
                         try {
                             haEntity = await haEntityService.getByEntityId(entity_id);
                         } catch (error) {
@@ -102,14 +102,14 @@ const service = {
                                 description: state.attributes.friendly_name,
                                 accessed_at: new Date(state.attributes.last_triggered || state.last_updated)
                             }
-    
+
                             haEntity = await haEntityService.create(haEntityCreate)
                         }
-    
+
                         switch (domain) {
-                            case DeviceTypeCode.script:
+                            case DeviceTypeCode.script || DeviceTypeCode.scene:
                                 let script: any = null
-    
+
                                 try {
                                     script = await scriptService.getByHomeIdAndId(home.id, entity_id);
                                 } catch (error) {
@@ -120,13 +120,13 @@ const service = {
                                         name: state.attributes.friendly_name,
                                         description: state.attributes.friendly_name,
                                     }
-    
+
                                     await scriptService.create(scriptCreate);
                                 }
                                 break;
-                            case DeviceTypeCode.scene:
+                            case DeviceTypeCode.automation:
                                 let automation: any = null
-    
+
                                 try {
                                     automation = await automationService.getByHomeIdAndEntityId(home.id, entity_id);
                                 } catch (error) {
@@ -137,14 +137,14 @@ const service = {
                                         name: state.attributes.friendly_name,
                                         description: state.attributes.friendly_name,
                                     }
-    
+
                                     await automationService.create(automationCreate);
                                 }
                                 break;
                             default:
                                 let device: any = null;
                                 const deviceType = await deviceTypeService.getByCode(domain)
-    
+
                                 try {
                                     device = await deviceService.getByHomeIdAndEntityId(home.id, entity_id);
                                 } catch (error) {
@@ -158,7 +158,7 @@ const service = {
                                         sub_type: state.attributes.friendly_name,
                                         attributes: JSON.stringify(state.attributes),
                                     }
-    
+
                                     await deviceService.create(deviceCreate);
                                 }
                                 break;

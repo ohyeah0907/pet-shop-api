@@ -39,6 +39,7 @@ enum DeviceTypeCode {
   sensor
   switch
   vacuum
+  automation
 }
 
 enum ActionableType {
