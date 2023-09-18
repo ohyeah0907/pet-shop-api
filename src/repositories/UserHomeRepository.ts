@@ -1,4 +1,3 @@
-import { GetResult } from "@prisma/client/runtime/library";
 import prisma from "../prisma"
 import { UserHome, ObjectState } from "@prisma/client";
 import { UserHomeSearch } from "../dto/user_home";
@@ -47,7 +46,7 @@ const findById = async (id: number) => {
 }
 
 const findByHomeIdAndUserId = async (homeId: number, userId: number) => {
-    const userHome = await prisma.userHome.findUnique({
+    const userHome = await prisma.userHome.findFirst({
         include: {
             user: true,
             home: true

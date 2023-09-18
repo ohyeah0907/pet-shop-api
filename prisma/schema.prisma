@@ -157,7 +157,7 @@ model UserSocial {
 model UserHome {
   id             Int            @id @default(autoincrement())
   user           User           @relation(fields: [user_id], references: [id])
-  user_id        Int            @unique
+  user_id        Int            
   home           Home           @relation(fields: [home_id], references: [id], onDelete: Cascade)
   home_id        Int
   ha_username    String         @db.VarChar(255)
@@ -174,6 +174,8 @@ model UserHome {
   deleted_at     DateTime?
   user_schedules UserSchedule[]
   user_fcms      UserFCM[]
+
+  @@unique([user_id, home_id], name: "user_home_unique")
 }
 
 model KeyStore {
