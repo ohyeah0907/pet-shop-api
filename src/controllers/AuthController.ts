@@ -13,6 +13,14 @@ const controller = {
             return new BadRequestResponse(error.message).send(res);
         }
     },
+    register: async (req: Request, res: Response) => {
+        try {
+            const result = await authService.register(req.body.register);
+            return new SuccessResponse("Đăng ký thành công", result).send(res);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
     logout: async (req: ProtectedRequest, res: Response) => {
         try {
             const result = await authService.logout(req.user);
@@ -25,6 +33,22 @@ const controller = {
         try {
             const { accessToken, refreshToken } = req.headers;
 
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
+    resend: async (req: Request, res: Response) => {
+        try {
+            const result = await authService.resend(req.body.resend);
+            return new SuccessResponse("Bạn hãy check email để xác thực tài khoản!", result).send(res);
+        } catch (error: any) {
+            return new BadRequestResponse(error.message).send(res);
+        }
+    },
+    verify: async (req: Request, res: Response) => {
+        try {
+            const result = await authService.verify(req.params.token);
+            return new SuccessResponse("Xác thực thành công!", result).send(res);
         } catch (error: any) {
             return new BadRequestResponse(error.message).send(res);
         }

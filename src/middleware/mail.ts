@@ -9,7 +9,7 @@ export const sendMailVerification = async (email: string, token: string): Promis
         from: emailConstant.auth!.user,
         to: email,
         subject: "Verify your email",
-        html: `<p>Click <a href="http://localhost:4000/api/v2/oauth2/verify-email/${token}">here</a> to verify your email</p>`,
+        html: `<p>Click <a href="http://localhost:4000/api/auth/verify-email/${token}">here</a> to verify your email</p>`,
     };
 
     return transport

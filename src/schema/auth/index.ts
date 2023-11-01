@@ -5,8 +5,19 @@ import { JoiAuthBearer } from '../../middleware/validator';
 export default {
     userLogin: Joi.object().keys({
         login: Joi.object().keys({
-            username: Joi.string().required().trim(),
+            email: Joi.string().required().trim(),
             password: Joi.string().required().trim(),
+        }).required(),
+    }),
+    userRegister: Joi.object().keys({
+        register: Joi.object().keys({
+            email: Joi.string().required().trim(),
+            password: Joi.string().required().trim(),
+        }).required(),
+    }),
+    userResend: Joi.object().keys({
+        resend: Joi.object().keys({
+            email: Joi.string().required().trim(),
         }).required(),
     }),
     apiKey: Joi.object()

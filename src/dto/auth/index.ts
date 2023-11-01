@@ -1,10 +1,18 @@
 import { Tokens } from "../../types/app-request";
 
 export type AuthLogin = {
-    username: string;
+    email: string;
     password: string;
 }
 
+export type AuthRegister = {
+    email: string,
+    password: string,
+}
+
+export type AuthResend = {
+    email: string,
+}
 export type AuthLoginResponse = {
     tokens: Tokens;
     user: UserInfo;

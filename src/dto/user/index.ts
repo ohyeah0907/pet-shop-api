@@ -1,4 +1,3 @@
-import { UserSocial } from "@prisma/client";
 
 export type UserCreate = {
     name: string;
@@ -8,7 +7,6 @@ export type UserCreate = {
     password: string;
     is_voice: boolean;
     verification_token: string;
-    social?: UserSocial
 }
 
 export type UserUpdate = {

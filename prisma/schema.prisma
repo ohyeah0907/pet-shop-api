@@ -17,165 +17,205 @@ enum ObjectState {
   DELETED
 }
 
-enum DeviceTypeCode {
-  alarm_control_panel
-  binary_sensor
-  button
-  camera
-  climate
-  cover
-  fan
-  group
-  humidifier
-  input_boolean
-  input_button
-  input_select
-  light
-  lock
-  media_player
-  scene
-  script
-  select
-  sensor
-  switch
-  vacuum
-  automation
-}
-
-enum ActionableType {
-  Filter
-  Script
-  Automation
-  Device
-  Sensor
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPING
+  COMPLETED
+  CANCELLED
 }
 
 // Model
-
-model Cloud {
-  id          Int         @id @default(autoincrement())
-  ip          String      @unique @db.VarChar(255)
-  domain      String      @unique @db.VarChar(255)
-  state       ObjectState @default(ACTIVE)
-  created_at  DateTime    @default(now())
-  updated_at  DateTime    @updatedAt
-  deleted_at  DateTime?
-  home_clouds HomeCloud[]
+model PetType {
+  id         Int         @id @default(autoincrement())
+  name       String      @db.VarChar(255)
+  parent     PetType?    @relation("PetCategoryParent", fields: [parent_id], references: [id])
+  parent_id  Int?
+  state      ObjectState @default(ACTIVE)
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  deleted_at DateTime?
+  children   PetType[]   @relation("PetCategoryParent")
+  pets       Pet[]
 }
 
-model HomeCloud {
-  id                 Int         @id @default(autoincrement())
-  cloud              Cloud       @relation(fields: [cloud_id], references: [id])
-  cloud_id           Int
-  home               Home        @relation("Home", fields: [home_id], references: [id])
-  home_id            Int
-  vpn_ip             String      @db.VarChar(255)
-  private_key        String      @db.VarChar(255)
-  public_key         String      @db.VarChar(255)
-  pre_shared_key     String      @db.VarChar(255)
-  cloud_port         Int         @db.Integer
-  state              ObjectState @default(ACTIVE)
-  created_at         DateTime    @default(now())
-  updated_at         DateTime    @updatedAt
-  deleted_at         DateTime?
-  active_home_clouds Home[]      @relation("ActiveHomeCloud")
-
-  @@unique([cloud_id, home_id], name: "unique_cloud_home")
-}
-
-model Home {
-  id                   Int               @id @default(autoincrement())
-  name                 String            @db.VarChar(255)
-  address              String            @db.VarChar(255)
-  lan_ip               String            @db.VarChar(255)
-  lan_port             Int               @db.Integer
-  wan_domain           String            @unique @db.VarChar(255)
-  wan_port             Int               @db.Integer
-  image_url            String            @db.VarChar(255)
-  active_home_cloud    HomeCloud?        @relation("ActiveHomeCloud", fields: [active_home_cloud_id], references: [id])
-  active_home_cloud_id Int?              @db.Integer
-  state                ObjectState       @default(ACTIVE)
-  created_at           DateTime          @default(now())
-  updated_at           DateTime          @updatedAt
-  deleted_at           DateTime?
-  home_clouds          HomeCloud[]       @relation("Home")
-  rooms                Room[]
-  cameras              Camera[]
-  scripts              Script[]
-  automations          Automation[]
-  devices              Device[]
-  sensors              Sensor[]
-  ha_entities          HAEntity[]
-  user_homes           UserHome[]
-  home_translations    HomeTranslation[]
-}
-
-model User {
+model Pet {
   id                 Int                @id @default(autoincrement())
+  sku                String             @unique @db.VarChar(255)
   name               String             @db.VarChar(255)
-  email              String             @unique @db.VarChar(255)
-  phone              String             @db.VarChar(255)
-  username           String             @unique @db.VarChar(255)
-  password           String             @db.VarChar(255)
-  avatar_url         String             @default("") @db.VarChar(255)
-  is_admin           Boolean            @default(false)
-  is_locked          Boolean            @default(false)
-  is_voice           Boolean            @default(false)
-  verification_token String             @db.VarChar(255)
-  is_verified        Boolean            @default(false)
-  verified_at        DateTime?
+  stock_quantity     Int                @default(0)
+  price              Float              @default(0)
+  thumbnail_image    String             @default("") @db.VarChar(255)
+  description_image  String[]           @default([])
+  age                Int                @default(0)
+  isMale             Boolean            @default(true)
+  color              String             @default("") @db.VarChar(255)
+  weight             Float              @default(0)
+  height             Float              @default(0)
+  birth_date         DateTime?
+  origin             String             @default("") @db.VarChar(255)
+  description        String             @default("") @db.VarChar(255)
+  type               PetType            @relation(fields: [type_id], references: [id])
+  type_id            Int
   state              ObjectState        @default(ACTIVE)
   created_at         DateTime           @default(now())
   updated_at         DateTime           @updatedAt
   deleted_at         DateTime?
-  key_store          KeyStore[]
-  user_homes         UserHome[]
-  sessions           Session[]
-  user_tags          UserTag[]
-  user_notifications UserNotification[]
-  user_room_devices  UserDevice[]
-  voice_sessions     VoiceSession[]
-  user_socials       UserSocial[]
+  product_feedbacks  ProductFeedback[]
+  promotions         Promotion[]
+  product_promotions ProductPromotion[]
+  carts              Cart[]
+  order_details      OrderDetail[]
 }
 
-model UserSocial {
-  id            Int         @id @default(autoincrement())
-  user          User        @relation(fields: [user_id], references: [id])
+model AccessoryType {
+  id          Int             @id @default(autoincrement())
+  name        String          @db.VarChar(255)
+  parent      AccessoryType?  @relation("AccessoryCategoryParent", fields: [parent_id], references: [id])
+  parent_id   Int?
+  state       ObjectState     @default(ACTIVE)
+  created_at  DateTime        @default(now())
+  updated_at  DateTime        @updatedAt
+  deleted_at  DateTime?
+  children    AccessoryType[] @relation("AccessoryCategoryParent")
+  accessories Accessory[]
+}
+
+model Accessory {
+  id                 Int                @id @default(autoincrement())
+  sku                String             @unique @db.VarChar(255)
+  name               String             @db.VarChar(255)
+  stock_quantity     Int                @default(0)
+  price              Float              @default(0)
+  thumbnail_image    String             @default("") @db.VarChar(255)
+  description_image  String[]           @default([])
+  origin             String             @default("") @db.VarChar(255)
+  description        String             @default("") @db.VarChar(255)
+  type               AccessoryType      @relation(fields: [type_id], references: [id])
+  type_id            Int
+  state              ObjectState        @default(ACTIVE)
+  created_at         DateTime           @default(now())
+  updated_at         DateTime           @updatedAt
+  deleted_at         DateTime?
+  product_feedbacks  ProductFeedback[]
+  promotions         Promotion[]
+  product_promotions ProductPromotion[]
+  carts              Cart[]
+  order_details      OrderDetail[]
+}
+
+model ProductFeedback {
+  id           Int         @id @default(autoincrement())
+  pet          Pet?        @relation(fields: [pet_id], references: [id])
+  pet_id       Int?
+  accessory    Accessory?  @relation(fields: [accessory_id], references: [id])
+  accessory_id Int?
+  user         User        @relation(fields: [user_id], references: [id])
+  user_id      Int
+  content      String      @db.VarChar(255)
+  state        ObjectState @default(ACTIVE)
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+  deleted_at   DateTime?
+}
+
+model Promotion {
+  id                 Int                @id @default(autoincrement())
+  name               String             @db.VarChar(255)
+  description        String             @default("") @db.VarChar(255)
+  start_date         DateTime
+  end_date           DateTime
+  state              ObjectState        @default(ACTIVE)
+  created_at         DateTime           @default(now())
+  updated_at         DateTime
+  deleted_at         DateTime?
+  pet                Pet?               @relation(fields: [pet_id], references: [id])
+  pet_id             Int?
+  accessory          Accessory?         @relation(fields: [accessory_id], references: [id])
+  accessory_id       Int?
+  product_promotions ProductPromotion[]
+}
+
+model ProductPromotion {
+  id           Int         @id @default(autoincrement())
+  pet          Pet?        @relation(fields: [pet_id], references: [id])
+  pet_id       Int?
+  accessory    Accessory?  @relation(fields: [accessory_id], references: [id])
+  accessory_id Int?
+  promotion    Promotion   @relation(fields: [promotion_id], references: [id])
+  promotion_id Int
+  state        ObjectState @default(ACTIVE)
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+  deleted_at   DateTime?
+}
+
+model Cart {
+  id           Int         @id @default(autoincrement())
+  user         User        @relation(fields: [user_id], references: [id])
+  user_id      Int
+  pet          Pet?        @relation(fields: [pet_id], references: [id])
+  pet_id       Int?
+  accessory    Accessory?  @relation(fields: [accessory_id], references: [id])
+  accessory_id Int?
+  quantity     Int         @default(0)
+  state        ObjectState @default(ACTIVE)
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+  deleted_at   DateTime?
+}
+
+model Order {
+  id            Int           @id @default(autoincrement())
+  user          User          @relation(fields: [user_id], references: [id])
+  order_status  OrderStatus   @default(PENDING)
   user_id       Int
-  name          String      @db.VarChar(255)
-  email         String      @db.VarChar(255)
-  avatar_url    String      @db.VarChar(255)
-  provider_name String      @db.VarChar(255)
-  provider_id   String      @db.VarChar(255)
-  access_token  String      @db.VarChar(255)
-  state         ObjectState @default(ACTIVE)
-  created_at    DateTime    @default(now())
-  updated_at    DateTime    @updatedAt
+  payment       String        @db.VarChar(255)
+  state         ObjectState   @default(ACTIVE)
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @updatedAt
   deleted_at    DateTime?
+  order_details OrderDetail[]
 }
 
-model UserHome {
-  id             Int            @id @default(autoincrement())
-  user           User           @relation(fields: [user_id], references: [id])
-  user_id        Int            
-  home           Home           @relation(fields: [home_id], references: [id], onDelete: Cascade)
-  home_id        Int
-  ha_username    String         @db.VarChar(255)
-  ha_password    String         @db.VarChar(255)
-  access_token   String?        @db.VarChar(255)
-  refresh_token  String?        @db.VarChar(255)
-  expired_at     DateTime?
-  lan_only       Boolean        @default(false)
-  is_owner       Boolean        @default(false)
-  ordering       Int            @db.Integer
-  state          ObjectState    @default(ACTIVE)
-  created_at     DateTime       @default(now())
-  updated_at     DateTime       @updatedAt
-  deleted_at     DateTime?
-  user_schedules UserSchedule[]
-  user_fcms      UserFCM[]
+model OrderDetail {
+  id           Int         @id @default(autoincrement())
+  order        Order       @relation(fields: [order_id], references: [id])
+  order_id     Int
+  pet          Pet?        @relation(fields: [pet_id], references: [id])
+  pet_id       Int?
+  accessory    Accessory?  @relation(fields: [accessory_id], references: [id])
+  accessory_id Int?
+  quantity     Int         @default(0)
+  state        ObjectState @default(ACTIVE)
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+  deleted_at   DateTime?
+}
 
-  @@unique([user_id, home_id], name: "user_home_unique")
+model User {
+  id                 Int               @id @default(autoincrement())
+  name               String            @db.VarChar(255)
+  email              String            @unique @db.VarChar(255)
+  phone              String            @db.VarChar(255)
+  username           String            @unique @db.VarChar(255)
+  password           String            @db.VarChar(255)
+  avatar_url         String            @default("") @db.VarChar(255)
+  facebook_id        String?           @default("") @db.VarChar(255)
+  google_id          String?           @default("") @db.VarChar(255)
+  is_admin           Boolean           @default(false)
+  is_locked          Boolean           @default(false)
+  verification_token String            @db.VarChar(255)
+  is_verified        Boolean           @default(false)
+  verified_at        DateTime?
+  state              ObjectState       @default(ACTIVE)
+  created_at         DateTime          @default(now())
+  updated_at         DateTime          @updatedAt
+  deleted_at         DateTime?
+  key_store          KeyStore[]
+  product_feedbacks  ProductFeedback[]
+  carts              Cart[]
+  orders             Order[]
 }
 
 model KeyStore {
@@ -188,462 +228,4 @@ model KeyStore {
   created_at    DateTime    @default(now())
   updated_at    DateTime    @updatedAt
   deleted_at    DateTime?
-}
-
-model Room {
-  id                   Int            @id @default(autoincrement())
-  home                 Home           @relation(fields: [home_id], references: [id])
-  home_id              Int
-  name                 String         @db.VarChar(255)
-  thumb_image          String         @db.VarChar(255)
-  panorama_image       String         @db.VarChar(255)
-  is_home              Boolean        @default(false)
-  ordering             Int            @db.Integer
-  state                ObjectState    @default(ACTIVE)
-  created_at           DateTime       @default(now())
-  updated_at           DateTime       @updatedAt
-  deleted_at           DateTime?
-  room_cameras         RoomCamera[]
-  actionables          Actionable[]
-  room_devices         RoomDevice[]
-  room_shortcuts       RoomShortcut[] @relation("MainRoom")
-  room_shortcut_others RoomShortcut[] @relation("OrtherRoom")
-}
-
-model Session {
-  id           Int         @id @default(autoincrement())
-  user         User        @relation(fields: [user_id], references: [id])
-  user_id      Int
-  token        String      @unique @db.VarChar(255)
-  ip           String      @db.VarChar(255)
-  location     String      @db.VarChar(255)
-  user_agent   String      @db.VarChar(255)
-  device       String      @db.VarChar(255)
-  platform     String      @db.VarChar(255)
-  finger_print String      @db.VarChar(255)
-  accessed_at  DateTime
-  expired_at   DateTime
-  state        ObjectState @default(ACTIVE)
-  created_at   DateTime    @default(now())
-  updated_at   DateTime    @updatedAt
-  deleted_at   DateTime?
-}
-
-model Filter {
-  id             Int         @id @default(autoincrement())
-  device_type    DeviceType  @relation(fields: [device_type_id], references: [id])
-  device_type_id Int
-  name           String      @db.VarChar(255)
-  icon           String      @db.VarChar(255)
-  background_on  String      @db.VarChar(255)
-  background_off String      @db.VarChar(255)
-  color_on       String      @db.VarChar(255)
-  color_off      String      @db.VarChar(255)
-  state          ObjectState @default(ACTIVE)
-  created_at     DateTime    @default(now())
-  updated_at     DateTime    @updatedAt
-  deleted_at     DateTime?
-}
-
-model Camera {
-  id              Int          @id @default(autoincrement())
-  home            Home         @relation(fields: [home_id], references: [id])
-  home_id         Int
-  ha_entity       HAEntity?    @relation(fields: [ha_entity_id], references: [id])
-  ha_entity_id    Int?
-  camera_brand    CameraBrand  @relation(fields: [camera_brand_id], references: [id])
-  camera_brand_id Int
-  username        String       @db.VarChar(255)
-  password        String       @db.VarChar(255)
-  name            String       @db.VarChar(255)
-  lan_ip          String       @db.VarChar(255)
-  lan_port        Int          @db.Integer
-  lan_uri         String       @db.VarChar(255)
-  wan_ip          String       @db.VarChar(255)
-  wan_port        Int          @db.Integer
-  wan_uri         String       @db.VarChar(255)
-  cloud_domain    String       @db.VarChar(255)
-  cloud_port      Int          @db.Integer
-  cloud_uri       String       @db.VarChar(255)
-  state           ObjectState  @default(ACTIVE)
-  created_at      DateTime     @default(now())
-  updated_at      DateTime     @updatedAt
-  deleted_at      DateTime?
-  room_cameras    RoomCamera[]
-  presets         Preset[]
-}
-
-model RoomCamera {
-  id         Int         @id @default(autoincrement())
-  room       Room        @relation(fields: [room_id], references: [id])
-  room_id    Int
-  camera     Camera      @relation(fields: [camera_id], references: [id])
-  camera_id  Int
-  pinned     Boolean     @default(false)
-  ordering   Int         @db.Integer
-  state      ObjectState @default(ACTIVE)
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-
-  @@unique([room_id, camera_id], name: "room_camera_unique")
-}
-
-model Preset {
-  id         Int         @id @default(autoincrement())
-  camera     Camera      @relation(fields: [camera_id], references: [id])
-  camera_id  Int
-  name       String      @db.VarChar(255)
-  url        String      @db.VarChar(255)
-  state      ObjectState @default(ACTIVE)
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  devices    Device[]
-}
-
-model Script {
-  id           Int         @id @default(autoincrement())
-  home         Home        @relation(fields: [home_id], references: [id])
-  home_id      Int
-  ha_entity    HAEntity    @relation(fields: [ha_entity_id], references: [id])
-  ha_entity_id Int
-  name         String      @db.VarChar(255)
-  description  String      @db.VarChar(255)
-  accessed_at  DateTime
-  state        ObjectState @default(ACTIVE)
-  created_at   DateTime    @default(now())
-  updated_at   DateTime    @updatedAt
-  deleted_at   DateTime?
-
-  @@unique([home_id, ha_entity_id], name: "script_entity_unique")
-}
-
-model Automation {
-  id           Int         @id @default(autoincrement())
-  home         Home        @relation(fields: [home_id], references: [id])
-  home_id      Int
-  ha_entity    HAEntity    @relation(fields: [ha_entity_id], references: [id])
-  ha_entity_id Int
-  name         String      @db.VarChar(255)
-  description  String      @db.VarChar(255)
-  accessed_at  DateTime
-  state        ObjectState @default(ACTIVE)
-  created_at   DateTime    @default(now())
-  updated_at   DateTime    @updatedAt
-  deleted_at   DateTime?
-
-  @@unique([home_id, ha_entity_id], name: "automation_entity_unique")
-}
-
-model Sensor {
-  id         Int         @id @default(autoincrement())
-  home       Home        @relation(fields: [home_id], references: [id])
-  home_id    Int
-  entity_id  String      @db.VarChar(255)
-  name       String      @db.VarChar(255)
-  state      ObjectState @default(ACTIVE)
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-
-  @@unique([home_id, entity_id], name: "sensor_entity_unique")
-}
-
-model Device {
-  id           Int          @id @default(autoincrement())
-  home         Home         @relation(fields: [home_id], references: [id])
-  home_id      Int
-  ha_entity    HAEntity?    @relation(fields: [ha_entity_id], references: [id])
-  ha_entity_id Int?
-  type         DeviceType?  @relation(fields: [type_id], references: [id])
-  type_id      Int?
-  sub_type     String       @db.VarChar(255)
-  name         String       @db.VarChar(255)
-  description  String       @db.VarChar(255)
-  status       Boolean      @default(false)
-  attributes   String       @db.Text
-  preset       Preset?      @relation(fields: [preset_id], references: [id])
-  preset_id    Int?
-  state        ObjectState  @default(ACTIVE)
-  created_at   DateTime     @default(now())
-  updated_at   DateTime     @updatedAt
-  deleted_at   DateTime?
-  room_devices RoomDevice[]
-  user_devices UserDevice[]
-
-  @@unique([home_id, ha_entity_id], name: "device_entity_unique")
-}
-
-model DeviceType {
-  id         Int            @id @default(autoincrement())
-  code       DeviceTypeCode @unique
-  name       String         @db.VarChar(255)
-  state      ObjectState    @default(ACTIVE)
-  created_at DateTime       @default(now())
-  updated_at DateTime       @updatedAt
-  deleted_at DateTime?
-  devices    Device[]
-  filters    Filter[]
-}
-
-model UserDevice {
-  id          Int         @id @default(autoincrement())
-  user        User        @relation(fields: [user_id], references: [id])
-  user_id     Int
-  device      Device      @relation(fields: [device_id], references: [id], onDelete: Cascade)
-  device_id   Int
-  is_favorite Boolean     @default(false)
-  enable      Boolean     @default(true)
-  state       ObjectState @default(ACTIVE)
-  created_at  DateTime    @default(now())
-  updated_at  DateTime    @updatedAt
-  deleted_at  DateTime?
-}
-
-model Actionable {
-  id         Int            @id @default(autoincrement())
-  room       Room           @relation(fields: [room_id], references: [id])
-  room_id    Int
-  type_id    Int
-  type       ActionableType
-  name       String         @db.VarChar(255)
-  ordering   Int            @db.Integer
-  state      ObjectState    @default(ACTIVE)
-  created_at DateTime       @default(now())
-  updated_at DateTime       @updatedAt
-  deleted_at DateTime?
-}
-
-model CameraBrand {
-  id             Int         @id @default(autoincrement())
-  name           String      @db.VarChar(255)
-  url_pattern    String      @db.VarChar(255)
-  preset_pattern String      @db.VarChar(255)
-  state          ObjectState @default(ACTIVE)
-  created_at     DateTime    @default(now())
-  updated_at     DateTime    @updatedAt
-  deleted_at     DateTime?
-  cameras        Camera[]
-}
-
-model UserSchedule {
-  id             Int            @id @default(autoincrement())
-  user_home      UserHome       @relation(fields: [user_home_id], references: [id])
-  user_home_id   Int
-  started_at     DateTime
-  ended_at       DateTime
-  state          ObjectState    @default(ACTIVE)
-  created_at     DateTime       @default(now())
-  updated_at     DateTime       @updatedAt
-  deleted_at     DateTime?
-  schedule_weeks ScheduleWeek[]
-}
-
-model ScheduleWeek {
-  id             Int            @id @default(autoincrement())
-  schedule       UserSchedule   @relation(fields: [schedule_id], references: [id])
-  schedule_id    Int
-  week_day       Int
-  enable         Boolean        @default(false)
-  state          ObjectState    @default(ACTIVE)
-  created_at     DateTime       @default(now())
-  updated_at     DateTime       @updatedAt
-  deleted_at     DateTime?
-  schedule_hours ScheduleHour[]
-}
-
-model ScheduleHour {
-  id               Int          @id @default(autoincrement())
-  schedule_week    ScheduleWeek @relation(fields: [schedule_week_id], references: [id])
-  schedule_week_id Int
-  started_hour     Int
-  ended_hour       Int
-  state            ObjectState  @default(ACTIVE)
-  created_at       DateTime     @default(now())
-  updated_at       DateTime     @updatedAt
-  deleted_at       DateTime?
-}
-
-model RoomDevice {
-  id         Int         @id @default(autoincrement())
-  room       Room        @relation(fields: [room_id], references: [id])
-  room_id    Int
-  device     Device      @relation(fields: [device_id], references: [id])
-  device_id  Int
-  ordering   Int         @db.Integer
-  longitude  Float       @db.DoublePrecision
-  latitude   Float       @db.DoublePrecision
-  is_clone   Boolean     @default(true)
-  state      ObjectState @default(ACTIVE)
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-
-  @@unique([room_id, device_id], name: "room_device_unique")
-}
-
-model Tag {
-  id         Int         @id @default(autoincrement())
-  name       String      @db.VarChar(255)
-  state      ObjectState @default(ACTIVE)
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  user_tags  UserTag[]
-}
-
-model Notification {
-  id                 Int                @id @default(autoincrement())
-  name               String             @db.VarChar(255)
-  data               String             @db.Text
-  content            String             @db.VarChar(255)
-  has_media          Boolean            @default(false)
-  deep_link          String             @db.VarChar(255)
-  state              ObjectState        @default(ACTIVE)
-  created_at         DateTime           @default(now())
-  updated_at         DateTime           @updatedAt
-  deleted_at         DateTime?
-  user_notifications UserNotification[]
-}
-
-model UserTag {
-  id         Int         @id @default(autoincrement())
-  user       User        @relation(fields: [user_id], references: [id])
-  user_id    Int
-  tag        Tag         @relation(fields: [tag_id], references: [id])
-  tag_id     Int
-  state      ObjectState @default(ACTIVE)
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-
-  @@unique([user_id, tag_id], name: "user_tag_unique")
-}
-
-model UserNotification {
-  id              Int          @id @default(autoincrement())
-  user_fcm        UserFCM      @relation(fields: [user_fcm_id], references: [id])
-  user_fcm_id     Int
-  notification    Notification @relation(fields: [notification_id], references: [id])
-  notification_id Int
-  is_sent         Boolean      @default(false)
-  sent_at         DateTime?
-  is_viewed       Boolean      @default(false)
-  viewed_at       DateTime?
-  state           ObjectState  @default(ACTIVE)
-  created_at      DateTime     @default(now())
-  updated_at      DateTime     @updatedAt
-  deleted_at      DateTime?
-  User            User?        @relation(fields: [userId], references: [id])
-  userId          Int?
-}
-
-model RoomShortcut {
-  id            Int         @id @default(autoincrement())
-  room          Room        @relation("MainRoom", fields: [room_id], references: [id])
-  room_id       Int
-  room_other    Room        @relation("OrtherRoom", fields: [room_other_id], references: [id])
-  room_other_id Int
-  longitude     Float       @db.DoublePrecision
-  latitude      Float       @db.DoublePrecision
-  state         ObjectState @default(ACTIVE)
-  created_at    DateTime    @default(now())
-  updated_at    DateTime    @updatedAt
-  deleted_at    DateTime?
-
-  @@unique([room_id, room_other_id], name: "room_shortcut_unique")
-}
-
-model HAEntity {
-  id          Int          @id @default(autoincrement())
-  home        Home         @relation(fields: [home_id], references: [id])
-  home_id     Int
-  entity_id   String
-  name        String       @db.VarChar(255)
-  description String       @db.VarChar(255)
-  accessed_at DateTime
-  state       ObjectState  @default(ACTIVE)
-  created_at  DateTime     @default(now())
-  updated_at  DateTime     @updatedAt
-  deleted_at  DateTime?
-  cameras     Camera[]
-  devices     Device[]
-  scripts     Script[]
-  automations Automation[]
-
-  @@unique([home_id, entity_id], name: "home_entity_unique")
-}
-
-model VoiceProject {
-  id             Int            @id @default(autoincrement())
-  project_id     String         @db.VarChar(255)
-  client_id      String         @unique @db.VarChar(255)
-  name           String         @db.VarChar(255)
-  client_secret  String         @db.VarChar(255)
-  redirect_uris  String[]       @db.VarChar(255)
-  state          ObjectState    @default(ACTIVE)
-  created_at     DateTime       @default(now())
-  updated_at     DateTime       @updatedAt
-  deleted_at     DateTime?
-  voice_sessions VoiceSession[]
-}
-
-model VoiceSession {
-  id               Int          @id @default(autoincrement())
-  user             User         @relation(fields: [user_id], references: [id])
-  user_id          Int
-  voice_project    VoiceProject @relation(fields: [voice_project_id], references: [id])
-  voice_project_id Int
-  access_token     String       @db.VarChar(255)
-  refresh_token    String       @db.VarChar(255)
-  expired_at       DateTime
-  state            ObjectState  @default(ACTIVE)
-  created_at       DateTime     @default(now())
-  updated_at       DateTime     @updatedAt
-  deleted_at       DateTime?
-}
-
-model UserFCM {
-  id                 Int                @id @default(autoincrement())
-  user_home          UserHome           @relation(fields: [user_home_id], references: [id])
-  user_home_id       Int
-  fcm_subcribe_id    String             @unique @db.VarChar(255)
-  device_name        String             @db.VarChar(255)
-  app_name           String             @db.VarChar(255)
-  subcribe_date      DateTime
-  other_info         String             @db.Text
-  status             Boolean            @default(true)
-  state              ObjectState        @default(ACTIVE)
-  created_at         DateTime           @default(now())
-  updated_at         DateTime           @updatedAt
-  deleted_at         DateTime?
-  user_notifications UserNotification[]
-}
-
-model Language {
-  id                Int               @id @default(autoincrement())
-  name              String            @db.VarChar(255)
-  code              String            @unique @db.VarChar(255)
-  state             ObjectState       @default(ACTIVE)
-  created_at        DateTime          @default(now())
-  updated_at        DateTime          @updatedAt
-  deleted_at        DateTime?
-  home_translations HomeTranslation[]
-}
-
-model HomeTranslation {
-  id          Int         @id @default(autoincrement())
-  home        Home        @relation(fields: [home_id], references: [id])
-  home_id     Int
-  language    Language    @relation(fields: [language_id], references: [id])
-  language_id Int
-  name        String      @db.VarChar(255)
-  address     String      @db.VarChar(255)
-  state       ObjectState @default(ACTIVE)
-  created_at  DateTime    @default(now())
-  updated_at  DateTime    @updatedAt
-  deleted_at  DateTime?
-
-  @@unique([home_id, language_id], name: "home_translation_unique")
 }
