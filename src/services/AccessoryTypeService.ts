@@ -34,10 +34,12 @@ const service = {
     if (update.name) {
       accessory.name = update.name;
     }
+
     if (update.parent) {
       const parent = await service.getById(update.parent!.id);
       accessory.parent_id = parent.id;
     }
+
     accessory.updated_at = new Date();
 
     return await AccessoryTypeRepository.save(accessory);

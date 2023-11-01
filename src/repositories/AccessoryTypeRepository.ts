@@ -1,6 +1,5 @@
 import prisma from "../prisma";
 import { AccessoryType, ObjectState } from "@prisma/client";
-import { AccessoryTypeSearch } from "../dto/accessory_type";
 
 const findAll = async (search?: object, include?: object) => {
   const condition: any = {

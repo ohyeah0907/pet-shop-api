@@ -10,8 +10,3 @@ export type AccessoryTypeUpdate = {
   name: String;
   parent?: AccessoryType;
 };
-
-export type AccessoryTypeSearch = {
-  name: String;
-  parent?: AccessoryType;
-};
