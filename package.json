@@ -10,7 +10,7 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "scripts": {
-    "build": "yarn && rimraf build && tsc",
+    "build": "yarn && tsc",
     "predev": "npm install && npm run build",
     "serve": "node -r dotenv/config build/app.js",
     "clean": "rimraf ./build",
