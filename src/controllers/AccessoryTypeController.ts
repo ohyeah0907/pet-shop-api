@@ -6,7 +6,6 @@ const controller = {
   getSearch: async (req: Request, res: Response) => {
     const accessoryTypes = await accessoryTypeService.getSearch(
       req.body?.search,
-      req.body?.include,
     );
     return new SuccessResponse("Thành công!", accessoryTypes).send(res);
   },

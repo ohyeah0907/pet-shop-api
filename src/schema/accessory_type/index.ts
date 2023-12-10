@@ -7,21 +7,21 @@ export default {
         name: Joi.string().required().trim(),
         parent: Joi.object()
           .keys({
-            id: Joi.number().required(),
+            id: Joi.number().allow(null),
           })
-          .allow(null),
+          .required(),
       })
       .required(),
   }),
   accessoryTypeUpdate: Joi.object().keys({
     update: Joi.object().keys({
       id: Joi.number().required(),
-      name: Joi.string().allow(null),
+      name: Joi.string().required().trim(),
       parent: Joi.object()
         .keys({
-          id: Joi.number().required(),
+          id: Joi.number().allow(null),
         })
-        .allow(null),
+        .required(),
     }),
   }),
 };

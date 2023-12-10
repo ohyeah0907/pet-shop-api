@@ -1,13 +1,37 @@
+import { AccessoryTypeSearch } from "../dto/accessory_type";
 import prisma from "../prisma";
 import { AccessoryType, ObjectState } from "@prisma/client";
 
-const findAll = async (search?: object, include?: object) => {
-  const condition: any = {
-    ...(search || {}),
-  };
+const findAll = async (search?: AccessoryTypeSearch, include?: object) => {
+  const condition: any = {};
+
+  if (search?.name) {
+    condition.name = {
+      contains: search.name,
+    };
+  }
+  if (search?.parent) {
+    condition.parent_id = search.parent.id;
+  }
+  if (search?.state) {
+    condition.state = search.state;
+  }
+  if (search?.someStates) {
+    condition.state = {
+      in: search.someStates,
+    };
+  }
+  if (search?.notInIds && Array.isArray(search.notInIds)) {
+    condition.id = {
+      notIn: search.notInIds,
+    };
+  }
 
   const accessoryTypes = await prisma.accessoryType.findMany({
-    where: condition,
+    where: {
+      state: ObjectState.ACTIVE,
+      ...condition,
+    },
     include: {
       accessories: true,
       parent: true,
@@ -19,12 +43,10 @@ const findAll = async (search?: object, include?: object) => {
   return accessoryTypes;
 };
 
-const findById = async (id: number) => {
+const findById = async (id: number, include?: object) => {
   const accessoryType = await prisma.accessoryType.findUnique({
     include: {
-      accessories: true,
-      parent: true,
-      children: true,
+      ...(include || {}),
     },
     where: {
       id: id,
@@ -34,7 +56,7 @@ const findById = async (id: number) => {
   return accessoryType;
 };
 
-const save = async (accessoryType: AccessoryType) => {
+const save = async (accessoryType: AccessoryType, include?: object) => {
   if (accessoryType.id) {
     return await prisma.accessoryType.update({
       where: {
@@ -53,7 +75,7 @@ const save = async (accessoryType: AccessoryType) => {
         deleted_at: accessoryType.deleted_at,
       },
       include: {
-        accessories: true,
+        ...(include || {}),
       },
     });
   }
@@ -68,6 +90,9 @@ const save = async (accessoryType: AccessoryType) => {
             },
           }
         : undefined,
+    },
+    include: {
+      ...(include || {}),
     },
   });
 };

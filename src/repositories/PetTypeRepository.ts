@@ -3,23 +3,36 @@ import { PetType, ObjectState } from "@prisma/client";
 import { PetTypeSearch } from "../dto/pet_type";
 
 const findAll = async (search: PetTypeSearch) => {
-  const condition: any = {
-    NOT: {
-      state: ObjectState.DELETED,
-    },
-  };
-  if (search.name) {
+  const condition: any = {};
+  if (search?.name) {
     condition.name = {
       contains: search.name,
     };
   }
+  if (search?.state) {
+    condition.state = search.state;
+  }
+  if (search?.someStates) {
+    condition.state = {
+      in: search.someStates,
+    };
+  }
+  if (search?.notInIds && Array.isArray(search.notInIds)) {
+    condition.id = {
+      notIn: search.notInIds,
+    };
+  }
+
   const petTypes = await prisma.petType.findMany({
     include: {
       pets: true,
       parent: true,
       children: true,
     },
-    where: condition,
+    where: {
+      state: ObjectState.ACTIVE,
+      ...condition,
+    },
   });
   return petTypes;
 };

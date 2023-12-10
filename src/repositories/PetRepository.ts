@@ -3,17 +3,12 @@ import { Pet, ObjectState } from "@prisma/client";
 import { PetSearch } from "../dto/pet";
 
 const findAll = async (search: PetSearch) => {
-  const condition: any = {
-    NOT: {
-      state: ObjectState.DELETED,
-    },
-  };
+  const condition: any = {};
   if (search.name) {
     condition.name = {
       contains: search.name,
     };
   }
-
   if (search.type) {
     if (search.type.id) {
       condition.type = {
@@ -21,12 +16,28 @@ const findAll = async (search: PetSearch) => {
       };
     }
   }
+  if (search?.state) {
+    condition.state = search.state;
+  }
+  if (search?.someStates) {
+    condition.state = {
+      in: search.someStates,
+    };
+  }
+  if (search?.notInIds && Array.isArray(search.notInIds)) {
+    condition.id = {
+      notIn: search.notInIds,
+    };
+  }
 
   const pets = await prisma.pet.findMany({
     include: {
       type: true,
     },
-    where: condition,
+    where: {
+      state: ObjectState.ACTIVE,
+      ...condition,
+    },
   });
   return pets;
 };
@@ -62,8 +73,8 @@ const save = async (pet: Pet) => {
         price: pet.price,
         stock_quantity: pet.stock_quantity,
         thumbnail_image: pet.thumbnail_image,
-        description_image: pet.description_image,
-        birth_date: pet.birth_date,
+        description_images: pet.description_images,
+        birthday: pet.birthday,
         origin: pet.origin,
         description: pet.description,
         isMale: pet.isMale,
@@ -91,8 +102,8 @@ const save = async (pet: Pet) => {
       price: pet.price,
       stock_quantity: pet.stock_quantity,
       thumbnail_image: pet.thumbnail_image,
-      description_image: pet.description_image,
-      birth_date: pet.birth_date,
+      description_images: pet.description_images,
+      birthday: pet.birthday,
       origin: pet.origin,
       description: pet.description,
       isMale: pet.isMale,

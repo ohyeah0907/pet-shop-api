@@ -1,7 +1,7 @@
 import { Tokens } from '../types/app-request';
 import { AuthenticationFailure, InternalServerError } from '../handler/app-error';
 import JWT, { JwtPayload } from '../core/jwt';
-import { token } from '../config/token';
+import { tokenConfig } from '../config/token';
 import { User } from '@prisma/client';
 
 export const getAccessToken = (authorization?: string) => {
@@ -18,8 +18,8 @@ export const validateTokenData = (payload: JwtPayload): boolean => {
         !payload.sub ||
         !payload.aud ||
         !payload.prm ||
-        payload.iss !== token.issuer ||
-        payload.aud !== token.audience ||
+        payload.iss !== tokenConfig.issuer ||
+        payload.aud !== tokenConfig.audience ||
         !payload.sub
     )
         throw new AuthenticationFailure('Invalid Access Token');
@@ -33,30 +33,38 @@ export const createTokens = async (
 ): Promise<Tokens> => {
     const accessToken = await JWT.encode(
         new JwtPayload(
-            token.issuer,
-            token.audience,
+            tokenConfig.issuer,
+            tokenConfig.audience,
             user.id.toString(),
             accessTokenKey,
-            token.accessTokenValidity,
+            tokenConfig.accessTokenValidity,
         ),
     );
 
     if (!accessToken) throw new InternalServerError();
 
-    const refreshToken = await JWT.encode(
+    return {
+        accessToken: accessToken,
+        refreshToken: refreshTokenKey,
+    } as Tokens;
+};
+
+export const createAccessToken = async (
+    userId: number,
+    accessTokenKey: string,
+): Promise<string> => {
+    const accessToken = await JWT.encode(
         new JwtPayload(
-            token.issuer,
-            token.audience,
-            user.id.toString(),
-            refreshTokenKey,
-            token.refreshTokenValidity,
+            tokenConfig.issuer,
+            tokenConfig.audience,
+            userId.toString(),
+            accessTokenKey,
+            tokenConfig.accessTokenValidity,
         ),
     );
 
-    if (!refreshToken) throw new InternalServerError();
+    if (!accessToken) throw new InternalServerError();
 
-    return {
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-    } as Tokens;
+
+    return accessToken;
 };

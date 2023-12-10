@@ -1,19 +1,28 @@
-import { DeviceType, PrismaClient } from "@prisma/client";
-import { device_types } from "./init/device_types"
-import prisma from "../src/prisma"
+import bcrypt from "bcrypt";
+import prisma from "../src/prisma";
 
 const main = async () => {
-    device_types.forEach(async (device_type: any) => {
-        const datas = await prisma.deviceType.create({
-            data: device_type
-        })
-        console.log(datas)
-    })
-}
+  const user = await prisma.user.create({
+    data: {
+      email: "admin@gmail.com",
+      password: bcrypt.hashSync("admin", 10),
+      name: "admin",
+      username: "admin",
+      phone: "0123456789",
+      verification_token: "123456",
+      is_verified: true,
+      is_locked: false,
+      is_admin: true,
+    },
+  } as any);
+};
 
-main().catch(e =>{
-    console.log(e)
-    process.exit(1)
-}).finally(() => {
-    prisma.$disconnect();
-})
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });

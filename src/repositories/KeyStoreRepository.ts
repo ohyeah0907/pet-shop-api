@@ -5,7 +5,16 @@ async function findForKey(client: User, key: string) {
     const keystore = await prisma.keyStore.findFirst({
         where: {
             client_id: client.id,
-            primary_key: key,
+            refresh_token: key,
+        }
+    });
+    return keystore;
+}
+
+async function findByRefreshToken(refresh_token: string) {
+    const keystore = await prisma.keyStore.findFirst({
+        where: {
+            refresh_token: refresh_token,
         }
     });
     return keystore;
@@ -29,14 +38,12 @@ async function removeAllForClient(client: User) {
 
 async function find(
     client: User,
-    primaryKey: string,
-    secondaryKey: string,
+    refresh_token: string,
 ) {
     const keystore = await prisma.keyStore.findFirst({
         where: {
             client_id: client.id,
-            primary_key: primaryKey,
-            secondary_key: secondaryKey,
+            refresh_token: refresh_token,
         }
     });
     return keystore;
@@ -44,14 +51,12 @@ async function find(
 
 async function create(
     client: User,
-    primaryKey: string,
-    secondaryKey: string,
+    refresh_token: string,
 ) {
     const keystore = await prisma.keyStore.create({
         data: {
             client: { connect: { id: client.id } },
-            primary_key: primaryKey,
-            secondary_key: secondaryKey,
+            refresh_token: refresh_token,
         }
     });
     return keystore;
@@ -59,6 +64,7 @@ async function create(
 
 export default {
     findForKey,
+    findByRefreshToken,
     remove,
     removeAllForClient,
     find,

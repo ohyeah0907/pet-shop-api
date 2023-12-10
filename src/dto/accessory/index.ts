@@ -1,11 +1,19 @@
-import { Accessory, AccessoryType } from "@prisma/client";
+import { AccessoryType, ObjectState } from "@prisma/client";
+
+export type AccessorySearch = {
+  name?: string;
+  state?: ObjectState;
+  someStates?: ObjectState[];
+  notInIds?: number[];
+};
 
 export type AccessoryCreate = {
+  sku: string;
   name: string;
   stock_quantity: number;
   price: number;
   thumbnail_image: string;
-  description_image: string[];
+  description_images: string[];
   origin: string;
   description: string;
   type: AccessoryType;
@@ -13,12 +21,13 @@ export type AccessoryCreate = {
 
 export type AccessoryUpdate = {
   id: number;
-  name?: string;
-  stock_quantity?: number;
-  price?: number;
-  thumbnail_image?: string;
-  description_image?: string[];
-  origin?: string;
-  description?: string;
-  type?: AccessoryType;
+  sku: string;
+  name: string;
+  stock_quantity: number;
+  price: number;
+  thumbnail_image: string;
+  description_images: string[];
+  origin: string;
+  description: string;
+  type: AccessoryType;
 };

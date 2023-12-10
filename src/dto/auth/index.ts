@@ -1,28 +1,31 @@
 import { Tokens } from "../../types/app-request";
 
 export type AuthLogin = {
-    email: string;
-    password: string;
-}
+  email: string;
+  password: string;
+};
 
 export type AuthRegister = {
-    email: string,
-    password: string,
-}
+  email: string;
+  password: string;
+};
 
 export type AuthResend = {
-    email: string,
-}
+  email: string;
+};
 export type AuthLoginResponse = {
-    tokens: Tokens;
-    user: UserInfo;
-}
+  tokens: Tokens;
+  user: UserInfo;
+};
 
 export type UserInfo = {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-    isAdmin: boolean;
-    username: string;
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  isAdmin: boolean;
+  username: string;
+};
+export type RefreshTokenResponse = {
+  access_token: string
 }

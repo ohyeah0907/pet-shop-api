@@ -30,4 +30,8 @@ export default {
             authorization: JoiAuthBearer().required(),
         })
         .unknown(true),
+    refreshToken: Joi.object().keys({
+        refreshToken: Joi.string().required().trim(),
+    }),
+        
 }

@@ -1,12 +1,27 @@
+import { UserSearch } from "../dto/user";
 import prisma from "../prisma";
 import { User, ObjectState } from "@prisma/client";
 
-const findAll = async () => {
+const findAll = async (search: UserSearch) => {
+  const conditions: any = {};
+  if (search.state) {
+    conditions.state = search.state;
+  }
+  if (search.someStates) {
+    conditions.state = {
+      in: search.someStates,
+    };
+  }
+  if (search.notInIds && Array.isArray(search.notInIds)) {
+    conditions.id = {
+      notIn: search.notInIds,
+    };
+  }
+
   const users = await prisma.user.findMany({
     where: {
-      NOT: {
-        state: ObjectState.DELETED,
-      },
+      state: ObjectState.ACTIVE,
+      ...conditions,
     },
     orderBy: {
       id: "asc",

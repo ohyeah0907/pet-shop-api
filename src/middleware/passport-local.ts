@@ -2,7 +2,6 @@ import passport from 'passport';
 import passportLocal from 'passport-local';
 import userService from '../services/UserService';
 import bcrypt from 'bcrypt';
-import { User } from '@prisma/client';
 import { Request } from 'express';
 import { BadRequestResponse } from '../handler/app-response';
 

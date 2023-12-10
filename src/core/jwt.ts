@@ -1,7 +1,7 @@
 import { promisify } from 'util';
 import { TokenExpiredError, sign, verify } from 'jsonwebtoken';
 import { InvalidAccessToken, TokenExpired } from '../handler/app-error';
-import { token } from '../config/token';
+import { tokenConfig } from '../config/token';
 
 /*
  * issuer     — Software organization who issues the token.
@@ -37,7 +37,7 @@ export class JwtPayload {
 
 async function encode(payload: JwtPayload): Promise<string> {
   // @ts-ignore
-  return promisify(sign)({ ...payload }, token.jwtSecret, { algorithm: 'HS512' });
+  return promisify(sign)({ ...payload }, tokenConfig.jwtSecret, { algorithm: 'HS512' });
 }
 
 /**
@@ -46,7 +46,7 @@ async function encode(payload: JwtPayload): Promise<string> {
 async function validate(accessToken: string): Promise<JwtPayload> {
   try {
     // @ts-ignore
-    return (await promisify(verify)(accessToken, token.jwtSecret)) as JwtPayload;
+    return (await promisify(verify)(accessToken, tokenConfig.jwtSecret)) as JwtPayload;
   } catch (e: any) {
     // throws error if the token has not been encrypted by the private key
     if(e instanceof TokenExpiredError) throw new TokenExpired("Token đã hết hạn");
@@ -60,7 +60,7 @@ async function validate(accessToken: string): Promise<JwtPayload> {
 async function decode(token: string): Promise<JwtPayload> {
   try {
     // @ts-ignore
-    return (await promisify(verify)(token, token.jwtSecret, {
+    return (await promisify(verify)(token, tokenConfig.jwtSecret, {
       ignoreExpiration: true,
     })) as JwtPayload;
   } catch (e) {
