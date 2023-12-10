@@ -10,11 +10,12 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "scripts": {
+    "build": "yarn && tsc && prisma migrate deploy",
     "predev": "npm install && npm run build",
     "serve": "node -r dotenv/config build/app.js",
     "clean": "rimraf ./build",
     "dev": "tsc && nodemon -q build/app.js",
-    "start": "tsc && prisma migrate deploy && node build/app.js",
+    "start": "node build/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
