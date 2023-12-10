@@ -759,12 +759,12 @@
   dependencies:
     "@babel/runtime" "^7.21.0"
 
-"debug@^3.2.7":
-  "integrity" "sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ=="
-  "resolved" "https://registry.npmjs.org/debug/-/debug-3.2.7.tgz"
-  "version" "3.2.7"
+"debug@^4":
+  "integrity" "sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ=="
+  "resolved" "https://registry.npmjs.org/debug/-/debug-4.3.4.tgz"
+  "version" "4.3.4"
   dependencies:
-    "ms" "^2.1.1"
+    "ms" "2.1.2"
 
 "debug@2.6.9":
   "integrity" "sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA=="
@@ -1488,13 +1488,13 @@
   "resolved" "https://registry.npmjs.org/nodemailer/-/nodemailer-6.9.4.tgz"
   "version" "6.9.4"
 
-"nodemon@^3.0.1":
-  "integrity" "sha512-g9AZ7HmkhQkqXkRc20w+ZfQ73cHLbE8hnPbtaFbFtCumZsjyMhKk9LajQ07U5Ux28lvFjZ5X7HvWR1xzU8jHVw=="
-  "resolved" "https://registry.npmjs.org/nodemon/-/nodemon-3.0.1.tgz"
-  "version" "3.0.1"
+"nodemon@^3.0.2":
+  "integrity" "sha512-9qIN2LNTrEzpOPBaWHTm4Asy1LxXLSickZStAQ4IZe7zsoIpD/A7LWxhZV3t4Zu352uBcqVnRsDXSMR2Sc3lTA=="
+  "resolved" "https://registry.npmjs.org/nodemon/-/nodemon-3.0.2.tgz"
+  "version" "3.0.2"
   dependencies:
     "chokidar" "^3.5.2"
-    "debug" "^3.2.7"
+    "debug" "^4"
     "ignore-by-default" "^1.0.1"
     "minimatch" "^3.1.2"
     "pstree.remy" "^1.1.8"
@@ -2209,10 +2209,10 @@
   "resolved" "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   "version" "0.0.6"
 
-"typescript@^5.1.6", "typescript@>=2.7":
-  "integrity" "sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA=="
-  "resolved" "https://registry.npmjs.org/typescript/-/typescript-5.1.6.tgz"
-  "version" "5.1.6"
+"typescript@^5.3.3", "typescript@>=2.7":
+  "integrity" "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw=="
+  "resolved" "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz"
+  "version" "5.3.3"
 
 "uid-safe@~2.1.5":
   "integrity" "sha512-KPHm4VL5dDXKz01UuEd88Df+KzynaohSL9fBh096KWAxSKZQDI2uBrVqtvRM4rwrIrRRKsdLNML/lnaaVSRioA=="

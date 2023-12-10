@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var asyncHandler_1 = require("../../handler/asyncHandler");
+var OrderDetailController_1 = require("../../controllers/OrderDetailController");
+var validator_1 = require("../../middleware/validator");
+var order_detail_1 = require("../../schema/order_detail");
+var router = (0, express_1.Router)();
+// router.use(authentication);
+router.post("/create", (0, validator_1.default)(order_detail_1.default.orderDetailCreate), (0, asyncHandler_1.default)(OrderDetailController_1.default.create));
+router.put("/update", (0, validator_1.default)(order_detail_1.default.orderDetailUpdate), (0, asyncHandler_1.default)(OrderDetailController_1.default.update));
+router.delete("/delete/:id", (0, asyncHandler_1.default)(OrderDetailController_1.default.delete));
+exports.default = router;

@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var asyncHandler_1 = require("../../handler/asyncHandler");
+var CartController_1 = require("../../controllers/CartController");
+var validator_1 = require("../../middleware/validator");
+var cart_1 = require("../../schema/cart");
+var router = (0, express_1.Router)();
+// router.use(authentication);
+router.post("/create", (0, validator_1.default)(cart_1.default.cartCreate), (0, asyncHandler_1.default)(CartController_1.default.create));
+router.put("/update", (0, validator_1.default)(cart_1.default.cartUpdate), (0, asyncHandler_1.default)(CartController_1.default.update));
+router.delete("/delete/:id", (0, asyncHandler_1.default)(CartController_1.default.delete));
+exports.default = router;
