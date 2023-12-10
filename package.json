@@ -14,7 +14,7 @@
     "predev": "npm install && npm run build",
     "serve": "node -r dotenv/config build/app.js",
     "clean": "rimraf ./build",
-    "dev": "cross-env NODE_ENV=development PORT=4000 concurrently \"tsc --watch\" \"nodemon -q build/app.js\"",
+    "dev": "yarn prisma migrate deploy && nodemon -q build/app.js",
     "prestart": "npm install && npm run build",
     "start": "cross-env NODE_ENV=production PORT=4000 node build/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
