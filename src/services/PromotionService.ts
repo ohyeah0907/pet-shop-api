@@ -20,8 +20,8 @@ const service = {
       id: 0,
       name: create.name,
       description: create.description,
-      start_date: create.start_date,
-      end_date: create.end_date,
+      start_date: new Date(create.start_date),
+      end_date: new Date(create.end_date),
     };
     const created = await PromotionRepository.save(promotion);
 
@@ -32,8 +32,8 @@ const service = {
 
     promotion.name = update.name;
     promotion.description = update.description;
-    promotion.start_date = update.start_date;
-    promotion.end_date = update.end_date;
+    promotion.start_date = new Date(update.start_date);
+    promotion.end_date = new Date(update.end_date);
 
     return await PromotionRepository.save(promotion);
   },
