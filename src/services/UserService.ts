@@ -35,7 +35,9 @@ const service = {
       username: create.username,
       verification_token: create.verification_token || "",
       password: bcrypt.hashSync(create.password, 10),
-      is_voice: true,
+      is_locked: create.is_locked || false,
+      is_verified: create.is_verified || false,
+      is_admin: create.is_admin || false,
     };
     return await UserRepository.save(user);
   },
@@ -63,11 +65,11 @@ const service = {
     if (update.is_locked !== null) {
       user.is_locked = update.is_locked;
     }
-    if (update.is_voice !== null) {
-      user.is_voice = update.is_voice;
-    }
     if (update.is_verified !== null) {
       user.is_verified = update.is_verified;
+    }
+    if (update.verification_token) {
+      user.verification_token = update.verification_token;
     }
     return await UserRepository.save(user);
   },

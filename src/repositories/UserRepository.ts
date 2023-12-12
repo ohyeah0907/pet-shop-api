@@ -157,6 +157,7 @@ const save = async (user: User) => {
       password: user.password,
       is_locked: user.is_locked,
       is_verified: user.is_verified,
+      is_admin: user.is_admin,
     },
     select: {
       id: true,

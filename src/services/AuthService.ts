@@ -44,31 +44,30 @@ const service = {
     return result;
   },
   signInWithGoogle: async (userGoogle: any) => {
-    const profile = userGoogle.profile
+    const profile = userGoogle.profile;
 
     if (!profile)
-      throw new AuthenticationFailure('Không tìm thấy thông tin từ google')
+      throw new AuthenticationFailure("Không tìm thấy thông tin từ google");
 
     if (!profile._json.email_verified)
-      throw new AuthenticationFailure('Email này chưa được xác thực!')
+      throw new AuthenticationFailure("Email này chưa được xác thực!");
 
-    let user: any = null
-    user = await UserRepository.findByEmail(profile._json.email!)
+    let user: any = null;
+    user = await UserRepository.findByEmail(profile._json.email!);
     if (!user) {
       const create: any = {
-        name: profile._json.family_name + ' ' + profile._json.given_name!,
+        name: profile._json.family_name + " " + profile._json.given_name!,
         email: profile._json.email,
         avatar_url: profile._json.picture,
-        phone: '',
-        username: profile._json.email.split('@')[0],
+        phone: "",
+        username: profile._json.email.split("@")[0],
         google_id: profile.id,
-        verification_token: '',
-        password: '',
-        is_voice: true,
+        verification_token: "",
+        password: "",
         is_locked: true,
         is_verified: true,
-      }
-      user = await UserRepository.save(create)
+      };
+      user = await UserRepository.save(create);
     }
     const accessTokenKey = crypto.randomBytes(64).toString("hex");
     const refreshTokenKey = crypto.randomBytes(64).toString("hex");
@@ -86,7 +85,7 @@ const service = {
         isAdmin: user.is_admin,
       },
     };
-    return result
+    return result;
   },
   logout: async (user: any) => {
     await KeyStoreRepository.removeAllForClient(user);
@@ -103,7 +102,6 @@ const service = {
       verification_token: v4(),
       username: register.email,
       password: bcrypt.hashSync(register.password, 10),
-      is_voice: true,
       is_locked: false,
       is_verified: false,
     };
@@ -153,23 +151,20 @@ const service = {
     return userResponse;
   },
   refreshToken: async (refreshToken: string) => {
+    const keyStore = await KeyStoreRepository.findByRefreshToken(refreshToken);
 
-    const keyStore = await KeyStoreRepository.findByRefreshToken(
-      refreshToken
-    )
+    if (!keyStore) throw new NotFound("Không tìm thấy refresh token");
 
-    if (!keyStore) throw new NotFound('Không tìm thấy refresh token')
-
-    const accessTokenKey = crypto.randomBytes(64).toString('hex')
+    const accessTokenKey = crypto.randomBytes(64).toString("hex");
 
     const result: RefreshTokenResponse = {
       access_token: await createAccessToken(
         keyStore.client_id as any,
-        accessTokenKey
+        accessTokenKey,
       ),
-    }
-    return result
-  }
+    };
+    return result;
+  },
 };
 
 export default service;

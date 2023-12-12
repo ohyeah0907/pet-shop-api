@@ -6,7 +6,9 @@ export type UserCreate = {
   phone: string;
   username: string;
   password: string;
-  is_voice: boolean;
+  is_admin: boolean;
+  is_locked: boolean;
+  is_verified: boolean;
   verification_token: string;
 };
 
@@ -17,10 +19,10 @@ export type UserUpdate = {
   phone?: string;
   username?: string;
   password?: string;
-  is_admin?: boolean;
   is_locked?: boolean;
-  is_voice?: boolean;
+  is_admin?: boolean;
   is_verified?: boolean;
+  verification_token: string;
 };
 
 export type UserSearch = {
