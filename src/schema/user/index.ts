@@ -10,6 +10,8 @@ export default {
         username: Joi.string().required().trim(),
         password: Joi.string().required().trim(),
         is_admin: Joi.boolean().required(),
+        is_locked: Joi.boolean().required(),
+        is_verified: Joi.boolean().required(),
         verification_token: Joi.string().required().trim(),
       })
       .required(),
