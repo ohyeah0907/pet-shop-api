@@ -7,7 +7,7 @@ const findAll = async (search: UserSearch) => {
   if (search.state) {
     conditions.state = search.state;
   }
-  if (search.someStates) {
+  if (search.someStates && Array.isArray(search.someStates)) {
     conditions.state = {
       in: search.someStates,
     };

@@ -5,13 +5,13 @@ import { CartItemSearch } from "../dto/cart_item";
 const findAll = async (search?: CartItemSearch, include?: object) => {
   const condition: any = {};
 
-  if (search?.cart) {
+  if (search?.cart?.id) {
     condition.cart_id = search.cart.id;
   }
   if (search?.state) {
     condition.state = search.state;
   }
-  if (search?.someStates) {
+  if (search?.someStates && Array.isArray(search.someStates)) {
     condition.state = {
       in: search.someStates,
     };

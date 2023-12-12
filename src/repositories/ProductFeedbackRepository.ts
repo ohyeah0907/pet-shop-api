@@ -5,19 +5,19 @@ import { ProductFeedback, ObjectState } from "@prisma/client";
 const findAll = async (search?: ProductFeedbackSearch, include?: object) => {
   const condition: any = {};
 
-  if (search?.user) {
+  if (search?.user?.id) {
     condition.user_id = search.user.id;
   }
-  if (search?.pet) {
+  if (search?.pet?.id) {
     condition.pet_id = search.pet.id;
   }
-  if (search?.accessory) {
+  if (search?.accessory?.id) {
     condition.accessory_id = search.accessory.id;
   }
   if (search?.state) {
     condition.state = search.state;
   }
-  if (search?.someStates) {
+  if (search?.someStates && Array.isArray(search.someStates)) {
     condition.state = {
       in: search.someStates,
     };

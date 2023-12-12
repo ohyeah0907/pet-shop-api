@@ -10,13 +10,13 @@ const findAll = async (search?: AccessoryTypeSearch, include?: object) => {
       contains: search.name,
     };
   }
-  if (search?.parent) {
+  if (search?.parent?.id) {
     condition.parent_id = search.parent.id;
   }
   if (search?.state) {
     condition.state = search.state;
   }
-  if (search?.someStates) {
+  if (search?.someStates && Array.isArray(search.someStates)) {
     condition.state = {
       in: search.someStates,
     };

@@ -9,17 +9,13 @@ const findAll = async (search: PetSearch) => {
       contains: search.name,
     };
   }
-  if (search.type) {
-    if (search.type.id) {
-      condition.type = {
-        id: search.type.id,
-      };
-    }
+  if (search?.type?.id) {
+    condition.type_id = search.type.id;
   }
   if (search?.state) {
     condition.state = search.state;
   }
-  if (search?.someStates) {
+  if (search?.someStates && Array.isArray(search.someStates)) {
     condition.state = {
       in: search.someStates,
     };

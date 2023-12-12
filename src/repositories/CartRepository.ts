@@ -5,13 +5,13 @@ import prisma from "../prisma";
 const findAll = async (search?: CartSearch, include?: object) => {
   const condition: any = {};
 
-  if (search?.user) {
+  if (search?.user?.id) {
     condition.user_id = search.user.id;
   }
   if (search?.state) {
     condition.state = search.state;
   }
-  if (search?.someStates) {
+  if (search?.someStates && Array.isArray(search.someStates)) {
     condition.state = {
       in: search.someStates,
     };
