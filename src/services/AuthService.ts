@@ -4,6 +4,7 @@ import {
   AuthLoginResponse,
   AuthRegister,
   AuthResend,
+  AuthReset,
   RefreshTokenResponse,
   UserInfo,
 } from "../dto/auth";
@@ -15,7 +16,11 @@ import crypto from "crypto";
 import { sendMailVerification } from "../middleware/mail";
 import { v4 } from "uuid";
 import UserRepository from "../repositories/UserRepository";
-import { AuthenticationFailure, NotFound } from "../handler/app-error";
+import {
+  AuthenticationFailure,
+  BadRequest,
+  NotFound,
+} from "../handler/app-error";
 
 const service = {
   login: async (login: AuthLogin) => {
@@ -97,8 +102,8 @@ const service = {
       ObjectState.DELETED,
     ]);
     if (user?.state === ObjectState.ACTIVE) {
-      if (user.is_verified) throw new Error(`Email này đã được xác thực!`);
-      else throw new Error(`Email này đã được đăng ký!`);
+      if (user.is_verified) throw new BadRequest(`Email này đã được xác thực!`);
+      else throw new BadRequest(`Email này đã được đăng ký!`);
     }
 
     let userCreate: any = {
@@ -144,6 +149,13 @@ const service = {
     if (!emailResult) throw new Error(`Gửi mail thất bại`);
 
     return true;
+  },
+  resetPassword: async (reset: AuthReset) => {
+    const user: any = await UserRepository.findByEmail(reset.email);
+
+    if (!user) throw new BadRequest(`Không tìm thấy email`);
+    if (!user.is_verified)
+      throw new BadRequest(`Email này chưa được xác thực!`);
   },
   verify: async (token: string) => {
     const user = await UserRepository.findByVerificationToken(token);

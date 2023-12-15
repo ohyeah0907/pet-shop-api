@@ -13,6 +13,11 @@ export type AuthRegister = {
 export type AuthResend = {
   email: string;
 };
+
+export type AuthReset = {
+  email: string;
+};
+
 export type AuthLoginResponse = {
   tokens: Tokens;
   user: UserInfo;
@@ -27,5 +32,5 @@ export type UserInfo = {
   username: string;
 };
 export type RefreshTokenResponse = {
-  access_token: string
-}
+  access_token: string;
+};
