@@ -26,9 +26,9 @@ const service = {
   login: async (login: AuthLogin) => {
     const user = await userService.getUserByEmail(login.email);
     if (!bcrypt.compareSync(login.password, user.password))
-      throw new Error("Mật khẩu không chính xác");
-    if (!user.is_verified) throw new Error("Tài khoản chưa được xác thực");
-    if (user.is_locked) throw new Error("Tài khoản đã bị khóa");
+      throw new AuthenticationFailure("Mật khẩu không chính xác");
+    if (!user.is_verified) throw new BadRequest("Tài khoản chưa được xác thực");
+    if (user.is_locked) throw new BadRequest("Tài khoản đã bị khóa");
 
     const accessTokenKey = crypto.randomBytes(64).toString("hex");
     const refreshTokenKey = crypto.randomBytes(64).toString("hex");
@@ -131,22 +131,22 @@ const service = {
       newUser.verification_token,
     );
 
-    if (!emailResult) throw new Error(`Gửi mail thất bại`);
+    if (!emailResult) throw new BadRequest(`Gửi mail thất bại`);
 
     return true;
   },
   resend: async (resend: AuthResend) => {
     const user: any = await UserRepository.findByEmail(resend.email);
 
-    if (!user) throw new Error(`Không tìm thấy email`);
-    if (user.is_verified) throw new Error(`Email này đã được xác thực!`);
+    if (!user) throw new BadRequest(`Không tìm thấy email`);
+    if (user.is_verified) throw new BadRequest(`Email này đã được xác thực!`);
 
     const emailResult = await sendMailVerification(
       user.email,
       user.verification_token,
     );
 
-    if (!emailResult) throw new Error(`Gửi mail thất bại`);
+    if (!emailResult) throw new BadRequest(`Gửi mail thất bại`);
 
     return true;
   },
@@ -159,7 +159,7 @@ const service = {
   },
   verify: async (token: string) => {
     const user = await UserRepository.findByVerificationToken(token);
-    if (!user) throw new Error(`Token không hợp lệ`);
+    if (!user) throw new AuthenticationFailure(`Token không hợp lệ`);
     user.is_verified = true;
     user.verification_token = "";
     user.verified_at = new Date();
