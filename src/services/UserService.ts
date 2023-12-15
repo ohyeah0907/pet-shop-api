@@ -21,11 +21,11 @@ const service = {
     if (!user) throw new Error("Không tìm thấy email");
     return user;
   },
-  getUserByUserName: async (username: string) => {
-    const user = await UserRepository.findByUsername(username);
-    if (!user) throw new Error("Không tìm thấy username");
-    return user;
-  },
+  // getUserByUserName: async (username: string) => {
+  //   const user = await UserRepository.findByUsername(username);
+  //   if (!user) throw new Error("Không tìm thấy username");
+  //   return user;
+  // },
   createUser: async (create: UserCreate) => {
     const user: any = {
       id: 0,

@@ -65,19 +65,19 @@ const findById = async (id: number) => {
   });
   return user;
 };
-const findByUsername = async (username: string) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      username: username,
-      NOT: {
-        state: ObjectState.DELETED,
-      },
-    },
-  });
-  return user;
-};
+// const findByUsername = async (username: string) => {
+//   const user = await prisma.user.findUnique({
+//     where: {
+//       username: username,
+//       NOT: {
+//         state: ObjectState.DELETED,
+//       },
+//     },
+//   });
+//   return user;
+// };
 
-const findByEmail = async (email: string) => {
+const findByEmail = async (email: string, someState?: ObjectState[]) => {
   const user = await prisma.user.findUnique({
     where: {
       email: email,
@@ -175,7 +175,7 @@ const save = async (user: User) => {
 export default {
   findAll,
   findById,
-  findByUsername,
+  // findByUsername,
   findByEmail,
   findByVoiceUsername,
   findByVerificationToken,

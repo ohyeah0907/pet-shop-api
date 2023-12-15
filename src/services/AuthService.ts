@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { ObjectState, User } from "@prisma/client";
 import {
   AuthLogin,
   AuthLoginResponse,
@@ -92,10 +92,16 @@ const service = {
     return true;
   },
   register: async (register: AuthRegister) => {
-    const user = await UserRepository.findByEmail(register.email);
+    const user = await UserRepository.findByEmail(register.email, [
+      ObjectState.ACTIVE,
+      ObjectState.DELETED,
+    ]);
+    if (user?.state === ObjectState.ACTIVE) {
+      if (user.is_verified) throw new Error(`Email này đã được xác thực!`);
+      else throw new Error(`Email này đã được đăng ký!`);
+    }
 
-    if (user != null) throw new Error(`Email đã tồn tại`);
-    const userCreate: any = {
+    let userCreate: any = {
       name: "",
       email: register.email,
       phone: "",
@@ -105,6 +111,14 @@ const service = {
       is_locked: false,
       is_verified: false,
     };
+
+    if (user?.state === ObjectState.DELETED) {
+      userCreate = {
+        ...userCreate,
+        id: user.id,
+        state: ObjectState.ACTIVE,
+      };
+    }
     const newUser = await UserRepository.save(userCreate);
 
     const emailResult = await sendMailVerification(
@@ -120,6 +134,7 @@ const service = {
     const user: any = await UserRepository.findByEmail(resend.email);
 
     if (!user) throw new Error(`Không tìm thấy email`);
+    if (user.is_verified) throw new Error(`Email này đã được xác thực!`);
 
     const emailResult = await sendMailVerification(
       user.email,
