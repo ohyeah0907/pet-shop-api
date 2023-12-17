@@ -43,7 +43,7 @@ const service = {
         email: user.email,
         phone: user.phone,
         username: user.username,
-        isAdmin: user.is_admin,
+        is_admin: user.is_admin,
       },
     };
     return result;
@@ -87,7 +87,7 @@ const service = {
         email: user.email,
         phone: user.phone,
         username: user.username,
-        isAdmin: user.is_admin,
+        is_admin: user.is_admin,
       },
     };
     return result;
@@ -173,7 +173,7 @@ const service = {
       email: user.email,
       phone: user.phone,
       username: user.username,
-      isAdmin: user.is_admin,
+      is_admin: user.is_admin,
     };
     return userResponse;
   },

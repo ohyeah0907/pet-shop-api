@@ -28,7 +28,7 @@ export type UserInfo = {
   name: string;
   email: string;
   phone: string;
-  isAdmin: boolean;
+  is_admin: boolean;
   username: string;
 };
 export type RefreshTokenResponse = {
