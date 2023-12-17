@@ -64,7 +64,7 @@ async function decode(token: string): Promise<JwtPayload> {
       ignoreExpiration: true,
     })) as JwtPayload;
   } catch (e) {
-    throw new InvalidAccessToken();
+    throw new InvalidAccessToken("Token không hợp lệ");
   }
 }
 

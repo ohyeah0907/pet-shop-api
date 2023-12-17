@@ -2,7 +2,7 @@ import express, { Response } from "express";
 import { ProtectedRequest } from "../types/app-request";
 import userService from "../services/UserService";
 import KeystoreRepository from "../repositories/KeyStoreRepository";
-import { AuthenticationFailure } from "../handler/app-error";
+import { AppError, AuthenticationFailure } from "../handler/app-error";
 import JWT from "../core/jwt";
 import { getAccessToken, validateTokenData } from "../helper/token";
 import schema from "../schema/auth";
@@ -34,7 +34,7 @@ export default router.use(
 
       return next();
     } catch (e: any) {
-      return new BadRequestResponse(e.message).send(res);
+      return AppError.handle(e, res);
     }
   }),
 );

@@ -5,6 +5,7 @@ enum ErrorCode {
   FAILURE = 1,
   RETRY = 2,
   INVALID_ACCESS_TOKEN = 3,
+  EXPIRED_ACCESS_TOKEN = 4,
 }
 
 enum ResponseStatusCode {
@@ -215,6 +216,24 @@ export class AccessTokenErrorResponse extends AppResponse {
   send(res: Response, headers: { [key: string]: string } = {}): Response {
     headers.instruction = this.instruction;
     return this.prepare<AccessTokenErrorResponse>(res, this, headers);
+  }
+}
+
+export class ExpiredAccessTokenErrorResponse extends AppResponse {
+  constructor(message = "Expired access token") {
+    super(
+      false,
+      ErrorCode.EXPIRED_ACCESS_TOKEN,
+      ResponseStatus.FAILURE,
+      ResponseStatusCode.UNAUTHORIZED,
+      message,
+      new Date(),
+      null,
+    );
+  }
+
+  send(res: Response, headers: { [key: string]: string } = {}): Response {
+    return this.prepare<ExpiredAccessTokenErrorResponse>(res, this, headers);
   }
 }
 
