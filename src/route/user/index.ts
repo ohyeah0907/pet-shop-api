@@ -5,10 +5,10 @@ import authentication from "../../middleware/authentication";
 
 const router = Router();
 
-// router.use(authentication)
+router.use(authentication);
 
-router.use("/", mutation)
+router.use("/", mutation);
 
-router.use("/", query)
+router.use("/", query);
 
 export default router;
