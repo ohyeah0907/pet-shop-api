@@ -70,6 +70,7 @@ CREATE TABLE "Accessory" (
     "description_images" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "origin" VARCHAR(255) NOT NULL DEFAULT '',
     "description" VARCHAR(255) NOT NULL DEFAULT '',
+    "weight" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "type_id" INTEGER NOT NULL,
     "state" "ObjectState" NOT NULL DEFAULT 'ACTIVE',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -232,9 +233,6 @@ CREATE UNIQUE INDEX "Cart_user_id_key" ON "Cart"("user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- AddForeignKey
 ALTER TABLE "PetType" ADD CONSTRAINT "PetType_parent_id_fkey" FOREIGN KEY ("parent_id") REFERENCES "PetType"("id") ON DELETE SET NULL ON UPDATE CASCADE;
