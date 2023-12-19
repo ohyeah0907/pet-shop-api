@@ -16,16 +16,17 @@ export default router.use(
   validator(schema.auth, ValidationSource.HEADER),
   asyncHandler(async (req: ProtectedRequest, res: Response, next: any) => {
     req.accessToken = getAccessToken(req.headers.authorization); // Express headers are auto converted to lowercase
-    // console.log('accessToken :>> ', req.accessToken);
     try {
       const payload = await JWT.decode(req.accessToken);
-      // console.log('payload :>> ', payload);
       validateTokenData(payload);
 
       await JWT.validate(req.accessToken);
 
-      const user: any = await userService.getUserById(parseInt(payload.sub));
-      if (!user) throw new AuthenticationFailure("Người dùng chưa được tạo");
+      const user: any = await userService
+        .getUserById(parseInt(payload.sub))
+        .catch((error) => {
+          throw new AuthenticationFailure("Người dùng chưa được tạo");
+        });
       req.user = user;
 
       // const keystore = await KeystoreRepository.findForKey(req.user, payload.prm);
