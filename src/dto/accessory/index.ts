@@ -16,6 +16,7 @@ export type AccessoryCreate = {
   description_images: string[];
   origin: string;
   description: string;
+  weight: number;
   type: AccessoryType;
 };
 
@@ -29,5 +30,6 @@ export type AccessoryUpdate = {
   description_images: string[];
   origin: string;
   description: string;
+  weight: number;
   type: AccessoryType;
 };

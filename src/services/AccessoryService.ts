@@ -27,6 +27,7 @@ const service = {
       price: create.price,
       thumbnail_image: create.thumbnail_image,
       description_images: create.description_images,
+      weight: create.weight,
       origin: create.origin,
       description: create.description,
       type_id: type.id,
@@ -45,6 +46,7 @@ const service = {
     accessory.price = update.price;
     accessory.thumbnail_image = update.thumbnail_image;
     accessory.description_images = update.description_images;
+    accessory.weight = update.weight;
     accessory.origin = update.origin;
     accessory.description = update.description;
 

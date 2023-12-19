@@ -64,6 +64,7 @@ const save = async (accessory: Accessory, include?: object) => {
         stock_quantity: accessory.stock_quantity,
         thumbnail_image: accessory.thumbnail_image,
         description_images: accessory.description_images,
+        weight: accessory.weight,
         origin: accessory.origin,
         description: accessory.description,
         type: {
@@ -89,6 +90,7 @@ const save = async (accessory: Accessory, include?: object) => {
       description_images: accessory.description_images,
       origin: accessory.origin,
       description: accessory.description,
+      weight: accessory.weight,
       type: {
         connect: {
           id: accessory.type_id,

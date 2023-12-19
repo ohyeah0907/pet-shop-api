@@ -96,6 +96,7 @@ model Accessory {
   description_images String[]           @default([])
   origin             String             @default("") @db.VarChar(255)
   description        String             @default("") @db.VarChar(255)
+  weight             Float              @default(0)
   type               AccessoryType      @relation(fields: [type_id], references: [id])
   type_id            Int
   state              ObjectState        @default(ACTIVE)

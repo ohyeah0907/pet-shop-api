@@ -10,6 +10,7 @@ export default {
         price: Joi.number().required(),
         thumbnail_image: Joi.string().required().trim(),
         description_images: Joi.array().items(Joi.string().trim()).required(),
+        weight: Joi.number().required(),
         origin: Joi.string().required().trim(),
         description: Joi.string().required().trim(),
         type: Joi.object()
@@ -31,6 +32,7 @@ export default {
       description_images: Joi.array().items(Joi.string().trim()).required(),
       origin: Joi.string().required(),
       description: Joi.string().required(),
+      weight: Joi.number().required(),
       type: Joi.object()
         .keys({
           id: Joi.number().required(),

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Accessory" ADD COLUMN     "weight" DOUBLE PRECISION NOT NULL DEFAULT 0;
