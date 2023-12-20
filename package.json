@@ -11,7 +11,7 @@
   },
   "scripts": {
     "devcss": "postcss public/styles/tailwind.css -o public/styles/style.css -w",
-    "build": "yarn && tsc && prisma migrate reset -f",
+    "build": "yarn && tsc && prisma migrate deploy",
     "predev": "npm install && npm run build",
     "serve": "node -r dotenv/config build/app.js",
     "clean": "rimraf ./build",
