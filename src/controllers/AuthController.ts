@@ -23,15 +23,10 @@ const controller = {
       const result = await authService.signInWithGoogle(session.passport.user);
       console.log("result :>> ", result);
 
-      res.render("verified", {
-        data: JSON.stringify(
-          new SuccessResponse("Đăng nhập thành công", result),
-        ),
-      });
-
-      // if (result) {
-      //   return new SuccessResponse("Đăng nhập thành công", result).send(res);
-      // }
+      res.cookie("accessToken", result.tokens.accessToken);
+      res.cookie("refreshToken", result.tokens.refreshToken);
+      res.cookie("user", result.user);
+      res.redirect(process.env.CLIENT_URL || "http://localhost:3000");
     } catch (error: any) {
       return AppError.handle(error, res);
     }
