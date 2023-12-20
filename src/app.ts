@@ -9,29 +9,31 @@ import router from "./route";
 import bodyParser from "body-parser";
 import passport from "passport";
 import initialPassport from "./middleware/passport-local";
-import flash from "connect-flash"
-import "./web_socket"
+import flash from "connect-flash";
+import "./web_socket";
 import initPassportSocial from "./middleware/passport-social";
 
 const PORT = process.env.PORT || 3000;
 const app: Express = express();
-app.use(session({
-    secret: 'klhjjxcvjkxcjvcjsdfjsdljlgasgkcxvcouvopu',
+app.use(
+  session({
+    secret: "klhjjxcvjkxcjvcjsdfjsdljlgasgkcxvcouvopu",
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-        secure: false,
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+      secure: false,
     },
     resave: false,
     saveUninitialized: false,
-}));
-app.enable('trust proxy');
+  }),
+);
+app.enable("trust proxy");
 
 app.use((req, res, next) => {
-    if (req.secure || req.headers.host?.startsWith('localhost')) {
-        next();
-    } else {
-        res.redirect('https://' + req.headers.host + req.url);
-    }
+  if (req.secure || req.headers.host?.startsWith("localhost")) {
+    next();
+  } else {
+    res.redirect("https://" + req.headers.host + req.url);
+  }
 });
 app.use(passport.initialize());
 app.use(passport.session());
@@ -42,18 +44,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(flash());
 
-const portalUrl = process.env.PORTAL_URL || ''
-app.use(cors(
-    // {
-    //     origin: [
-    //         portalUrl,
-    //         "http://localhost:4003",
+const portalUrl = process.env.PORTAL_URL || "";
+app.use(
+  cors(),
+  // {
+  //     origin: [
+  //         portalUrl,
+  //         "http://localhost:4003",
 
-    //     ],
-    //     optionsSuccessStatus: 200,
-    //     credentials: true,
-    // }
-))
+  //     ],
+  //     optionsSuccessStatus: 200,
+  //     credentials: true,
+  // }
+);
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 

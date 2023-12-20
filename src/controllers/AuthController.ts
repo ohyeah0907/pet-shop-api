@@ -4,6 +4,7 @@ import authService from "../services/AuthService";
 import { ProtectedRequest } from "../types/app-request";
 import { UserInfo } from "../dto/auth";
 import { AppError } from "../handler/app-error";
+import path from "path";
 
 const controller = {
   login: async (req: Request, res: Response) => {
@@ -17,12 +18,20 @@ const controller = {
   signInWithGoogle: async (req: Request, res: Response) => {
     try {
       const session = req.session as any;
-      console.log("session :>> ", session);
+      // console.log("session :>> ", session);
 
       const result = await authService.signInWithGoogle(session.passport.user);
-      if (result) {
-        return new SuccessResponse("Đăng nhập thành công", result).send(res);
-      }
+      console.log("result :>> ", result);
+
+      res.render("verified", {
+        data: JSON.stringify(
+          new SuccessResponse("Đăng nhập thành công", result),
+        ),
+      });
+
+      // if (result) {
+      //   return new SuccessResponse("Đăng nhập thành công", result).send(res);
+      // }
     } catch (error: any) {
       return AppError.handle(error, res);
     }
