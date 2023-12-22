@@ -10,19 +10,17 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "scripts": {
-    "devcss": "postcss public/styles/tailwind.css -o public/styles/style.css -w",
     "build": "yarn && tsc && prisma migrate deploy",
     "predev": "npm install && npm run build",
     "serve": "node -r dotenv/config build/app.js",
     "clean": "rimraf ./build",
-    "dev": "concurrently \"tsc --watch\" \"nodemon -q build/app.js\" \"yarn run devcss\"",
+    "dev": "concurrently \"tsc --watch\" \"nodemon -q build/app.js\"",
     "start": "node build/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@prisma/client": "^5.2.0",
     "@types/express": "^4.17.17",
-    "autoprefixer": "^10.4.16",
     "axios": "^1.5.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
@@ -43,7 +41,6 @@
     "passport-local": "^1.0.0",
     "rimraf": "^5.0.1",
     "sharp": "^0.32.4",
-    "tailwindcss": "^3.4.0",
     "typescript": "^5.3.3",
     "uuid": "^9.0.0",
     "ws": "^8.13.0"
@@ -63,7 +60,6 @@
     "@types/uuid": "^9.0.2",
     "@types/ws": "^8.5.5",
     "concurrently": "^8.2.0",
-    "postcss-cli": "^11.0.0",
     "prisma": "^5.2.0",
     "ts-node": "^10.9.1"
   }

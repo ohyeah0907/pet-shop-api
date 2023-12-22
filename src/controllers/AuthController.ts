@@ -17,16 +17,11 @@ const controller = {
   },
   signInWithGoogle: async (req: Request, res: Response) => {
     try {
-      const session = req.session as any;
-      // console.log("session :>> ", session);
-
-      const result = await authService.signInWithGoogle(session.passport.user);
-      console.log("result :>> ", result);
-
-      res.cookie("accessToken", result.tokens.accessToken);
-      res.cookie("refreshToken", result.tokens.refreshToken);
-      res.cookie("user", result.user);
-      res.redirect(process.env.CLIENT_URL || "http://localhost:3000");
+      const code = req.headers["auth-code"];
+      const result = await authService.signInWithGoogle(code as string);
+      if (result) {
+        return new SuccessResponse("Đăng nhập thành công", result).send(res);
+      }
     } catch (error: any) {
       return AppError.handle(error, res);
     }

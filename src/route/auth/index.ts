@@ -34,24 +34,6 @@ router.post(
   asyncHandler(controller.refreshToken),
 );
 
-router.get(
-  "/signin/google",
-  asyncHandler(async (req, res, next) => {
-    req.session.authorize = req.query;
-    next();
-  }),
-  passport.authenticate("google", {
-    scope: ["profile", "email", "openid"],
-  }),
-);
-
-router.get(
-  "/google/callback",
-  passport.authenticate("google", {
-    session: true,
-    failureRedirect: "/auth/login",
-  }),
-  asyncHandler(controller.signInWithGoogle),
-);
+router.post("/signin/google", asyncHandler(controller.signInWithGoogle));
 
 export default router;

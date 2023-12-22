@@ -21,6 +21,8 @@ import {
   BadRequest,
   NotFound,
 } from "../handler/app-error";
+import googleConstants from "../constants/google";
+import axios from "axios";
 
 const service = {
   login: async (login: AuthLogin) => {
@@ -48,27 +50,48 @@ const service = {
     };
     return result;
   },
-  signInWithGoogle: async (userGoogle: any) => {
-    const profile = userGoogle.profile;
+  signInWithGoogle: async (code: string) => {
+    // Exchange the authorization code for an access token
+    const response = await axios.post(
+      "https://www.googleapis.com/oauth2/v4/token",
+      {
+        code,
+        client_id: googleConstants.clientId,
+        client_secret: googleConstants.clientSecret,
+        redirect_uri: "postmessage",
+        grant_type: "authorization_code",
+        content_type: "application/x-www-form-urlencoded",
+      },
+    );
+    const accessTokenGoogle = response.data.access_token;
+    console.log("Access Token:", accessTokenGoogle);
 
-    if (!profile)
-      throw new AuthenticationFailure("Không tìm thấy thông tin từ google");
+    // Fetch user details using the access token
+    const userResponse = await axios.get(
+      "https://www.googleapis.com/oauth2/v3/userinfo",
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenGoogle}`,
+        },
+      },
+    );
+    const profile = userResponse.data;
 
-    if (!profile._json.email_verified)
-      throw new AuthenticationFailure("Email này chưa được xác thực!");
-
+    if (!profile.email_verified)
+      throw new AuthenticationFailure("Tài khoản chưa được xác thực");
     let user: any = null;
-    user = await UserRepository.findByEmail(profile._json.email!);
+    user = await UserRepository.findByEmail(profile.email!);
     if (!user) {
       const create: any = {
-        name: profile._json.family_name + " " + profile._json.given_name!,
-        email: profile._json.email,
-        avatar_url: profile._json.picture,
+        name: profile.name,
+        email: profile.email,
+        avatar_url: profile.picture,
         phone: "",
-        username: profile._json.email.split("@")[0],
-        google_id: profile.id,
+        username: profile.email.split("@")[0],
+        google_id: profile.sub,
         verification_token: "",
         password: "",
+        is_voice: true,
         is_locked: true,
         is_verified: true,
       };
