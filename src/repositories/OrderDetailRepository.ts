@@ -28,8 +28,8 @@ const findAll = async (search?: OrderDetailSearch, include?: object) => {
       ...condition,
     },
     include: {
-      pet: { select: { name: true } },
-      accessory: { select: { name: true } },
+      pet: { select: { name: true, stock_quantity: true, state: true } },
+      accessory: { select: { name: true, stock_quantity: true, state: true } },
       order: {
         include: {
           user: {
