@@ -26,7 +26,13 @@ import axios from "axios";
 
 const service = {
   login: async (login: AuthLogin) => {
-    const user = await userService.getUserByEmail(login.email);
+    let user = null;
+
+    try {
+      user = await userService.getUserByEmail(login.email);
+    } catch (error) {
+      throw new AuthenticationFailure("Email không tồn tại");
+    }
     if (!bcrypt.compareSync(login.password, user.password))
       throw new AuthenticationFailure("Mật khẩu không chính xác");
     if (!user.is_verified) throw new BadRequest("Tài khoản chưa được xác thực");
