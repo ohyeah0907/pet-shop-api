@@ -2,7 +2,7 @@ import prisma from "../prisma";
 import { Pet, ObjectState } from "@prisma/client";
 import { PetSearch } from "../dto/pet";
 
-const findAll = async (search: PetSearch) => {
+const findAll = async (search: PetSearch, include?: object) => {
   const condition: any = {};
   if (search.name) {
     condition.name = {
@@ -27,12 +27,19 @@ const findAll = async (search: PetSearch) => {
   }
 
   const pets = await prisma.pet.findMany({
-    include: {
-      type: true,
-    },
     where: {
       state: ObjectState.ACTIVE,
       ...condition,
+    },
+    include: {
+      type: {
+        select: {
+          id: true,
+          name: true,
+          parent: true,
+        },
+      },
+      ...(include || {}),
     },
   });
   return pets;
@@ -40,13 +47,19 @@ const findAll = async (search: PetSearch) => {
 
 const findById = async (id: number) => {
   const pet = await prisma.pet.findUnique({
-    include: {
-      type: true,
-    },
     where: {
       id: id,
       NOT: {
         state: ObjectState.DELETED,
+      },
+    },
+    include: {
+      type: {
+        select: {
+          id: true,
+          name: true,
+          parent: true,
+        },
       },
     },
   });

@@ -30,7 +30,13 @@ const findAll = async (search?: AccessorySearch, include?: object) => {
       ...condition,
     },
     include: {
-      type: true,
+      type: {
+        select: {
+          id: true,
+          name: true,
+          parent: true,
+        },
+      },
       ...(include || {}),
     },
   });
@@ -40,7 +46,13 @@ const findAll = async (search?: AccessorySearch, include?: object) => {
 const findById = async (id: number, include?: object) => {
   const accessory = await prisma.accessory.findUnique({
     include: {
-      type: true,
+      type: {
+        select: {
+          id: true,
+          name: true,
+          parent: true,
+        },
+      },
       ...(include || {}),
     },
     where: {
