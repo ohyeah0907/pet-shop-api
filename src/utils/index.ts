@@ -50,3 +50,10 @@ export function seperateArray(arr: any[]): any[][] {
   }
   return result;
 }
+
+export const generateSignature = (payload: any, secretKey: any) => {
+  const hmac = crypto.createHmac("sha256", secretKey);
+  hmac.update(payload, "utf8");
+  const signature = hmac.digest("hex");
+  return signature;
+};

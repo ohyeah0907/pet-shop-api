@@ -12,13 +12,21 @@ const service = {
     if (!order) throw new Error("Không tìm thấy order");
     return order;
   },
+
+  getByCode: async (code: string) => {
+    const order = await OrderRepository.findByCode(code);
+    if (!order) throw new Error("Không tìm thấy order");
+    return order;
+  },
   create: async (create: OrderCreate) => {
     const user = await UserService.getUserById(create.user?.id);
 
     const order: any = {
       id: 0,
       user_id: user.id,
+      code: create.code,
       order_status: create.order_status,
+      total: create.total,
       payment: create.payment,
     };
     const created = await OrderRepository.save(order);

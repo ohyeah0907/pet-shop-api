@@ -8,15 +8,17 @@ export type OrderSearch = {
   notInIds?: number[];
 };
 
-export type OrderCreate = {
-  user: User;
-  order_status: OrderStatus;
-  payment: string;
-};
-
 export type OrderUpdate = {
   id: number;
   // user?: User;
   order_status: OrderStatus;
   payment: Payment;
+};
+
+export type OrderCreate = {
+  user: User;
+  order_status: OrderStatus;
+  payment: string;
+  code: string
+  total: number;
 };

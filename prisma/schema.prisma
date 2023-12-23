@@ -188,6 +188,8 @@ model Order {
   user          User          @relation(fields: [user_id], references: [id])
   user_id       Int
   order_status  OrderStatus   @default(PENDING)
+  code          String        @unique @db.VarChar(255)
+  total         Float         @default(0)
   payment       Payment       @default(cash)
   state         ObjectState   @default(ACTIVE)
   created_at    DateTime      @default(now())
@@ -250,3 +252,4 @@ model KeyStore {
   updated_at    DateTime    @updatedAt
   deleted_at    DateTime?
 }
+

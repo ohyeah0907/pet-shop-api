@@ -53,6 +53,20 @@ const findById = async (id: number, include?: object) => {
   return order;
 };
 
+const findByCode = async (code: string, include?: object) => {
+  const order = await prisma.order.findUnique({
+    include: {
+      ...(include || {}),
+    },
+    where: {
+      code: code,
+      state: ObjectState.ACTIVE,
+    },
+  });
+
+  return order;
+};
+
 const save = async (order: Order, include?: object) => {
   if (order.id) {
     return await prisma.order.update({
@@ -78,7 +92,9 @@ const save = async (order: Order, include?: object) => {
       user: {
         connect: { id: order.user_id },
       },
+      code: order.code,
       order_status: order.order_status,
+      total: order.total,
       payment: order.payment,
     },
     include: {
@@ -90,5 +106,6 @@ const save = async (order: Order, include?: object) => {
 export default {
   findAll,
   findById,
+  findByCode,
   save,
 };

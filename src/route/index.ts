@@ -12,6 +12,7 @@ import order from "./order";
 import orderDetail from "./order_detail";
 import auth from "./auth";
 import user from "./user";
+import payment from "./payment";
 
 const router = Router();
 
@@ -28,5 +29,6 @@ router.use("/cart", cart);
 router.use("/cart-item", cartItem);
 router.use("/order", order);
 router.use("/order-detail", orderDetail);
+router.use("/payment", payment);
 
 export default router;
