@@ -6,10 +6,9 @@ const findAll = async (search: PetSearch, include?: object) => {
   const condition: any = {};
   if ("name" in search) {
     console.log("search.name :>> ", search.name);
-    condition.name = {
-      contains: search.name || null,
-      mode: "insensitive",
-    };
+    condition.name = search.name
+      ? { contains: `${search.name}`, mode: "insensitive" }
+      : null;
   }
   if (search?.type?.id) {
     condition.type_id = search.type.id;
