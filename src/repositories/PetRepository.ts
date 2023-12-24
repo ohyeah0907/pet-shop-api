@@ -7,6 +7,7 @@ const findAll = async (search: PetSearch, include?: object) => {
   if (search.name) {
     condition.name = {
       contains: search.name,
+      mode: "insensitive",
     };
   }
   if (search?.type?.id) {
