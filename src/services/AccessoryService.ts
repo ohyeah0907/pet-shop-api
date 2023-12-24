@@ -8,7 +8,7 @@ import {
 import AccessoryTypeService from "../services/AccessoryTypeService";
 
 const service = {
-  getSearch: async (search?: AccessorySearch, include?: object) => {
+  getSearch: async (search: AccessorySearch, include?: object) => {
     return AccessoryRepository.findAll(search, include);
   },
   getById: async (id: number) => {

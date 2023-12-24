@@ -4,7 +4,7 @@ import { BadRequestResponse, SuccessResponse } from "../handler/app-response";
 
 const controller = {
   getSearch: async (req: Request, res: Response) => {
-    const pets = await petService.getSearch(req.body?.search);
+    const pets = await petService.getSearch(req.body?.search || {});
     return new SuccessResponse("Thành công!", pets).send(res);
   },
   getById: async (req: Request, res: Response) => {

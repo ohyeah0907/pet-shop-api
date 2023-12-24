@@ -2,12 +2,12 @@ import { AccessorySearch } from "../dto/accessory";
 import prisma from "../prisma";
 import { Accessory, ObjectState } from "@prisma/client";
 
-const findAll = async (search?: AccessorySearch, include?: object) => {
+const findAll = async (search: AccessorySearch, include?: object) => {
   const condition: any = {};
 
-  if (search?.name) {
+  if ("name" in search) {
     condition.name = {
-      contains: search.name,
+      contains: `${search.name}`,
       mode: "insensitive",
     };
   }
