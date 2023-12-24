@@ -6,10 +6,9 @@ const findAll = async (search: AccessorySearch, include?: object) => {
   const condition: any = {};
 
   if ("name" in search) {
-    condition.name = {
-      contains: `${search.name}`,
-      mode: "insensitive",
-    };
+    condition.name = search.name
+      ? { contains: `${search.name}`, mode: "insensitive" }
+      : "";
   }
   if (search?.state) {
     condition.state = search.state;
