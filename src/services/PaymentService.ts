@@ -14,19 +14,16 @@ const service = {
   checkout: async (request: any) => {
     const checkout = request.checkout;
     console.log("checkout :>> ", checkout);
-    const total = await checkout.items.reduce(
-      async (sum: number, item: any) => {
-        let product = null;
-        if (item.pet_id) {
-          product = await petService.getById(item.pet_id);
-        } else {
-          product = await accessoryService.getById(item.accessory_id);
-        }
-        console.log("product :>> ", product);
-        return sum + Number(product!.price) * Number(item.quantity);
-      },
-      0,
-    );
+    const total = await checkout.items.reduce(async (sum: any, item: any) => {
+      let product = null;
+      if (item.pet_id) {
+        product = await petService.getById(item.pet_id);
+      } else {
+        product = await accessoryService.getById(item.accessory_id);
+      }
+      console.log("product :>> ", product);
+      return (await sum) + Number(product!.price) * Number(item.quantity);
+    }, Promise.resolve(0));
     const orderCreate: OrderCreate = {
       user: request.user,
       payment: Payment.momo,
