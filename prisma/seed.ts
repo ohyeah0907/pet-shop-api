@@ -11,6 +11,7 @@ const main = async () => {
         name: "admin",
         username: "admin",
         phone: "0123456789",
+        address: "",
         verification_token: "123456",
         is_verified: true,
         is_locked: false,

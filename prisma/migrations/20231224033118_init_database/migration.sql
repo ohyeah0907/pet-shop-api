@@ -160,6 +160,8 @@ CREATE TABLE "Order" (
     "id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "order_status" "OrderStatus" NOT NULL DEFAULT 'PENDING',
+    "code" VARCHAR(255) NOT NULL,
+    "total" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "payment" "Payment" NOT NULL DEFAULT 'cash',
     "state" "ObjectState" NOT NULL DEFAULT 'ACTIVE',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -193,6 +195,7 @@ CREATE TABLE "User" (
     "phone" VARCHAR(255) NOT NULL,
     "username" VARCHAR(255) NOT NULL,
     "password" VARCHAR(255) NOT NULL,
+    "address" VARCHAR(255) NOT NULL DEFAULT '',
     "avatar_url" VARCHAR(255) DEFAULT '',
     "facebook_id" VARCHAR(255) DEFAULT '',
     "google_id" VARCHAR(255) DEFAULT '',
@@ -230,6 +233,12 @@ CREATE UNIQUE INDEX "Accessory_sku_key" ON "Accessory"("sku");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Cart_user_id_key" ON "Cart"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Order_code_key" ON "Order"("code");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "OrderDetail_order_id_pet_id_accessory_id_key" ON "OrderDetail"("order_id", "pet_id", "accessory_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
