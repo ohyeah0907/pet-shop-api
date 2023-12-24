@@ -8,7 +8,7 @@ const controller = {
     req.body.user = req.user;
     const result = await paymentService.checkout(req.body);
     console.log("result :>> ", result);
-    res.redirect(result!.payUrl);
+    return new SuccessResponse("Thành công!", result!.payUrl).send(res);
   },
   returnMomo: async (req: Request, res: Response) => {
     console.log("req :>> ", req.query);
