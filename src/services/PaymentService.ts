@@ -77,7 +77,7 @@ const service = {
   createMomoOrder: async (order: any) => {
     const orderId: string = order.code;
     const requestId: string = randomUUID();
-    const amount: number = 1000;
+    const amount: number = order.total;
     const orderInfo: string = "Thanh toán hóa đơn " + orderId;
     const requestType: string = "captureWallet";
 
