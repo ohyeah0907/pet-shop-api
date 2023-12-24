@@ -4,7 +4,7 @@ import { PetSearch } from "../dto/pet";
 
 const findAll = async (search: PetSearch, include?: object) => {
   const condition: any = {};
-  if (search.name) {
+  if (search?.name) {
     condition.name = {
       contains: search.name,
       mode: "insensitive",
