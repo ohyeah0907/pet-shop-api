@@ -123,6 +123,7 @@ const save = async (user: User) => {
         name: user.name,
         email: user.email,
         phone: user.phone,
+        address: user.address,
         avatar_url: user.avatar_url,
         username: user.username,
         password: user.password,
@@ -148,6 +149,7 @@ const save = async (user: User) => {
     data: {
       name: user.name,
       phone: user.phone,
+      address: user.address,
       email: user.email,
       avatar_url: user.avatar_url,
       username: user.username,
