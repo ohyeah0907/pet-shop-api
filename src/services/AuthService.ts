@@ -50,6 +50,7 @@ const service = {
         name: user.name,
         email: user.email,
         phone: user.phone,
+        address: user.address,
         username: user.username,
         is_admin: user.is_admin,
       },
@@ -82,6 +83,7 @@ const service = {
       },
     );
     const profile = userResponse.data;
+    console.log("profile :>> ", profile);
 
     if (!profile.email_verified)
       throw new AuthenticationFailure("Tài khoản chưa được xác thực");
@@ -115,6 +117,7 @@ const service = {
         name: user.name,
         email: user.email,
         phone: user.phone,
+        address: user.address,
         username: user.username,
         is_admin: user.is_admin,
       },
@@ -138,7 +141,8 @@ const service = {
     let userCreate: any = {
       name: "",
       email: register.email,
-      phone: "",
+      phone: register.phone,
+      address: register.address,
       verification_token: v4(),
       username: register.email,
       password: bcrypt.hashSync(register.password, 10),
@@ -201,6 +205,7 @@ const service = {
       name: user.name,
       email: user.email,
       phone: user.phone,
+      address: user.address,
       username: user.username,
       is_admin: user.is_admin,
     };

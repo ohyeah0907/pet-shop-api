@@ -1,0 +1,241 @@
+const pets = [
+  {
+    sku: "SPPW00",
+    name: "Phóc trắng đáng yêu",
+    stock_quantity: 50,
+    price: 1000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_1%2Fphoc-trang-1.jpeg?alt=media&token=7e8376e4-4713-424a-9fed-9269a4e9ecb7",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_1%2Fphoc-trang-2.jpeg?alt=media&token=a834c580-571a-4711-9587-0f90c7d1c66a",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_1%2Fphoc-trang-3.jpeg?alt=media&token=7dcfce2c-2b52-4d5f-8700-bad487bf331e",
+    ],
+    age: 5,
+    isMale: true,
+    color: "White",
+    weight: 10,
+    height: 10,
+    birthday: new Date().toISOString(),
+    origin: "",
+    description: "Adorable and nice looking pet",
+    type_id: 3,
+  },
+  {
+    sku: "SPCY00",
+    name: "Corgi vàng lùn xinh",
+    stock_quantity: 50,
+    price: 1000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_2%2Fcorgi-vang-1.jpeg?alt=media&token=5b84efa5-0aca-4b66-94e4-bd26fb3a36c8",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_2%2Fcorgi-vang-2.jpeg?alt=media&token=4ed96d8a-c159-4cd0-b6d2-b15c15565372",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_2%2Fcorgi-vang-3.jpeg?alt=media&token=14f76e74-39e8-4acf-8ca2-6efb86ff1841",
+    ],
+    age: 5,
+    isMale: true,
+    color: "Yellow",
+    weight: 10,
+    height: 10,
+    birthday: new Date().toISOString(),
+    origin: "",
+    description: "Adorable and nice looking pet",
+    type_id: 3,
+  },
+  {
+    sku: "SPPY00",
+    name: "Poodle vàng mơ xinh",
+    stock_quantity: 50,
+    price: 1000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_3%2Fpuddle-vang-1.jpeg?alt=media&token=80d97d52-3c15-4c18-9475-b996dd5f407f",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_3%2Fpuddle-vang-2.jpeg?alt=media&token=c1e19972-d2dc-43fc-983f-d8e4d7a3b03d  ",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_3%2Fpuddle-vang-3.jpeg?alt=media&token=9a78cae3-9c64-4a9d-8eb7-84337ffacacd",
+    ],
+    age: 5,
+    isMale: true,
+    color: "Yellow",
+    weight: 10,
+    height: 10,
+    birthday: new Date().toISOString(),
+    origin: "",
+    description: "Adorable and nice looking pet",
+    type_id: 3,
+  },
+  {
+    sku: "SPCB00",
+    name: "Corgi quấn tai nâu",
+    stock_quantity: 50,
+    price: 1000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_4%2Fcorgi-quan-tai-nau-1.jpeg?alt=media&token=0cfe654a-9d93-4368-8457-7437d134a7e1",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_4%2Fcorgi-quan-tai-nau-2.jpeg?alt=media&token=2b3ba882-8d74-4ccf-a215-9dedecbd87d5",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_4%2Fcorgi-quan-tai-nau-3.jpeg?alt=media&token=38665415-ddb1-42ea-abca-ce15f8c4447e",
+    ],
+    age: 5,
+    isMale: true,
+    color: "Brown",
+    weight: 10,
+    height: 10,
+    birthday: new Date().toISOString(),
+    origin: "",
+    description: "Adorable and nice looking pet",
+    type_id: 3,
+  },
+  {
+    sku: "SPAB00",
+    name: "Alaska nâu",
+    stock_quantity: 50,
+    price: 1000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_5%2Falaska-nau-1.jpeg?alt=media&token=13d18916-1eb8-4247-a7b8-1250aac556f5",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_5%2Falaska-nau-2.jpeg?alt=media&token=767fb3d9-0edf-4678-baf9-dda64bdc87b0",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_5%2Falaska-nau-3.jpeg?alt=media&token=aaf134cd-befd-469d-a06a-98e2cf1713fc",
+    ],
+    age: 5,
+    isMale: false,
+    color: "Brown",
+    weight: 10,
+    height: 10,
+    birthday: new Date().toISOString(),
+    origin: "",
+    description: "Adorable and nice looking pet",
+    type_id: 3,
+  },
+  {
+    sku: "SPMG00",
+    name: "Mèo xám chân ngắn tai cụp siêu yêu",
+    stock_quantity: 50,
+    price: 1000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_6%2Fmeo-chan-ngan-xam-1.jpeg?alt=media&token=46a6bf64-358f-4b1c-a6f3-33bc57749924",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_6%2Fmeo-chan-ngan-xam-2.jpeg?alt=media&token=52e43e2d-d546-4a23-87c5-b60bc9ec12eb",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_6%2Fmeo-chan-ngan-xam-3.jpeg?alt=media&token=808a1f62-56f4-40fb-a1e2-6483c3e4d352",
+    ],
+    age: 5,
+    isMale: false,
+    color: "Gray",
+    weight: 10,
+    height: 10,
+    birthday: new Date().toISOString(),
+    origin: "",
+    description: "Adorable and nice looking pet",
+    type_id: 4,
+  },
+  {
+    sku: "SPMG01",
+    name: "Mèo chân ngắn tai cụp",
+    stock_quantity: 50,
+    price: 1000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_7%2Fmeo-chan-ngan-tai-cup-xam-1.jpeg?alt=media&token=bb7993a1-fe62-40cb-be38-ab0b7875ae5c",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_7%2Fmeo-chan-ngan-tai-cup-xam-2.jpeg?alt=media&token=afcfaea5-a8b2-4222-a282-7ee3305bbeca",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_7%2Fmeo-chan-ngan-tai-cup-xam-3.jpeg?alt=media&token=1335b9f3-af34-414f-abba-7c463b1b9075",
+    ],
+    age: 5,
+    isMale: true,
+    color: "Gray",
+    weight: 10,
+    height: 10,
+    birthday: new Date().toISOString(),
+    origin: "",
+    description: "Adorable and nice looking pet",
+    type_id: 4,
+  },
+  {
+    sku: "SPMB00",
+    name: "Mèo xám chân lùn tai cụp cute",
+    stock_quantity: 50,
+    price: 1000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_8%2Fmeo-chan-ngan-den-1.jpeg?alt=media&token=5c645546-5489-40fe-b905-c79a63399a18",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_8%2Fmeo-chan-ngan-den-2.jpeg?alt=media&token=c80b425e-b761-4a3e-aef9-57a0b373bc60",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_8%2Fmeo-chan-ngan-den-3.jpeg?alt=media&token=3420256d-8ff1-46bd-afcd-a30117a8d71c",
+    ],
+    age: 5,
+    isMale: true,
+    color: "Black",
+    weight: 10,
+    height: 10,
+    birthday: new Date().toISOString(),
+    origin: "",
+    description: "Adorable and nice looking pet",
+    type_id: 4,
+  },
+  {
+    sku: "SPMLDB00",
+    name: "Mèo lông dài bicolor",
+    stock_quantity: 50,
+    price: 1000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_9%2Fmeo-long-dai-bicolor-1.jpeg?alt=media&token=1f40f921-c054-43a2-9b72-6665ffa9d3f3",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_9%2Fmeo-long-dai-bicolor-2.jpeg?alt=media&token=c29e340e-113c-42bc-a0b5-d2373fcf3478",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_9%2Fmeo-long-dai-bicolor-3.jpeg?alt=media&token=2dd4d239-3101-48f8-8f1d-f7d8cb94b43a",
+    ],
+    age: 5,
+    isMale: false,
+    color: "BiColor",
+    weight: 10,
+    height: 10,
+    birthday: new Date().toISOString(),
+    origin: "",
+    description: "Adorable and nice looking pet",
+    type_id: 4,
+  },
+  {
+    sku: "SPCL00",
+    name: "Vẹt Cockatiel Lutino",
+    stock_quantity: 50,
+    price: 1000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_10%2Fvet-cockatiel-lutino-1.jpeg?alt=media&token=ebb92016-effd-4c77-94cd-7f30b87a66e4",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/pet%2Fpet_10%2Fvet-cockatiel-lutino-2.jpeg?alt=media&token=30b0d7cd-83c6-420a-8cab-a28fda6305fb",
+    ],
+    age: 5,
+    isMale: false,
+    color: "Yellow",
+    weight: 10,
+    height: 10,
+    birthday: new Date().toISOString(),
+    origin: "",
+    description: "Adorable and nice looking pet",
+    type_id: 5,
+  },
+];
+
+const petTypes = [
+  // id:1
+  {
+    name: "pet",
+    parent_id: null,
+  },
+  // id:2
+  {
+    name: "accessory",
+    parent_id: null,
+  },
+  // id:3
+  {
+    name: "dog",
+    parent_id: 1,
+  },
+  // id:4
+  {
+    name: "cat",
+    parent_id: 1,
+  },
+  // id:5
+  {
+    name: "bird",
+    parent_id: 1,
+  },
+];
+
+export { pets, petTypes };

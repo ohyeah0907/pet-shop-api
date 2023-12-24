@@ -16,6 +16,7 @@ const controller = {
 
     try {
       const result = await paymentService.returnMomo(req.query);
+      console.log("result :>> ", result);
       if (result) {
         res.redirect(
           `${CLIENT_URL}/checkout/success?orderId=${req.query.orderId}`,

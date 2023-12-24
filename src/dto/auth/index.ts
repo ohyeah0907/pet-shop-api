@@ -8,6 +8,8 @@ export type AuthLogin = {
 export type AuthRegister = {
   email: string;
   password: string;
+  phone: string;
+  address: string;
 };
 
 export type AuthResend = {
@@ -28,6 +30,7 @@ export type UserInfo = {
   name: string;
   email: string;
   phone: string;
+  address: string;
   is_admin: boolean;
   username: string;
 };

@@ -223,7 +223,7 @@ model User {
   phone              String            @db.VarChar(255)
   username           String            @db.VarChar(255)
   password           String            @db.VarChar(255)
-  // address            String?           @default("") @db.VarChar(255)
+  address            String            @default("") @db.VarChar(255)
   avatar_url         String?           @default("") @db.VarChar(255)
   facebook_id        String?           @default("") @db.VarChar(255)
   google_id          String?           @default("") @db.VarChar(255)
@@ -252,4 +252,3 @@ model KeyStore {
   updated_at    DateTime    @updatedAt
   deleted_at    DateTime?
 }
-

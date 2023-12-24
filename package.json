@@ -10,6 +10,7 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "scripts": {
+    "seed": "prisma migrate reset && prisma db seed",
     "build": "yarn && tsc && prisma migrate deploy",
     "predev": "npm install && npm run build",
     "serve": "node -r dotenv/config build/app.js",

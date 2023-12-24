@@ -23,7 +23,7 @@ const service = {
           product = await accessoryService.getById(item.accessory_id);
         }
         console.log("product :>> ", product);
-        return sum + product!.price * item.quantity;
+        return sum + Number(product!.price) * Number(item.quantity);
       },
       0,
     );
