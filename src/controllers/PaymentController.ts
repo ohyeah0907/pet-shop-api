@@ -28,7 +28,7 @@ const controller = {
       }
     } catch (error: any) {
       res.redirect(
-        `${CLIENT_URL}/checkout/failed?orderId=${req.query.orderId}&&message=${error.message}`,
+        `${CLIENT_URL}  `,
       );
     }
   },

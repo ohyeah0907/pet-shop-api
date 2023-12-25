@@ -19,15 +19,15 @@ export default {
   userUpdate: Joi.object().keys({
     update: Joi.object().keys({
       id: Joi.number().required(),
-      name: Joi.string().allow(null),
-      phone: Joi.string().allow(null),
-      email: Joi.string().email().allow(null),
-      username: Joi.string().allow(null),
+      name: Joi.string().allow(null, ""),
+      phone: Joi.string().allow(null, ""),
+      email: Joi.string().email().allow(null, ""),
+      username: Joi.string().allow(null, ""),
       password: Joi.string().allow(null),
       is_admin: Joi.boolean().allow(null),
       is_locked: Joi.boolean().allow(null),
       is_verified: Joi.boolean().allow(null),
-      verification_token: Joi.string().required().trim(),
+      verification_token: Joi.string().allow(null, ""),
     }),
   }),
 };
