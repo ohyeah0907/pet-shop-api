@@ -12,6 +12,12 @@ datasource db {
 
 // Enum
 
+enum Gender {
+  male
+  female
+  other
+}
+
 enum ObjectState {
   ACTIVE
   DELETED
@@ -221,6 +227,7 @@ model User {
   name               String            @db.VarChar(255)
   email              String            @unique @db.VarChar(255)
   phone              String            @db.VarChar(255)
+  gender             Gender?           @default(male)
   username           String            @db.VarChar(255)
   password           String            @db.VarChar(255)
   address            String            @default("") @db.VarChar(255)

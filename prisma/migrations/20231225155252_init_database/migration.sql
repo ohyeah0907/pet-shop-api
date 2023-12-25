@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "Gender" AS ENUM ('male', 'female', 'other');
+
+-- CreateEnum
 CREATE TYPE "ObjectState" AS ENUM ('ACTIVE', 'DELETED');
 
 -- CreateEnum
@@ -193,6 +196,7 @@ CREATE TABLE "User" (
     "name" VARCHAR(255) NOT NULL,
     "email" VARCHAR(255) NOT NULL,
     "phone" VARCHAR(255) NOT NULL,
+    "gender" "Gender" DEFAULT 'male',
     "username" VARCHAR(255) NOT NULL,
     "password" VARCHAR(255) NOT NULL,
     "address" VARCHAR(255) NOT NULL DEFAULT '',

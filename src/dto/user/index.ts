@@ -3,6 +3,7 @@ import { ObjectState } from "@prisma/client";
 export type UserCreate = {
   name: string;
   email: string;
+  gender?: string;
   phone: string;
   address: string;
   username: string;
@@ -17,6 +18,7 @@ export type UserUpdate = {
   id: number;
   name?: string;
   email?: string;
+  gender?: string;
   phone?: string;
   address?: string;
   username?: string;

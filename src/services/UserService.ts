@@ -33,6 +33,7 @@ const service = {
       email: create.email,
       phone: create.phone,
       username: create.username,
+      gender: create.gender,
       verification_token: create.verification_token || "",
       password: bcrypt.hashSync(create.password, 10),
       is_locked: create.is_locked || false,
@@ -49,6 +50,9 @@ const service = {
     }
     if (update.email) {
       user.email = update.email;
+    }
+    if (update.gender) {
+      user.gender = update.gender;
     }
     if (update.phone) {
       user.phone = update.phone;
