@@ -32,6 +32,7 @@ const service = {
       name: create.name,
       email: create.email,
       phone: create.phone,
+      address: create.address || "",
       username: create.username,
       gender: create.gender,
       verification_token: create.verification_token || "",
@@ -53,6 +54,9 @@ const service = {
     }
     if (update.gender) {
       user.gender = update.gender;
+    }
+    if (update.address) {
+      user.address = update.address;
     }
     if (update.phone) {
       user.phone = update.phone;

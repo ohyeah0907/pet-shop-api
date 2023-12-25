@@ -95,6 +95,7 @@ const service = {
         email: profile.email,
         avatar_url: profile.picture,
         phone: "",
+        address: "",
         username: profile.email.split("@")[0],
         google_id: profile.sub,
         verification_token: "",

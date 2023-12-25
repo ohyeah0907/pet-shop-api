@@ -7,6 +7,7 @@ export default {
       .keys({
         name: Joi.string().required().trim(),
         phone: Joi.string().required().trim(),
+        address: Joi.string().trim().allow(null, ""),
         email: Joi.string().email().required().trim(),
         gender: Joi.string()
           .trim()
@@ -25,6 +26,7 @@ export default {
       id: Joi.number().required(),
       name: Joi.string().allow(null, ""),
       phone: Joi.string().allow(null, ""),
+      address: Joi.string().trim().allow(null, ""),
       gender: Joi.string()
         .trim()
         .allow(...Object.values(Gender)),
