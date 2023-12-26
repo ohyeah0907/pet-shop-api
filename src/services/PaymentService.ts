@@ -150,6 +150,7 @@ const service = {
   },
   checkoutPaypal: async (request: any) => {
     const checkout = request.checkout;
+    console.log("checkout :>> ", checkout);
     const total = await checkout.items.reduce(async (sum: any, item: any) => {
       let product = null;
       if (item.pet_id) {
