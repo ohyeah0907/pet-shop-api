@@ -70,15 +70,16 @@ const service = {
     const orderDetails = await orderDetailService.getByOrderId(order.id);
     console.log("orderDetails :>> ", orderDetails);
     await Promise.all(
-      orderDetails.map((item) => {
+      orderDetails.map(async (item) => {
         if (item.pet_id) {
           const pet = item.pet;
           pet!.stock_quantity = pet!.stock_quantity - item.quantity;
-          return petService.update(pet as any);
+          console.log("pet :>> ", pet);
+          return await petService.update(pet as any);
         } else {
           const accessory = item.accessory;
           accessory!.stock_quantity = accessory!.stock_quantity - item.quantity;
-          return accessoryService.update(accessory as any);
+          return await accessoryService.update(accessory as any);
         }
       }),
     );
