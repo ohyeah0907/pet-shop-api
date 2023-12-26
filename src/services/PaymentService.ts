@@ -61,28 +61,27 @@ const service = {
 
     if (resultCode !== 0) {
       order.order_status = OrderStatus.COMPLETED;
+      // Update stock of product
+      const orderDetails = await orderDetailService.getByOrderId(order.id);
+      console.log("orderDetails :>> ", orderDetails);
+      for (let i = 0; i < orderDetails.length; i++) {
+        if (orderDetails[i].pet_id) {
+          const pet = orderDetails[i].pet;
+          pet!.stock_quantity = pet!.stock_quantity - orderDetails[i].quantity;
+          console.log("pet :>> ", pet);
+          return await petService.update(pet as any);
+        } else {
+          const accessory = orderDetails[i].accessory;
+          accessory!.stock_quantity =
+            accessory!.stock_quantity - orderDetails[i].quantity;
+          return await accessoryService.update(accessory as any);
+        }
+      }
     } else {
       order.order_status = OrderStatus.CANCELLED;
     }
 
     const updated = await orderService.update(order);
-    // Update stock of product
-    const orderDetails = await orderDetailService.getByOrderId(order.id);
-    console.log("orderDetails :>> ", orderDetails);
-    await Promise.all(
-      orderDetails.map(async (item) => {
-        if (item.pet_id) {
-          const pet = item.pet;
-          pet!.stock_quantity = pet!.stock_quantity - item.quantity;
-          console.log("pet :>> ", pet);
-          return await petService.update(pet as any);
-        } else {
-          const accessory = item.accessory;
-          accessory!.stock_quantity = accessory!.stock_quantity - item.quantity;
-          return await accessoryService.update(accessory as any);
-        }
-      }),
-    );
 
     if (!updated) {
       throw new Error("Cập nhật trạng thái đơn hàng thất bại");
