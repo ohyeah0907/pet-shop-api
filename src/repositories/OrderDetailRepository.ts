@@ -59,6 +59,21 @@ const findById = async (id: number, include?: object) => {
 
   return orderDetail;
 };
+const findByOrderId = async (orderId: number, include?: object) => {
+  const orderDetail = await prisma.orderDetail.findMany({
+    where: {
+      order_id: orderId,
+      state: ObjectState.ACTIVE,
+    },
+    include: {
+      pet: { select: { id: true, stock_quantity: true } },
+      accessory: { select: { id: true, stock_quantity: true } },
+      ...(include || {}),
+    },
+  });
+
+  return orderDetail;
+};
 
 const save = async (orderDetail: OrderDetail, include?: object) => {
   if (orderDetail.id) {
@@ -124,4 +139,5 @@ export default {
   findAll,
   findById,
   save,
+  findByOrderId,
 };

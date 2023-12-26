@@ -7,13 +7,19 @@ import schema from "../../schema/payment";
 
 const router = Router();
 
-
 router.post(
   "/checkout/momo",
   validator(schema.payment),
   authentication,
-  asyncHandler(controller.checkout),
+  asyncHandler(controller.checkoutMomo),
 );
 router.get("/return/momo", asyncHandler(controller.returnMomo));
+router.post(
+  "/checkout/paypal",
+  validator(schema.payment),
+  authentication,
+  asyncHandler(controller.checkoutPaypal),
+);
+router.post("/return/paypal", asyncHandler(controller.returnPaypal));
 
 export default router;

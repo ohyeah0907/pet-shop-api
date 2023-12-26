@@ -59,6 +59,9 @@ const service = {
 
     return await OrderDetailRepository.save(orderDetail);
   },
+  getByOrderId: async (orderId: number) => {
+    return await OrderDetailRepository.findByOrderId(orderId);
+  },
   delete: async (id: number) => {
     const orderDetail: any = await service.getById(id);
     orderDetail.state = ObjectState.DELETED;

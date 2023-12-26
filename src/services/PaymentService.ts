@@ -11,9 +11,8 @@ import { OrderDetailCreate } from "../dto/order_detail";
 import { OrderStatus, Payment } from "@prisma/client";
 
 const service = {
-  checkout: async (request: any) => {
+  checkoutMomo: async (request: any) => {
     const checkout = request.checkout;
-    console.log("checkout :>> ", checkout);
     const total = await checkout.items.reduce(async (sum: any, item: any) => {
       let product = null;
       if (item.pet_id) {
@@ -21,7 +20,6 @@ const service = {
       } else {
         product = await accessoryService.getById(item.accessory_id);
       }
-      console.log("product :>> ", product);
       return (await sum) + Number(product!.price) * Number(item.quantity);
     }, Promise.resolve(0));
     const orderCreate: OrderCreate = {
@@ -68,6 +66,22 @@ const service = {
     }
 
     const updated = await orderService.update(order);
+    // Update stock of product
+    const orderDetails = await orderDetailService.getByOrderId(order.id);
+    await Promise.all(
+      orderDetails.map((item) => {
+        if (item.pet_id) {
+          const pet = item.pet;
+          pet!.stock_quantity = pet!.stock_quantity - item.quantity;
+          return petService.update(pet as any);
+        } else {
+          const accessory = item.accessory;
+          accessory!.stock_quantity = accessory!.stock_quantity - item.quantity;
+          return accessoryService.update(accessory as any);
+        }
+      }),
+    );
+
     if (!updated) {
       throw new Error("Cập nhật trạng thái đơn hàng thất bại");
     }
@@ -133,6 +147,26 @@ const service = {
         throw error;
       });
   },
+  checkoutPaypal: async (request: any) => {
+    const checkout = request.checkout;
+    const total = await checkout.items.reduce(async (sum: any, item: any) => {
+      let product = null;
+      if (item.pet_id) {
+        product = await petService.getById(item.pet_id);
+      } else {
+        product = await accessoryService.getById(item.accessory_id);
+      }
+      return (await sum) + Number(product!.price) * Number(item.quantity);
+    }, Promise.resolve(0));
+    const orderCreate: OrderCreate = {
+      user: request.user,
+      payment: Payment.momo,
+      code: "INV-" + Date.now(),
+      order_status: "PENDING",
+      total: total,
+    };
+  },
+  returnPaypal: async (request: any) => {},
 };
 
 export default service;
