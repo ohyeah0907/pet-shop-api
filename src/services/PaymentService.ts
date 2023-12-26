@@ -69,12 +69,12 @@ const service = {
           const pet = orderDetails[i].pet;
           pet!.stock_quantity = pet!.stock_quantity - orderDetails[i].quantity;
           console.log("pet :>> ", pet);
-          return await petService.update(pet as any);
+          await petService.update(pet as any);
         } else {
           const accessory = orderDetails[i].accessory;
           accessory!.stock_quantity =
             accessory!.stock_quantity - orderDetails[i].quantity;
-          return await accessoryService.update(accessory as any);
+          await accessoryService.update(accessory as any);
         }
       }
     } else {
@@ -201,12 +201,12 @@ const service = {
           if (item.pet_id) {
             const pet = item.pet;
             pet!.stock_quantity = pet!.stock_quantity - item.quantity;
-            return petService.update(pet as any);
+            petService.update(pet as any);
           } else {
             const accessory = item.accessory;
             accessory!.stock_quantity =
               accessory!.stock_quantity - item.quantity;
-            return accessoryService.update(accessory as any);
+            accessoryService.update(accessory as any);
           }
         }),
       );
