@@ -68,6 +68,7 @@ const service = {
     const updated = await orderService.update(order);
     // Update stock of product
     const orderDetails = await orderDetailService.getByOrderId(order.id);
+    console.log("orderDetails :>> ", orderDetails);
     await Promise.all(
       orderDetails.map((item) => {
         if (item.pet_id) {
