@@ -20,6 +20,10 @@ router.post(
   authentication,
   asyncHandler(controller.checkoutPaypal),
 );
-router.post("/return/paypal", asyncHandler(controller.returnPaypal));
+router.post(
+  "/return/paypal",
+  authentication,
+  asyncHandler(controller.returnPaypal),
+);
 
 export default router;

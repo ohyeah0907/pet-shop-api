@@ -10,11 +10,22 @@ const controller = {
     console.log("result :>> ", result);
     return new SuccessResponse("Thành công!", result!.payUrl).send(res);
   },
-  checkoutPaypal: async (req: Request, res: Response) => {},
-  returnPaypal: async (req: Request, res: Response) => {},
+  checkoutPaypal: async (req: Request, res: Response) => {
+    req.body.user = req.user;
+    const result = await paymentService.checkoutPaypal(req.body);
+    console.log("result :>> ", result);
+    return new SuccessResponse("Thành công!", result).send(res);
+  },
+  returnPaypal: async (req: Request, res: Response) => {
+    req.body.user = req.user;
+    const result = await paymentService.returnPaypal(req.body);
+    console.log("result :>> ", result);
+    return new SuccessResponse("Thành công!", result).send(res);
+  },
   returnMomo: async (req: Request, res: Response) => {
     console.log("req :>> ", req.query);
     const { CLIENT_URL } = process.env;
+    console.log("CLIENT_URL :>> ", CLIENT_URL);
 
     try {
       const result = await paymentService.returnMomo(req.query);

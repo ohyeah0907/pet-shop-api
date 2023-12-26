@@ -185,38 +185,46 @@ const service = {
       await orderDetailService.create(orderDetailCreate);
     });
 
-    return order;
+    return { orderId: order.code };
   },
   returnPaypal: async (request: any) => {
     const { orderId, status } = request.body;
+    const result = {
+      status: "",
+      message: "",
+      orderId: "",
+    };
     const order = await orderService.getByCode(orderId);
     order.order_status = status;
+    result.status = status === OrderStatus.COMPLETED ? "success" : "failed";
+    result.message =
+      status === OrderStatus.COMPLETED
+        ? "Thanh toán thành công"
+        : "Thanh toán thất bại";
+    result.orderId = orderId;
+
     const updated = await orderService.update(order);
+    if (!updated) {
+      throw new Error("Cập nhật trạng thái đơn hàng thất bại");
+    }
     // Update stock of product
     if (status === OrderStatus.COMPLETED) {
       const orderDetails = await orderDetailService.getByOrderId(order.id);
-      console.log("orderDetails :>> ", orderDetails);
-      await Promise.all(
-        orderDetails.map((item) => {
-          if (item.pet_id) {
-            const pet = item.pet;
-            pet!.stock_quantity = pet!.stock_quantity - item.quantity;
-            petService.update(pet as any);
-          } else {
-            const accessory = item.accessory;
-            accessory!.stock_quantity =
-              accessory!.stock_quantity - item.quantity;
-            accessoryService.update(accessory as any);
-          }
-        }),
-      );
-
-      if (!updated) {
-        throw new Error("Cập nhật trạng thái đơn hàng thất bại");
+      for (let i = 0; i < orderDetails.length; i++) {
+        if (orderDetails[i].pet_id) {
+          const pet = orderDetails[i].pet;
+          pet!.stock_quantity = pet!.stock_quantity - orderDetails[i].quantity;
+          console.log("pet :>> ", pet);
+          await petService.update(pet as any);
+        } else {
+          const accessory = orderDetails[i].accessory;
+          accessory!.stock_quantity =
+            accessory!.stock_quantity - orderDetails[i].quantity;
+          await accessoryService.update(accessory as any);
+        }
       }
-
-      return updated;
     }
+    return result;
   },
 };
 
