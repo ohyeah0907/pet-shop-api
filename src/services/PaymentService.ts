@@ -160,11 +160,31 @@ const service = {
     }, Promise.resolve(0));
     const orderCreate: OrderCreate = {
       user: request.user,
-      payment: Payment.momo,
+      payment: Payment.paypal,
       code: "INV-" + Date.now(),
       order_status: "PENDING",
       total: total,
     };
+    const order = await orderService.create(orderCreate);
+
+    checkout.items.forEach(async (item: any) => {
+      const orderDetailCreate: OrderDetailCreate = {
+        order: order,
+        quantity: item.quantity,
+      };
+      let product = null;
+      if (item.pet_id) {
+        product = await petService.getById(item.pet_id);
+        orderDetailCreate.pet = product;
+      } else {
+        product = await accessoryService.getById(item.accessory_id);
+        orderDetailCreate.accessory = product;
+      }
+      product.price = product.price;
+      await orderDetailService.create(orderDetailCreate);
+    });
+
+    return order;
   },
   returnPaypal: async (request: any) => {},
 };
