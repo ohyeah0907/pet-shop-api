@@ -187,7 +187,37 @@ const service = {
 
     return order;
   },
-  returnPaypal: async (request: any) => {},
+  returnPaypal: async (request: any) => {
+    const { orderId, status } = request.body;
+    const order = await orderService.getByCode(orderId);
+    order.order_status = status;
+    const updated = await orderService.update(order);
+    // Update stock of product
+    if (status === OrderStatus.COMPLETED) {
+      const orderDetails = await orderDetailService.getByOrderId(order.id);
+      console.log("orderDetails :>> ", orderDetails);
+      await Promise.all(
+        orderDetails.map((item) => {
+          if (item.pet_id) {
+            const pet = item.pet;
+            pet!.stock_quantity = pet!.stock_quantity - item.quantity;
+            return petService.update(pet as any);
+          } else {
+            const accessory = item.accessory;
+            accessory!.stock_quantity =
+              accessory!.stock_quantity - item.quantity;
+            return accessoryService.update(accessory as any);
+          }
+        }),
+      );
+
+      if (!updated) {
+        throw new Error("Cập nhật trạng thái đơn hàng thất bại");
+      }
+
+      return updated;
+    }
+  },
 };
 
 export default service;
