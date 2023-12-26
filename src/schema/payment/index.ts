@@ -1,6 +1,7 @@
 import Joi from "joi";
 import { Header } from "../../enum";
 import { JoiAuthBearer } from "../../middleware/validator";
+import { OrderStatus } from "@prisma/client";
 
 export default {
   payment: Joi.object().keys({
@@ -17,5 +18,11 @@ export default {
           .required(),
       })
       .required(),
+  }),
+  returnPaypal: Joi.object().keys({
+    orderId: Joi.string().required(),
+    status: Joi.string()
+      .required()
+      .allow(...Object.values(OrderStatus)),
   }),
 };

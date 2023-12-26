@@ -22,6 +22,7 @@ router.post(
 );
 router.post(
   "/return/paypal",
+  validator(schema.returnPaypal),
   authentication,
   asyncHandler(controller.returnPaypal),
 );

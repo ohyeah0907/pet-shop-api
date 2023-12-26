@@ -189,7 +189,7 @@ const service = {
     return { orderId: order.code };
   },
   returnPaypal: async (request: any) => {
-    const { orderId, status } = request.body;
+    const { orderId, status } = request;
     const result = {
       status: "",
       message: "",
