@@ -32,7 +32,26 @@ const service = {
 
     const order = await orderService.create(orderCreate);
 
-    checkout.items.forEach(async (item: any) => {
+    // checkout.items.forEach(async (item: any) => {
+    //   const orderDetailCreate: OrderDetailCreate = {
+    //     order: order,
+    //     quantity: item.quantity,
+    //   };
+    //   let product = null;
+    //   if (item.pet_id) {
+    //     product = await petService.getById(item.pet_id);
+    //     orderDetailCreate.pet = product;
+    //     orderDetailCreate.price = product.price * item.quantity;
+    //   } else {
+    //     product = await accessoryService.getById(item.accessory_id);
+    //     orderDetailCreate.accessory = product;
+    //     orderDetailCreate.price = product.price * item.quantity;
+    //   }
+    //   product.price = product.price;
+    //   await orderDetailService.create(orderDetailCreate);
+    // });
+    for (let i = 0; i < checkout.items.length; i++) {
+      const item = checkout.items[i];
       const orderDetailCreate: OrderDetailCreate = {
         order: order,
         quantity: item.quantity,
@@ -41,13 +60,15 @@ const service = {
       if (item.pet_id) {
         product = await petService.getById(item.pet_id);
         orderDetailCreate.pet = product;
+        orderDetailCreate.price = product.price;
       } else {
         product = await accessoryService.getById(item.accessory_id);
         orderDetailCreate.accessory = product;
+        orderDetailCreate.price = product.price;
       }
       product.price = product.price;
       await orderDetailService.create(orderDetailCreate);
-    });
+    }
 
     const momoOrder = await service.createMomoOrder(order);
 
@@ -63,12 +84,10 @@ const service = {
       order.order_status = OrderStatus.COMPLETED;
       // Update stock of product
       const orderDetails = await orderDetailService.getByOrderId(order.id);
-      console.log("orderDetails :>> ", orderDetails);
       for (let i = 0; i < orderDetails.length; i++) {
         if (orderDetails[i].pet_id) {
           const pet = orderDetails[i].pet;
           pet!.stock_quantity = pet!.stock_quantity - orderDetails[i].quantity;
-          console.log("pet :>> ", pet);
           await petService.update(pet as any);
         } else {
           const accessory = orderDetails[i].accessory;
@@ -169,7 +188,26 @@ const service = {
     };
     const order = await orderService.create(orderCreate);
 
-    checkout.items.forEach(async (item: any) => {
+    // checkout.items.forEach(async (item: any) => {
+    //   const orderDetailCreate: OrderDetailCreate = {
+    //     order: order,
+    //     quantity: item.quantity,
+    //   };
+    //   let product = null;
+    //   if (item.pet_id) {
+    //     product = await petService.getById(item.pet_id);
+    //     orderDetailCreate.pet = product;
+    //     orderDetailCreate.price = product.price * item.quantity;
+    //   } else {
+    //     product = await accessoryService.getById(item.accessory_id);
+    //     orderDetailCreate.accessory = product;
+    //     orderDetailCreate.price = product.price * item.quantity;
+    //   }
+    //   product.price = product.price;
+    //   await orderDetailService.create(orderDetailCreate);
+    // });
+    for (let i = 0; i < checkout.items.length; i++) {
+      const item = checkout.items[i];
       const orderDetailCreate: OrderDetailCreate = {
         order: order,
         quantity: item.quantity,
@@ -178,13 +216,15 @@ const service = {
       if (item.pet_id) {
         product = await petService.getById(item.pet_id);
         orderDetailCreate.pet = product;
+        orderDetailCreate.price = product.price;
       } else {
         product = await accessoryService.getById(item.accessory_id);
         orderDetailCreate.accessory = product;
+        orderDetailCreate.price = product.price;
       }
       product.price = product.price;
       await orderDetailService.create(orderDetailCreate);
-    });
+    }
 
     return { orderId: order.code };
   },
