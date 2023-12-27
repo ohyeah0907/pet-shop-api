@@ -10,6 +10,7 @@ export default {
             id: Joi.number().required(),
           })
           .required(),
+        code: Joi.string().required(),
         order_status: Joi.string()
           .valid(...Object.values(OrderStatus))
           .required(),
@@ -28,6 +29,7 @@ export default {
             id: Joi.number().required(),
           })
           .required(),
+        code: Joi.string().required(),
         order_status: Joi.string()
           .valid(...Object.values(OrderStatus))
           .required(),

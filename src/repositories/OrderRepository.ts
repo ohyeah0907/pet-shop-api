@@ -77,6 +77,7 @@ const save = async (order: Order, include?: object) => {
         user: {
           connect: { id: order.user_id },
         },
+        code: order.code,
         order_status: order.order_status,
         payment: order.payment,
         state: order.state,
