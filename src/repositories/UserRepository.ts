@@ -33,6 +33,7 @@ const findAll = async (search: UserSearch) => {
       gender: true,
       email: true,
       phone: true,
+      address: true,
       verification_token: true,
       name: true,
       is_verified: true,

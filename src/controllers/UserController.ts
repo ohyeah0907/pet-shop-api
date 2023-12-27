@@ -4,7 +4,6 @@ import { BadRequestResponse, SuccessResponse } from "../handler/app-response";
 
 const controller = {
   getUserSearch: async (req: Request, res: Response) => {
-    console.log("user");
     const users = await userService.getUserSearch(req.body);
     return new SuccessResponse("Thành công!", users).send(res);
   },
