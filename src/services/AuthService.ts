@@ -145,7 +145,7 @@ const service = {
       phone: register.phone,
       address: register.address,
       verification_token: v4(),
-      username: register.email,
+      username: register.username,
       password: bcrypt.hashSync(register.password, 10),
       is_locked: false,
       is_verified: false,
