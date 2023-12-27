@@ -20,14 +20,16 @@ const service = {
   },
   getAllOrderDetailByOrderId: async (id: number) => {
     const orderDetails = await OrderDetailRepository.findByOrderId(id);
-    if (!orderDetails) throw new Error("Không tìm thấy order detail");
-    const result = {
-      order: orderDetails[0].order,
-      items: orderDetails.map((item) => {
-        const { order, ...rest } = item;
-        return rest;
-      }),
-    };
+    let result = {};
+    if (orderDetails.length !== 0) {
+      result = {
+        order: orderDetails[0].order,
+        items: orderDetails.map((item) => {
+          const { order, ...rest } = item;
+          return rest;
+        }),
+      };
+    }
     return result;
   },
   create: async (create: OrderDetailCreate) => {
