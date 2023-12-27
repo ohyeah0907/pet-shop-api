@@ -66,8 +66,17 @@ const findByOrderId = async (orderId: number, include?: object) => {
       state: ObjectState.ACTIVE,
     },
     include: {
-      pet: { include: { type: true } },
-      accessory: { include: { type: true } },
+      order: {
+        select: {
+          order_status: true,
+          code: true,
+          payment: true,
+          total: true,
+          created_at: true,
+        },
+      },
+      pet: { select: { name: true, stock_quantity: true, state: true } },
+      accessory: { select: { name: true, stock_quantity: true, state: true } },
       ...(include || {}),
     },
   });

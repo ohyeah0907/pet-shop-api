@@ -17,6 +17,22 @@ const controller = {
       return new BadRequestResponse(error.message).send(res);
     }
   },
+  getAllOrderDetailByOrderId: async (req: Request, res: Response) => {
+    try {
+      const {
+        order: { id },
+      } = req.body?.search;
+      if (typeof id !== "number")
+        throw new Error("Order's id is not right type");
+      const orderDetails = await orderDetailService.getAllOrderDetailByOrderId(
+        id,
+      );
+
+      return new SuccessResponse("Thành công!", orderDetails).send(res);
+    } catch (error: any) {
+      return new BadRequestResponse(error.message).send(res);
+    }
+  },
   create: async (req: Request, res: Response) => {
     try {
       const orderDetail = await orderDetailService.create(req.body.create);
