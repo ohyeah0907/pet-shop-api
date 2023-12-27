@@ -75,8 +75,26 @@ const findByOrderId = async (orderId: number, include?: object) => {
           created_at: true,
         },
       },
-      pet: { select: { name: true, stock_quantity: true, state: true } },
-      accessory: { select: { name: true, stock_quantity: true, state: true } },
+      pet: {
+        select: {
+          name: true,
+          stock_quantity: true,
+          description_images: true,
+          thumbnail_image: true,
+          description: true,
+          state: true,
+        },
+      },
+      accessory: {
+        select: {
+          name: true,
+          stock_quantity: true,
+          description_images: true,
+          thumbnail_image: true,
+          description: true,
+          state: true,
+        },
+      },
       ...(include || {}),
     },
   });
