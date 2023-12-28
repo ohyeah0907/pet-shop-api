@@ -25,6 +25,11 @@ const findAll = async (search: PetSearch, include?: object) => {
       notIn: search.notInIds,
     };
   }
+  if (search?.inIds && Array.isArray(search.inIds)) {
+    condition.id = {
+      in: search.inIds,
+    };
+  }
 
   const pets = await prisma.pet.findMany({
     where: {

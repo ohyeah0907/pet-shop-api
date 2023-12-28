@@ -1,6 +1,7 @@
 import UserRepository from "../repositories/UserRepository";
-import { ObjectState } from "@prisma/client";
+import { ObjectState, User } from "@prisma/client";
 import { UserCreate, UserUpdate } from "../dto/user";
+import recombeeClient from "../recombee";
 import bcrypt from "bcrypt";
 
 const service = {
@@ -86,6 +87,69 @@ const service = {
     user.state = ObjectState.DELETED;
     user.deleted_at = new Date();
     return !!(await UserRepository.save(user));
+  },
+  createUserPropertiesToRecombee: async (data: {
+    [key: string]:
+      | "int"
+      | "double"
+      | "string"
+      | "boolean"
+      | "timestamp"
+      | "set"
+      | "image"
+      | "imageList";
+  }) => {
+    return await Promise.all(
+      Object.keys(data).map(async (item) => {
+        const field = item;
+        const requestRecombee = new recombeeClient.rqs.AddUserProperty(
+          field,
+          data[field],
+        );
+        requestRecombee.timeout = 10000;
+        return await recombeeClient.client.send(requestRecombee);
+      }),
+    )
+      .then((res) => ({
+        success: true,
+        message: "Thêm property user thành công",
+      }))
+      .catch((err) => ({
+        success: false,
+        message: "Thêm property user thất bại",
+      }));
+  },
+  createUserToRecombee: async (user: User) => {
+    const result = {
+      success: false,
+      message: "",
+    };
+    if (user.id && user.email && user.username) {
+      const requestRecombee = new recombeeClient.rqs.SetUserValues(
+        `${user.id}`,
+        { email: user.email, username: user.username },
+        {
+          cascadeCreate: true,
+        },
+      );
+      requestRecombee.timeout = 10000;
+
+      await recombeeClient.client
+        .send(requestRecombee)
+        .then((response) => {
+          console.log("response :>> ", response);
+          result.success = true;
+          result.message = "Thêm user thành công vào recombee";
+        })
+        .catch((error) => {
+          console.log("error :>> ", error);
+          result.message = "Thêm pet thất bại vào recombee";
+        });
+    } else {
+      result.message = "Thiếu field khi thêm pet vào recombee";
+    }
+
+    return result;
   },
 };
 

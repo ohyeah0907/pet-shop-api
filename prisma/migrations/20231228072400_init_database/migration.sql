@@ -5,7 +5,7 @@ CREATE TYPE "Gender" AS ENUM ('male', 'female', 'other');
 CREATE TYPE "ObjectState" AS ENUM ('ACTIVE', 'DELETED');
 
 -- CreateEnum
-CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'CONFIRMED', 'SHIPPING', 'COMPLETED', 'CANCELLED');
+CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'COMPLETED', 'CANCELLED');
 
 -- CreateEnum
 CREATE TYPE "Payment" AS ENUM ('cash', 'momo', 'paypal');

@@ -111,7 +111,8 @@ const service = {
     const refreshTokenKey = crypto.randomBytes(64).toString("hex");
 
     await KeyStoreRepository.create(user, refreshTokenKey);
-    await service.createUserToRecombee(user);
+    // Recombee
+    await userService.createUserToRecombee(user);
 
     const result: AuthLoginResponse = {
       tokens: await createTokens(user, accessTokenKey, refreshTokenKey),
@@ -200,8 +201,9 @@ const service = {
     user.verification_token = "";
     user.verified_at = new Date();
     await UserRepository.save(user);
+
     // Recombee
-    await service.createUserToRecombee(user);
+    await userService.createUserToRecombee(user);
     return true;
   },
   info: async (user: User) => {
@@ -230,36 +232,6 @@ const service = {
       ),
     };
     return result;
-  },
-
-  createUserToRecombee: async (user: User) => {
-    recombeeClient.client
-      .send(new recombeeClient.rqs.AddUser("" + user.id))
-      .then((response) => {
-        console.log("Add user successfully: " + response);
-      })
-      .catch((error) => {
-        console.log("error :>> ", error);
-      });
-
-    recombeeClient.client
-      .send(
-        new recombeeClient.rqs.SetUserValues(
-          "" + user.id,
-          { email: user.email, username: user.username },
-          {
-            cascadeCreate: true,
-          },
-        ),
-      )
-      .then((response) => {
-        console.log("Set user values successfully: " + response);
-      })
-      .catch((error) => {
-        console.log("error :>> ", error);
-      });
-
-    return true;
   },
 };
 
