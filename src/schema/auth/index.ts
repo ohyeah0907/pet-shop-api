@@ -16,7 +16,7 @@ export default {
       .keys({
         email: Joi.string().required().trim(),
         password: Joi.string().required().trim(),
-        ussername: Joi.string().required().trim(),
+        username: Joi.string().required().trim(),
         phone: Joi.string().required().trim(),
         address: Joi.string().required().trim(),
       })

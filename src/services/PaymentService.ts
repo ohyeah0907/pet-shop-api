@@ -248,6 +248,8 @@ const service = {
     if (!updated) {
       throw new Error("Cập nhật trạng thái đơn hàng thất bại");
     }
+
+    console.log("order :>> ", order);
     // Update stock of product
     if (status === OrderStatus.COMPLETED) {
       const orderDetails = await orderDetailService.getByOrderId(order.id);
@@ -255,7 +257,6 @@ const service = {
         if (orderDetails[i].pet_id) {
           const pet = orderDetails[i].pet;
           pet!.stock_quantity = pet!.stock_quantity - orderDetails[i].quantity;
-          console.log("pet :>> ", pet);
           await petService.update(pet as any);
         } else {
           const accessory = orderDetails[i].accessory;

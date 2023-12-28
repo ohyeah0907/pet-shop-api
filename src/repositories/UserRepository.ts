@@ -174,6 +174,7 @@ const save = async (user: User) => {
       id: true,
       name: true,
       email: true,
+      username: true,
       verification_token: true,
       created_at: true,
       updated_at: true,
