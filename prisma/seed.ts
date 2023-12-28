@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import prisma from "../src/prisma";
 import { petTypes, pets } from "../src/constants/data";
 import userService from "../src/services/UserService";
-import petService from "../src/services/PetService";
+import productService from "../src/services/ProductService";
 
 const main = async () => {
   // Create admin user
@@ -34,20 +34,39 @@ const main = async () => {
   if (createPropertiesUser.success) {
     await userService.createUserToRecombee(user);
   }
+
+  // Create product properties to recommbee
+  const createProductProperties =
+    await productService.createProductPropertiesToRecombee({
+      name: "string",
+      type: "string",
+      // thumbnail_image: "string",
+    });
+  console.log(
+    "createProductProperties.message :>> ",
+    createProductProperties.message,
+  );
+
   // Create pet type
   await prisma.petType.createMany({ data: petTypes });
 
   // Create pet
-  const createPropertiesPet = await petService.createPetPropertiesToRecombee({
-    name: "string",
-    type: "string",
-  });
-  console.log("createPropertiesPet.message :>> ", createPropertiesPet.message);
-
   for (let i = 0; i < pets.length; i++) {
     const pet = await prisma.pet.create({ data: pets[i] });
-    if (createPropertiesPet.success) {
-      await petService.createPetToRecombee(pet);
+    if (createProductProperties.success) {
+      await productService.createProductToRecombee(pet, "pet");
+    }
+  }
+
+  // Create accessory type
+  await prisma.accessoryType.createMany({ data: [] });
+
+  // Create accessory
+  const accessories: any[] = [];
+  for (let i = 0; i < accessories.length; i++) {
+    const accessory = await prisma.accessory.create({ data: accessories[i] });
+    if (createProductProperties.success) {
+      await productService.createProductToRecombee(accessory, "accessory");
     }
   }
 };
