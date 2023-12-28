@@ -36,23 +36,52 @@ const service = {
   },
   update: async (update: PetUpdate) => {
     const pet: any = await service.getById(update.id);
-    const type = await PetTypeService.getById(update.type.id);
-    pet.type_id = type.id;
-
-    pet.name = update.name;
-    pet.sku = update.sku;
-    pet.stock_quantity = update.stock_quantity;
-    pet.price = update.price;
-    pet.thumbnail_image = update.thumbnail_image;
-    pet.description_images = update.description_images;
-    pet.age = update.age;
-    pet.color = update.color;
-    pet.weight = update.weight;
-    pet.height = update.height;
-    pet.birthday = new Date(update.birthday);
-    pet.origin = update.origin;
-    pet.description = update.description;
-    pet.isMale = update.isMale;
+    if (update.type?.id) {
+      const type = await PetTypeService.getById(update.type.id);
+      pet.type_id = type.id;
+    }
+    if (update.name) {
+      pet.name = update.name;
+    }
+    if (update.sku) {
+      pet.sku = update.sku;
+    }
+    if (update.stock_quantity) {
+      pet.stock_quantity = update.stock_quantity;
+    }
+    if (update.price) {
+      pet.price = update.price;
+    }
+    if (update.thumbnail_image) {
+      pet.thumbnail_image = update.thumbnail_image;
+    }
+    if (update.description_images) {
+      pet.description_images = update.description_images;
+    }
+    if (update.age) {
+      pet.age = update.age;
+    }
+    if (update.color) {
+      pet.color = update.color;
+    }
+    if (update.weight) {
+      pet.weight = update.weight;
+    }
+    if (update.height) {
+      pet.height = update.height;
+    }
+    if (update.birthday) {
+      pet.birthday = new Date(update.birthday);
+    }
+    if (update.origin) {
+      pet.origin = update.origin;
+    }
+    if (update.description) {
+      pet.description = update.description;
+    }
+    if (update.isMale) {
+      pet.isMale = update.isMale;
+    }
 
     return await PetRepository.save(pet);
   },

@@ -37,19 +37,37 @@ const service = {
   },
   update: async (update: AccessoryUpdate) => {
     const accessory: any = await service.getById(update.id);
-    const type = await AccessoryTypeService.getById(update.type.id);
-    accessory.type_id = type.id;
-
-    accessory.name = update.name;
-    accessory.sku = update.sku;
-    accessory.stock_quantity = update.stock_quantity;
-    accessory.price = update.price;
-    accessory.thumbnail_image = update.thumbnail_image;
-    accessory.description_images = update.description_images;
-    accessory.weight = update.weight;
-    accessory.origin = update.origin;
-    accessory.description = update.description;
-
+    if (update.type?.id) {
+      const type = await AccessoryTypeService.getById(update.type.id);
+      accessory.type_id = type.id;
+    }
+    if (update.name) {
+      accessory.name = update.name;
+    }
+    if (update.sku) {
+      accessory.sku = update.sku;
+    }
+    if (update.stock_quantity) {
+      accessory.stock_quantity = update.stock_quantity;
+    }
+    if (update.price) {
+      accessory.price = update.price;
+    }
+    if (update.thumbnail_image) {
+      accessory.thumbnail_image = update.thumbnail_image;
+    }
+    if (update.description_images) {
+      accessory.description_images = update.description_images;
+    }
+    if (update.weight) {
+      accessory.weight = update.weight;
+    }
+    if (update.origin) {
+      accessory.origin = update.origin;
+    }
+    if (update.description) {
+      accessory.description = update.description;
+    }
     return await AccessoryRepository.save(accessory);
   },
   delete: async (id: number) => {
