@@ -55,6 +55,9 @@ const findById = async (id: number, include?: object) => {
 
 const findByCode = async (code: string, include?: object) => {
   const order = await prisma.order.findUnique({
+    include: {
+      ...(include || {}),
+    },
     where: {
       code: code,
       state: ObjectState.ACTIVE,

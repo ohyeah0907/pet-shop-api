@@ -12,9 +12,9 @@ const controller = {
   },
   checkoutPaypal: async (req: Request, res: Response) => {
     req.body.user = req.user;
-    console.log("req.user :>> ", req.user);
+    // console.log("req.user :>> ", req.user);
     const result = await paymentService.checkoutPaypal(req.body);
-    console.log("result :>> ", result);
+    // console.log("result :>> ", result);
     return new SuccessResponse("Thành công!", result).send(res);
   },
   returnPaypal: async (req: Request, res: Response) => {

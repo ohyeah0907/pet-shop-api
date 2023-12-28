@@ -77,7 +77,13 @@ const findByOrderId = async (orderId: number, include?: object) => {
       },
       pet: {
         select: {
+          id: true,
           name: true,
+          type: {
+            select: {
+              id: true,
+            },
+          },
           stock_quantity: true,
           price: true,
           description_images: true,
@@ -88,7 +94,13 @@ const findByOrderId = async (orderId: number, include?: object) => {
       },
       accessory: {
         select: {
+          id: true,
           name: true,
+          type: {
+            select: {
+              id: true,
+            },
+          },
           stock_quantity: true,
           price: true,
           description_images: true,
