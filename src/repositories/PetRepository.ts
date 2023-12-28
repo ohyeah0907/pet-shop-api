@@ -25,9 +25,9 @@ const findAll = async (search: PetSearch, include?: object) => {
       notIn: search.notInIds,
     };
   }
-  if (search?.inIds && Array.isArray(search.inIds)) {
-    condition.id = {
-      in: search.inIds,
+  if (search?.inSkus && Array.isArray(search.inSkus)) {
+    condition.sku = {
+      in: search.inSkus,
     };
   }
 

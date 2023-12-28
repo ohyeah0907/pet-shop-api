@@ -1,6 +1,11 @@
 import bcrypt from "bcrypt";
 import prisma from "../src/prisma";
-import { petTypes, pets } from "../src/constants/data";
+import {
+  petTypes,
+  pets,
+  accessories,
+  accessoryTypes,
+} from "../src/constants/data";
 import userService from "../src/services/UserService";
 import productService from "../src/services/ProductService";
 
@@ -40,7 +45,6 @@ const main = async () => {
     await productService.createProductPropertiesToRecombee({
       name: "string",
       type: "string",
-      // thumbnail_image: "string",
     });
   console.log(
     "createProductProperties.message :>> ",
@@ -59,10 +63,9 @@ const main = async () => {
   }
 
   // Create accessory type
-  await prisma.accessoryType.createMany({ data: [] });
+  await prisma.accessoryType.createMany({ data: accessoryTypes });
 
   // Create accessory
-  const accessories: any[] = [];
   for (let i = 0; i < accessories.length; i++) {
     const accessory = await prisma.accessory.create({ data: accessories[i] });
     if (createProductProperties.success) {

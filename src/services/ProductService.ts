@@ -19,14 +19,17 @@ const service = {
           field,
           data[field],
         );
-        requestRecombee.timeout = 10000;
+        requestRecombee.timeout = 20000;
         return await recombeeClient.client.send(requestRecombee);
       }),
     )
-      .then((res) => ({
-        success: true,
-        message: "Thêm property product thành công",
-      }))
+      .then((res) => {
+        console.log("res :>> ", res);
+        return {
+          success: true,
+          message: "Thêm property product thành công",
+        };
+      })
       .catch((err) => ({
         success: false,
         message: "Thêm property product thất bại",
@@ -38,9 +41,9 @@ const service = {
       success: false,
       message: "",
     };
-    if (product.id && product.name) {
+    if (product.sku && product.name) {
       const requestRecombee = new recombeeClient.rqs.SetItemValues(
-        `${product.id}`,
+        `${product.sku}`,
         {
           name: product.name,
           type: type,
@@ -50,7 +53,7 @@ const service = {
           cascadeCreate: true,
         },
       );
-      requestRecombee.timeout = 10000;
+      requestRecombee.timeout = 20000;
 
       await recombeeClient.client
         .send(requestRecombee)

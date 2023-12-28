@@ -5,7 +5,7 @@ export type PetSearch = {
   type?: PetType;
   state?: ObjectState;
   someStates?: ObjectState[];
-  inIds?: number[];
+  inSkus?: number[];
   notInIds?: number[];
 };
 

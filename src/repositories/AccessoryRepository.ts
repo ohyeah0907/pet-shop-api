@@ -23,6 +23,11 @@ const findAll = async (search: AccessorySearch, include?: object) => {
       notIn: search.notInIds,
     };
   }
+  if (search?.inSkus && Array.isArray(search.inSkus)) {
+    condition.sku = {
+      in: search.inSkus,
+    };
+  }
 
   const accessories = await prisma.accessory.findMany({
     where: {

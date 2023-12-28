@@ -5,6 +5,7 @@ export type AccessorySearch = {
   state?: ObjectState;
   someStates?: ObjectState[];
   notInIds?: number[];
+  inSkus?: number[];
 };
 
 export type AccessoryCreate = {

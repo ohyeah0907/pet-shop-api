@@ -1,6 +1,6 @@
 const pets = [
   {
-    sku: "SPPW00",
+    sku: "PET-SPPW00",
     name: "Phóc trắng đáng yêu",
     stock_quantity: 50,
     price: 1000,
@@ -21,7 +21,7 @@ const pets = [
     type_id: 3,
   },
   {
-    sku: "SPCY00",
+    sku: "PET-SPCY00",
     name: "Corgi vàng lùn xinh",
     stock_quantity: 50,
     price: 1000,
@@ -42,7 +42,7 @@ const pets = [
     type_id: 3,
   },
   {
-    sku: "SPPY00",
+    sku: "PET-SPPY00",
     name: "Poodle vàng mơ xinh",
     stock_quantity: 50,
     price: 1000,
@@ -63,7 +63,7 @@ const pets = [
     type_id: 3,
   },
   {
-    sku: "SPCB00",
+    sku: "PET-SPCB00",
     name: "Corgi quấn tai nâu",
     stock_quantity: 50,
     price: 1000,
@@ -84,7 +84,7 @@ const pets = [
     type_id: 3,
   },
   {
-    sku: "SPAB00",
+    sku: "PET-SPAB00",
     name: "Alaska nâu",
     stock_quantity: 50,
     price: 1000,
@@ -105,7 +105,7 @@ const pets = [
     type_id: 3,
   },
   {
-    sku: "SPMG00",
+    sku: "PET-SPMG00",
     name: "Mèo xám chân ngắn tai cụp siêu yêu",
     stock_quantity: 50,
     price: 1000,
@@ -126,7 +126,7 @@ const pets = [
     type_id: 4,
   },
   {
-    sku: "SPMG01",
+    sku: "PET-SPMG01",
     name: "Mèo chân ngắn tai cụp",
     stock_quantity: 50,
     price: 1000,
@@ -147,7 +147,7 @@ const pets = [
     type_id: 4,
   },
   {
-    sku: "SPMB00",
+    sku: "PET-SPMB00",
     name: "Mèo xám chân lùn tai cụp cute",
     stock_quantity: 50,
     price: 1000,
@@ -168,7 +168,7 @@ const pets = [
     type_id: 4,
   },
   {
-    sku: "SPMLDB00",
+    sku: "PET-SPMLDB00",
     name: "Mèo lông dài bicolor",
     stock_quantity: 50,
     price: 1000,
@@ -189,7 +189,7 @@ const pets = [
     type_id: 4,
   },
   {
-    sku: "SPCL00",
+    sku: "PET-SPCL00",
     name: "Vẹt Cockatiel Lutino",
     stock_quantity: 50,
     price: 1000,
@@ -206,6 +206,167 @@ const pets = [
     birthday: new Date().toISOString(),
     origin: "",
     description: "Adorable and nice looking pet",
+    type_id: 4,
+  },
+];
+
+const accessories = [
+  {
+    // id: "",
+    sku: "ACC-BXG01",
+    name: "Bóng xương gai",
+    stock_quantity: 10,
+    price: 19000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_6%2Fbong-gai-do-choi-1.jpeg?alt=media&token=ca389cde-d188-4706-a100-0237fb70fb25",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_6%2Fbong-gai-do-choi-1.jpeg?alt=media&token=ca389cde-d188-4706-a100-0237fb70fb25",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_6%2Fbong-gai-do-choi-1.jpeg?alt=media&token=ca389cde-d188-4706-a100-0237fb70fb25",
+    ],
+    origin: "Viet Nam",
+    description: "Size nhỏ",
+    weight: 10,
+    type_id: 2,
+  },
+  {
+    // id: "",
+    sku: "ACC-XVS01",
+    name: "Xịt vệ sinh đúng chỗ",
+    stock_quantity: 99,
+    price: 55000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_1%2Fxit-ve-sinh-1.jpeg?alt=media&token=c215ffee-71e7-4698-b614-1bbbbd70607b",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_1%2Fxit-ve-sinh-1.jpeg?alt=media&token=c215ffee-71e7-4698-b614-1bbbbd70607b",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_1%2Fxit-ve-sinh-2.jpeg?alt=media&token=ddeee74f-7b5b-4e80-a850-bccc83ef1b9d",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_1%2Fxit-ve-sinh-3.jpeg?alt=media&token=b70b943f-2841-4e1a-9453-6460dd9d9872",
+    ],
+    origin: "Mỹ",
+    description: "xịt vệ sinh cho thú cưng",
+    weight: 50,
+    type_id: 3,
+  },
+  {
+    // id: "",
+    sku: "ACC-NCCM01",
+    name: "Nhà cho chó mèo",
+    stock_quantity: 14,
+    price: 1200000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_4%2Fnha-cho-cho-1.jpg?alt=media&token=e21584e7-844e-4f17-b045-924d64d4db32",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_4%2Fnha-cho-cho-1.jpg?alt=media&token=e21584e7-844e-4f17-b045-924d64d4db32",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_4%2Fnha-cho-cho-2.jpg?alt=media&token=12b87e9d-8e7c-4586-82c6-645d9650e470",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_4%2Fnha-cho-cho-3.jpg?alt=media&token=2dd56ba3-5d5d-4d42-bdf5-a5ba253fb2bd",
+    ],
+    origin: "Việt Nam",
+    description: "Size vừa ( size M )",
+    weight: 2500,
+    type_id: 5,
+  },
+  {
+    // id: "",
+    sku: "ACC-VCN01",
+    name: "Vòng cổ nơ kèm chuông",
+    stock_quantity: 777,
+    price: 60000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_3%2Fvong-co-no-1.jpeg?alt=media&token=5d89ebe2-22a8-4137-baf8-d43faf4dec74",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_3%2Fvong-co-no-1.jpeg?alt=media&token=5d89ebe2-22a8-4137-baf8-d43faf4dec74",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_3%2Fvong-co-no-2.jpeg?alt=media&token=bb036adf-6c23-40be-9765-8d7f88033054",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_3%2Fvong-co-no-3.jpeg?alt=media&token=190ebd75-d600-4df0-bb86-240d3cc71461",
+    ],
+    origin: "Trung Quốc",
+    description: "Size vừa (size M)",
+    weight: 10,
+    type_id: 4,
+  },
+  {
+    // id: "",
+    sku: "ACC-AHTM01",
+    name: "Áo hoạ tiết mới cho chó mèo",
+    stock_quantity: 9999,
+    price: 32000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_5%2Fao-hoa-tiet-moi-1.jpg?alt=media&token=1083ab1c-cf6f-4f26-807c-4fa8dfed2366",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_5%2Fao-hoa-tiet-moi-1.jpg?alt=media&token=1083ab1c-cf6f-4f26-807c-4fa8dfed2366",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_5%2Fao-hoa-tiet-moi-2.jpg?alt=media&token=23f529c6-11e3-4e85-8864-bc044633416b",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_5%2Fao-hoa-tiet-moi-3.jpg?alt=media&token=fc356b96-8fbe-4754-ae86-0f5425865194",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_5%2Fao-hoa-tiet-moi-4.jpg?alt=media&token=2ce0c0b4-0fce-4c8e-889c-9c24fb068309",
+    ],
+    origin: "Việt Nam",
+    description: "Free size",
+    weight: 10,
+    type_id: 4,
+  },
+  {
+    // id: "",
+    sku: "ACC-TVC01",
+    name: "Túi bộ",
+    stock_quantity: 70,
+    price: 250000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_7%2Ftui-bo-1.jpeg?alt=media&token=7be3f69f-7c68-4703-a73e-bdee4c7db6ca",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_7%2Ftui-bo-1.jpeg?alt=media&token=7be3f69f-7c68-4703-a73e-bdee4c7db6ca",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_7%2Ftui-bo-2.jpg?alt=media&token=d3663311-dea0-45a5-8581-836ff7ddbe10",
+    ],
+    origin: "Việt Nam",
+    description: "Free size",
+    weight: 10,
+    type_id: 4,
+  },
+  {
+    // id: "",
+    sku: "ACC-STSOS01",
+    name: "Sữa Tắm SOS",
+    stock_quantity: 100,
+    price: 150000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_8%2Fsua-tam-sos-1.jpeg?alt=media&token=cd3db63d-4a40-48fd-9786-d49586b5e9ce",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_8%2Fsua-tam-sos-1.jpeg?alt=media&token=cd3db63d-4a40-48fd-9786-d49586b5e9ce",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_8%2Fsua-tam-sos-2.jpg?alt=media&token=3d860aa4-0eac-4017-bd4a-b70837853960",
+    ],
+    origin: "Anh",
+    description: "Sữa tắm cho thú cưng",
+    weight: 450,
+    type_id: 3,
+  },
+  {
+    // id: "",
+    sku: "ACC-TACC01",
+    name: "Ganador puppy",
+    stock_quantity: 100,
+    price: 280000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_9%2Fthuc-an-cho-cho-1.jpeg?alt=media&token=cdc56423-a939-4699-8e00-066869049d9b",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_9%2Fthuc-an-cho-cho-1.jpeg?alt=media&token=cdc56423-a939-4699-8e00-066869049d9b",
+    ],
+    origin: "Pháp",
+    description: "Thức ăn có vị sữa và DHA",
+    weight: 3000,
+    type_id: 6,
+  },
+  {
+    // id: "",
+    sku: "ACC-LCTC01",
+    name: "Lều hoạ tiết thú cưng xinh xắn",
+    stock_quantity: 45,
+    price: 400000,
+    thumbnail_image:
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_10%2Fleu-tuan-loc-1.jpg?alt=media&token=79617262-100b-42a3-a7a4-071cf4325a36",
+    description_images: [
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_10%2Fleu-tuan-loc-2.jpg?alt=media&token=db47109b-3292-4297-85bc-565f975d6303",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_10%2Fleu-tuan-loc-3.jpg?alt=media&token=64079236-2525-471f-a1fe-a9658a3124d6",
+      "https://firebasestorage.googleapis.com/v0/b/pet-shop-monito.appspot.com/o/accessory%2Faccessory_10%2Fleu-tuan-loc-4.jpg?alt=media&token=fe58d6a2-0b25-4ac1-9115-6c3e04e60c8d",
+    ],
+    origin: "Việt Nam",
+    description: "Size vừa (size M)",
+    weight: 800,
     type_id: 5,
   },
 ];
@@ -218,24 +379,46 @@ const petTypes = [
   },
   // id:2
   {
-    name: "accessory",
-    parent_id: null,
-  },
-  // id:3
-  {
     name: "dog",
     parent_id: 1,
   },
-  // id:4
+  // id:3
   {
     name: "cat",
     parent_id: 1,
   },
-  // id:5
+  // id:4
   {
     name: "bird",
     parent_id: 1,
   },
 ];
 
-export { pets, petTypes };
+const accessoryTypes = [
+  {
+    name: "accessory",
+    parent_id: null,
+  },
+  {
+    name: "toy",
+    parent_id: 1,
+  },
+  {
+    name: "liquid",
+    parent_id: 1,
+  },
+  {
+    name: "cloth",
+    parent_id: 1,
+  },
+  {
+    name: "cage",
+    parent_id: 1,
+  },
+  {
+    name: "food",
+    parent_id: 1,
+  },
+];
+
+export { pets, accessories, petTypes, accessoryTypes };

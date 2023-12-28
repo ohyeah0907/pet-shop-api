@@ -66,7 +66,7 @@ const controller = {
   verify: async (req: Request, res: Response) => {
     try {
       const result = await authService.verify(req.params.token);
-      return new SuccessResponse("Xác thực thành công!", result).send(res);
+      res.redirect(`${process.env.CLIENT_URL}/auth/verifiedRegister`);
     } catch (error: any) {
       return AppError.handle(error, res);
     }
