@@ -59,6 +59,7 @@ const findById = async (id: number) => {
       gender: true,
       email: true,
       phone: true,
+      username: true,
       address: true,
       verification_token: true,
       name: true,
