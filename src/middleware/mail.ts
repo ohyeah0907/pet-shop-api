@@ -13,7 +13,7 @@ export const sendMailVerification = async (
     to: email,
     subject: "Verify your email",
     // html: `<p>Click <a href="https://pet-shop-service.onrender.com/api/auth/verify-email/${token}">here</a> to verify your email</p>`,
-    html: `<p>Click <a href="http://localhost:4000/api/auth/verify-email/${token}">here</a> to verify your email</p>`,
+    html: `<p>Click <a href="${process.env.SERVER_URL}/api/auth/verify-email/${token}" target="_self">here</a> to verify your email</p>`,
   };
 
   return transport
